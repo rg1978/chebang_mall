@@ -1,0 +1,53 @@
+<form id="tmpl_form" class="tableform" method="post" action="?app=system&ctl=admin_messenger&act=saveSmsConf">
+<input type="hidden" name="tpl_name" value="<{$tpl}>">
+<input type="hidden" name="tpl_type" value="<{$type}>">
+<div class="division">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+    <th style="text-align: left;"><em><font color="red">*</font></em><{t}>单手机号每天可获取验证码次数：<{/t}></th>
+    <td>
+        <{input type="text" name="count" value="$count" vtype="required&&number"}>
+    </td>
+    <td><span>正整数，最大值100</span></td>
+</tr>
+<tr>
+    <th style="text-align: left;"><em><font color="red">*</font></em><{t}>验证码有效时间(分钟)：<{/t}></th>
+    <td>
+        <{input type="text" name="active" value="$active" vtype="required&&number"}>
+    </td>
+    <td><span>正整数，最大值60</span></td>
+</tr>
+</table>
+</div>
+ <div class="table-action">
+    <{button id="tmpl" label="保存"|t:'system' type="submit" onclick="$('tmpl_form').fireEvent('submit',{stop:function(){}})"}>
+  </div>
+</form>
+<script>
+(function(){
+    var _form = $('tmpl_form');
+    var btn =$('tmpl');
+    _form.store('target',{
+		onSuccess:function(response){
+			var hash_res_obj = JSON.decode(response);
+		
+			if (hash_res_obj.success != undefined && hash_res_obj.success != "")
+			{
+				try{
+					var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+				}catch(e){}
+				
+				if(_dialogIns)
+				{	
+					_dialogIns.close();
+				}
+			}
+			
+		}
+	});
+
+
+})();
+
+
+</script>

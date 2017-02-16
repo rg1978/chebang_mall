@@ -1,0 +1,13 @@
+<div class="item-block item-user">
+    <div class="item-info-default">
+        <dl class="clearfix">
+            <dt><span><i></i></span></dt>
+            <dd>新增会员：<em><{$userdata.newuser|default:0}></em></dd>
+            <dd>会员总数：<em><{$userdata.accountuser|default:0}></em></dd>
+        </dl>
+    </div>
+    <div class="btn-default">
+        <a href="?app=sysuser&ctl=admin_user&act=index" type="button" class="btn"><span><span>查看会员<em class="has-info"></em></span></span></a> 
+        <a href="?app=sysstat&ctl=admin_userlist&act=index" type="button" class="btn"><span><span>会员统计</span></span></a> 
+    </div>
+</div>

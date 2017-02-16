@@ -1,0 +1,104 @@
+<div class="report">
+  <div class="box-body">
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix">
+        <div class="pull-left">
+          <div class="goods-infor">
+            <div class="goods-img"><img width="64" height="64" src="<{$rate.item_pic|storager:t}>"></div>
+            <div class="goods-title"><a href="<{url action=topc_ctl_item@index item_id=$rate.item_id}>" target="_blank"><{$rate.item_title}></a></div>
+          </div>
+        </div>
+        <div class="goods-price">
+          <div>成交价：<{$rate.item_price|cur}></div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="text-muted callout callout-info no-shadow old-evaluation-view-box">
+          <div class="report-title">
+            <h4 class="pull-left">初次评价信息</h4>
+          </div>
+          <div class="old-evaluation-view">
+            <ul>
+              <li>
+                <div class="view-key">商品评分：</div>
+                <div class="view-val"><i class="icon icon-flower <{$rate.result}>"></i>
+                  <{if $rate.result == 'good'}>好评<{elseif $rate.result == 'bad'}>差评<{else}>中评<{/if}>
+                </div>
+              </li>
+              <li>
+                <div class="view-key">评价内容：</div>
+                <div class="view-val"><{$rate.content}></div>
+              </li>
+              <{if $rate.rate_pic}>
+              <li>
+                <div class="view-key">评价晒图：</div>
+                <div class="view-val show-pics">
+                  <{foreach from=$rate.rate_pic item=picItem}>
+                  <a href="<{$picItem|storager:'l'}>" target="_blank"><img width="64" height="64" src="<{$picItem|storager:t}>"><i class="icon icon-search-a"></i></a>
+                  <{/foreach}>
+                </div>
+              </li>
+              <{/if}>
+              <li>
+                <div class="view-key">评价时间：</div>
+                <div class="view-val"><{$rate.created_time|cdate}></div>
+              </li>
+              <{if $rate.is_reply}>
+              <hr>
+              <li>
+                <div class="view-key">卖家回复：</div>
+                <div class="view-val text-green"><{$rate.reply_content}></div>
+              </li>
+              <li>
+                <div class="view-key">回复时间：</div>
+                <div class="view-val"><{$rate.reply_time|cdate}></div>
+              </li>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+
+        <{if $rate.is_append && $rate.append}>
+        <div class="text-muted callout callout-warning no-shadow old-evaluation-view-box">
+          <div class="report-title">
+            <h4 class="pull-left">追加评价信息</h4>
+          </div>
+          <div class="old-evaluation-view">
+            <ul>
+              <li>
+                <div class="view-key">追评内容：</div>
+                <div class="view-val"><{$rate.append.append_content}></div>
+              </li>
+              <{if $rate.append.append_rate_pic}>
+              <li>
+                <div class="view-key">追评晒图：</div>
+                <div class="view-val show-pics">
+                  <{foreach from=$rate.append.append_rate_pic item=picItem}>
+                  <a href="<{$picItem|storager:'l'}>" target="_blank"><img width="64" height="64" src="<{$picItem|storager:t}>"><i class="icon icon-search-a"></i></a>
+                  <{/foreach}>
+                </div>
+              </li>
+              <{/if}>
+              <li>
+                <div class="view-key">追评时间：</div>
+                <div class="view-val"><{$rate.append.created_time|cdate}></div>
+              </li>
+              <{if $rate.append.is_reply}>
+              <hr>
+              <li>
+                <div class="view-key">卖家回复：</div>
+                <div class="view-val text-green"><{$rate.append.append_reply_content}></div>
+              </li>
+              <li>
+                <div class="view-key">回复时间：</div>
+                <div class="view-val"><{$rate.append.reply_time|cdate}></div>
+              </li>
+              <{/if}>
+            </ul>
+          </div>
+        </div>
+        <{/if}>
+      </div>
+    </div>
+  </div>
+</div>

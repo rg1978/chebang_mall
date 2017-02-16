@@ -1,0 +1,14 @@
+<div class="bread-nav">
+  <{foreach from=$data item=crumb name=bread}>
+  <{if $crumb.url}>
+  <{if $env.foreach.bread.last}>
+  <span><{$crumb.title}></span>
+  <{else}>
+  <a href="<{$crumb.url}>"><{$crumb.title}></a>
+  <{/if}>
+  <{else}>
+  <span><{$crumb.title}></span>
+  <{/if}>
+  <{if $env.foreach.bread.last}><{else}><span>&gt;</span><{/if}>
+  <{/foreach}>
+</div>

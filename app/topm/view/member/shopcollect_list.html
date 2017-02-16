@@ -1,0 +1,19 @@
+<ul>
+  <{foreach from=$favshop_info item=fav}>
+  <li>
+    <input type="hidden" value="<{$fav.shop_id}>" name="shop_id[]"/>
+    <a href="<{url action=topm_ctl_shopcenter@index shop_id=$fav.shop_id}>">
+      <span class="info-l">
+        <img  class="preload" src="<{$fav.shop_logo|default:$defaultImageId.S.default_image|storager:t}>" alt="">
+      </span>
+      <span class="info-m">
+        <span class="store-n"><{$fav.shop_name}></span><br>
+
+      </span>
+      <span class="info-r">
+        <span class="icon-forward"></span>
+      </span>
+    </a>
+  </li>
+  <{/foreach}>
+</ul>

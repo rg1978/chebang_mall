@@ -1,0 +1,52 @@
+<div class="box box-solid">
+  <div class="box-body no-padding">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active">
+        <a href="#"><span class="label bg-green">APP聚合API</span></a>
+      </li>
+      <{if $activeGroupList.topapi}>
+      <{foreach from=$activeGroupList.topapi key=key item=item}>
+      <li>
+        <a href="<{url action=topdev_ctl_apis@info apitype=topapi method=$key}>">
+          <{$key}>
+          <span class="col-md-8 pull-right"><{$item.apidesc}></span>
+        </a>
+      </li>
+      <{/foreach}>
+      <{else}>
+      <li>
+        <a href="#">
+          无相关API
+        </a>
+      </li>
+      <{/if}>
+    </ul>
+  </div>
+</div>
+
+<div class="box box-solid">
+  <div class="box-body no-padding">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active">
+        <a href="#"><span class="label bg-green">系统API</span></a>
+      </li>
+      <{if $activeGroupList.apis}>
+      <{foreach from=$activeGroupList.apis key=key item=item}>
+      <li>
+        <a href="<{url action=topdev_ctl_apis@info apitype=apis method=$key}>">
+          <{$key}>
+          <span class="col-md-8 pull-right"><{$item.apidesc}></span>
+        </a>
+      </li>
+      <{/foreach}>
+      <{else}>
+      <li>
+        <a href="#">
+          无相关API
+        </a>
+      </li>
+      <{/if}>
+    </ul>
+  </div>
+  <!-- /.box-body -->
+</div>

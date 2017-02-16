@@ -1,0 +1,172 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4>发货商品明细</h4>
+    <table class="table table-primary table-goods table-order">
+      <tr>
+        <td colspan="5">订单号:<{$tradeInfo.tid}></td>
+      </tr>
+      <{foreach from=$tradeInfo.orders item=item}>
+      <tr>
+        <td><{$item.bn}></td>
+        <td>
+          <div class="goods">
+            <a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>">
+              <{if $item.pic_path}>
+              <img src="<{$item.pic_path|storager:t}>" alt="<{$item.title}>">
+              <{else}>
+              <img src="<{$defaultImageId.T.default_image}>" alt="<{$item.title}>">
+              <{/if}>
+              <{$item.title}>
+              <{if $item.spec_nature_info}>(<{$item.spec_nature_info}>)<{/if}>
+            </a>
+          </div>
+        </td>
+        <td>
+          <{$item.price|cur}>
+        </td>
+        <td>
+          <{$item.num}>
+        </td>
+        <td>
+          <span class="text-orange"><{$item.total_fee|cur}></span>
+        </td>
+      </tr>
+
+      <{if $item.gift_data}>
+      <{foreach from=$item.gift_data item=giftdata}>
+        <tr>
+        <td><span class="badge bg-red">赠品</span><{$giftdata.bn}></td>
+        <td>
+          <div class="goods">
+            <a href="<{url action=topc_ctl_item@index item_id=$giftdata.item_id}>">
+              <{if $giftdata.image_default_id}>
+              <img src="<{$giftdata.image_default_id|storager:t}>" alt="<{$giftdata.title}>">
+              <{else}>
+              <img src="<{$defaultImageId.T.default_image}>" alt="<{$giftdata.title}>">
+              <{/if}>
+              <{$giftdata.title}>
+              <{if $giftdata.spec_info}>(<{$giftdata.spec_info}>)<{/if}>
+            </a>
+          </div>
+        </td>
+        <td>
+          <{$giftdata.price|cur}>
+        </td>
+        <td>
+          <{$giftdata.gift_num}>
+        </td>
+        <td>
+          <span class="text-orange"><{0|cur}></span>
+        </td>
+      </tr>
+      <{/foreach}>
+      <{/if}>
+      <{/foreach}>
+    </table>
+  </div>
+
+  <div class="panel-body">
+    <input type="hidden" name="trade_id" value="<{$tradeInfo.tid}>">
+    <h4>发货信息填写</h4>
+    <table class="table table-primary table-goods table-order">
+      <tbody>
+        <tr>
+          <td>收货信息</td>
+          <td>
+            <div class="form-group">
+              收货人姓名： <{$tradeInfo.receiver_name}>;    收货人手机： <{$tradeInfo.receiver_mobile}>
+            </div>
+            <div class="form-group">
+              收货 地址： <{if $tradeInfo.ziti_addr}><{$tradeInfo.ziti_addr}> <{else}> <{$tradeInfo.receiver_state}><{$tradeInfo.receiver_city}><{$tradeInfo.receiver_district}> <{$tradeInfo.receiver_address}><{/if}>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>发票信息 </td>
+          <td>
+            <div class="form-group">
+              <{if !$tradeInfo.need_invoice }>
+              不开发票
+              <{else}>
+              发票类型：普通发票
+              发票抬头：<{if $tradeInfo.invoice_name=='individual'}>个人<{else}>单位<{/if}>(<{$tradeInfo.invoice_main}>)
+              <{/if}>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>配送信息</td>
+          <td>
+            <{if $ziti == 'true'}>
+            <div class="form-group has-error">
+              配送方式：
+              <select name="dlytmpl_id" class="form-control inline" disabled style="width:175px;margin-left:-5px;">
+                <option value="<{$tradeInfo.dlytmpl_id}>">上门自提</option>
+              </select>
+            </div>
+            <{else}>
+            <div class="form-group has-error">
+              配送方式：
+              <select name="dlytmpl_id" class="form-control inline" disabled style="width:175px;margin-left:-5px;">
+                <option value="express">快递</option>
+              </select>
+            </div>
+            <{/if}>
+            <div class="form-group has-error">
+              物流公司：
+              <select name="corp_code" class="form-control inline" style="width:175px;margin-left:-5px;">
+                <{foreach from=$dlycorp key=key item=dlyList}>
+                <option value="<{$dlyList.corp_code}>"><{$dlyList.corp_name}></option>
+                <{/foreach}>
+              </select>
+              <{if !$dlycorp[0]}>
+              <span>由于运费模板和物流业务改版，请在<a href="<{url action=topshop_ctl_shop_dlycorp@index}>">物流公司</a>，开启物流后发货</span>
+              <{/if}>
+            </div>
+            <div class="form-group has-error">
+              配送单号：<input type="text" name="logi_no" class="form-control inline" maxlength="20">
+            </div>
+            <{if $ziti == 'true'}>
+            <input type="hidden" name="isZiti" value="<{$ziti}>">
+            <div class="form-group has-error">
+              自提备注：
+              <textarea id="ziti_memo" class="form-control inline" maxlength="200" name="ziti_memo" style="height: 150px; width: 410px;"></textarea>
+            </div>
+            <{/if}>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer text-center">
+    <button type="button" class="btn btn-primary" id="act-delivery">确认</button>
+  </div>
+</div>
+<script>
+  $(function(){
+
+    $('#act-delivery').click(function(e){
+      var dlytmplId = $('select[name="dlytmpl_id"]').val();
+      var logi_no = $('input[name="logi_no"]').val();
+      var tid = $('input[name="trade_id"]').val();
+      var corp_code = $('select[name="corp_code"]').val();
+      var is_ziti = $('input[name="isZiti"]').val();
+      var memo = $('#ziti_memo').val();
+      data = 'tid='+tid+'&template_id='+dlytmplId+'&corp_code='+corp_code+'&logi_no='+logi_no+'&isZiti='+is_ziti+'&ziti_memo='+memo;
+      $.post('<{url action=topshop_ctl_trade_flow@dodelivery}>', data, function(rs){
+        // rs = JSON.parse(rs);
+        if(rs.error) {
+          $('#messagebox').message(rs.message);
+          return;
+        }
+        if(rs.success) {
+          $('#messagebox').message(rs.message, 'success');
+        }
+
+        if(rs.redirect) {
+          location.href = rs.redirect;
+        }
+      })
+    })
+  })
+</script>

@@ -1,0 +1,17 @@
+<services>
+    <service id="desktop.widgets">
+        <class>sysstat_desktop_widgets_tradeData</class>
+        <class>sysstat_desktop_widgets_userData</class>
+        <class>sysstat_desktop_widgets_applyData</class>
+        <class>sysstat_desktop_widgets_promotionData</class>
+        <class>sysstat_desktop_widgets_siteData</class>
+        <class>sysstat_desktop_widgets_statData</class>
+    </service>
+    <service id="desktop_finder.sysstat_mdl_desktop_item_statics">
+        <class>sysstat_finder_statItem</class>
+    </service>
+    <!--清除初始化数据-->
+    <service id="desktop_debug_clean_data">
+        <class>sysstat_data_clean</class>
+    </service>
+</services>

@@ -1,0 +1,82 @@
+<div class="deposit">
+  <div class="membercenter-box">
+    <div class="membercenter-box-hd">
+      <div class="membercenter-box-left">我的预存款</div>
+    </div>
+    <div class="membercenter-box-bd">
+
+      <div class="col-lg-9">
+        <div class="balance">可用余额：<span><{$deposit.deposit|cur}></span></div>
+      </div>
+      <div class="col-lg-3">
+        <div class="recharge" style='float:left;'><a href="<{url action=topc_ctl_member_deposit@rechargeSubmit}>" class="btn btn-danger"><span><span>去充值</span></span></a></div>
+        <{if $deposit.deposit > 0 && $cashConfig.depositCash}>
+        <div class="recharge"><a href="<{url action=topc_ctl_member_deposit@cashApplyPage}>" class="btn" style='color:#c9302c;border-color:#c9302c'><span style='border-color:#c9302c'><span>提&nbsp;&nbsp;现</span></span></a></div>
+        <{/if}>
+      </div>
+    </div>
+  </div>
+  <div class="membercenter-box">
+    <div class="membercenter-box-hd">
+      <div class="membercenter-box-left">交易记录</div>
+      <{if $cashConfig.depositCash}>
+      <div class="membercenter-box-right"><a href='<{url action=topc_ctl_member_deposit@cashList}>'>查看提现记录>></a></div>
+      <{/if}>
+    </div>
+    <div class="membercenter-box-bd nogap">
+      <table class="base-list-style" width="100%">
+        <colgroup>
+          <col class="list-col-4">
+          <col class="list-col-3">
+          <col class="list-col-3">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>时间</td>
+            <td>账户变动</td>
+            <td>备注</td>
+          </tr>
+        </thead>
+        <tbody>
+          <{foreach from=$deposit.list item=log}>
+          <tr>
+            <td><{$log.logtime|cdate}></td>
+            <{if $log.type=='expense'}><td class="reduce">-<{$log.fee|cur}></td><{else}><td class="increase">+<{$log.fee|cur}></td><{/if}>
+            <td><{$log.message}></td>
+          </tr>
+          <{/foreach}>
+        </tbody>
+      </table>
+
+      <!-- 无数据结构 star -->
+      <!-- <table class="base-list-style" width="100%">
+        <colgroup>
+          <col class="list-col-4">
+          <col class="list-col-3">
+          <col class="list-col-3">
+        </colgroup>
+        <thead>
+          <tr>
+            <td>时间</td>
+            <td>账户变动</td>
+            <td>备注</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3">
+             <div class="no-data">
+                <div class="bg-icon">￥</div>
+                <p>暂无明细</p>
+             </div>
+            </td>
+          </tr>
+        </tbody>
+      </table> -->
+      <!-- end -->
+    </div>
+  </div>
+
+    <{pagers data=$pagers}>
+
+</div>

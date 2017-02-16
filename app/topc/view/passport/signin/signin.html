@@ -1,0 +1,8 @@
+<div class="main" style="background:url('<{if $env.conf.site.site.loginlogo|storager}><{$env.conf.site.site.loginlogo|storager}><{else}><{$env.base_full_url}>/themes/luckymall/images/demo_login.jpg<{/if}>'); background-size: cover; background-position: center">
+  <div class="wrap-lg clearfix">
+    <div class="col-lg-9">&nbsp;</div>
+    <div class="col-lg-6 login">
+      <{include file='topc/passport/signin/member-signin.html'}>
+    </div>
+  </div>
+</div>

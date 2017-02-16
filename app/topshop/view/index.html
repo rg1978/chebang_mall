@@ -1,0 +1,32 @@
+<div class="row merchant-home">
+  <div class="col-lg-6">
+  	<!--验证提醒-->
+  	<{if $authnotice}>
+    <{include file="topshop/index/leftsafe.html"}>
+    <{/if}>
+    <!--业务提醒-->
+    <{include file="topshop/index/leftcenter.html"}>
+    <!--我的店铺-->
+    <{include file="topshop/index/lefttop.html"}>
+
+    <!--商家运营概况-->
+    <{include file="topshop/index/leftbottom.html"}>
+  </div>
+  <div class="col-lg-6">
+    <!--店铺入驻信息-->
+    <{include file="topshop/index/right.html"}>
+  </div>
+</div>
+<script type="text/javascript">
+	function setCookie(name,value)
+	{
+		var Days = 30;
+		var exp = new Date();
+		exp.setTime(exp.getTime() + Days*24*60*60*1000);
+		document.cookie = name + "="+ escape (value) + "; path=/; expires=" + exp.toGMTString();
+	}
+	function closeAuth(){
+		setCookie('authNotice','n');
+		$('.auth-close').hide();
+	}
+</script>

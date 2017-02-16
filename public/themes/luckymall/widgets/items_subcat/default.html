@@ -1,0 +1,25 @@
+<div class="category2">
+  <ul class="category-primary">
+    <{foreach from=$setting.catlist.1.lv2 item=lv2item}>
+    <li>
+      <div class="category-primary-item">
+        <a href="<{url action=topc_ctl_topics@index cat_id=$lv2item.cat_id}>">
+          <div class="title"><{$lv2item.cat_name}></div>
+        </a>
+        <div class="list">
+          <{foreach from=$lv2item.lv3 item=lv3item}>
+          <a href="<{url action=topc_ctl_list@index cat_id=$lv3item.cat_id}>"><{$lv3item.cat_name}></a>
+          <{/foreach}>
+        </div>
+      </div>
+      <div class="category-sub">
+        <ul>
+          <{foreach from=$lv2item.lv3 item=lv3item}>
+          <li><a href="<{url action=topc_ctl_list@index cat_id=$lv3item.cat_id}>"><{$lv3item.cat_name}></a></li>
+          <{/foreach}>
+        </ul>
+      </div>
+    </li>
+    <{/foreach}>
+  </ul>
+</div>

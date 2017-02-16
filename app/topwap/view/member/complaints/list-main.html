@@ -1,0 +1,15 @@
+<{foreach from=$complaintsList.list item=complaint}>
+<section class="section-white">
+  <a class="shopex-linkto" href="<{url action=topwap_ctl_member_complaints@complaintsView oid=$complaint.oid}>">
+    <div class="section-title">
+      <div class="box-item-flex1 fontS font-gray-40"><{$complaint.complaints_type}></div>
+      <div class="box-item-flex1 fontS  content-right"><mark><{$complaint.status}></mark></div>
+    </div>
+    <div class="content-padded box-display theme-border-top theme-border-bottom">
+      <div class="thumb"><img src="<{$complaint.pic_path|storager:'t'}>" alt=""></div>
+      <div class="box-item-flex1 fontS"><{$complaint.title}></div>
+    </div>
+    <div class="content-padded fonts font-gray-40 content-right"><{$complaint.created_time|cdate}></div>
+  </a>
+</section>
+<{/foreach}>

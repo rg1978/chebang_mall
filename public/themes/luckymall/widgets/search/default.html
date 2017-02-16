@@ -1,0 +1,47 @@
+<{if $env.conf.search.associate_enabled == '1'}>
+<{assign var=associate value="true"}>
+<{/if}>
+<div class="searchbar">
+  <form action="<{url action=topc_ctl_search@index}>" method="post" id="goods_search">
+    <input type="text" name="keyword" id="search-key-word" class="x-input">
+    <a href="javascript:void(0);" class="btn btn-search">搜索</a>
+  </form>
+<{if $data.search}>
+  <div class="hots">
+    <span><{$setting.hotkey}>：</span>
+    <{foreach from=$data.search item=toplink key=top_key}>
+    <a href="<{$toplink.top_link_url}>"><{$toplink.top_link_title}></a>
+    <{/foreach}>
+  </div>
+<{/if}>
+</div>
+
+<script>
+  $('.btn-search').click(function(){
+    $('#goods_search').submit();
+  })
+
+  function getUrlArgStr(){
+    var q=location.search.substr(1);
+    var qs=q.split('&');
+    var argStr='';
+    var keyword = '';
+    if(qs){
+      for(var i=0;i<qs.length;i++){
+        keyword = qs[i].substring(0,qs[i].indexOf('='));
+        if( keyword == 'n' || keyword == 'search_keywords' ){
+          return qs[i].substring(qs[i].indexOf('=')+1);
+        }
+      }
+    }
+
+    return argStr;
+  }
+
+  var keywords = getUrlArgStr();
+  console.log(keywords);
+  var str = decodeURI(keywords);
+  str = str.replace(/\+/g, " ")
+  str = str.replace(/%2B/g, "+")
+  $('#search-key-word').val(decodeURI(str));
+</script>

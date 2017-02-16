@@ -1,0 +1,329 @@
+<div class="signup-box-header">
+	<div class="signup-state">
+	    <h3>商家入驻流程</h3>
+	    <ul class="signup-flow-list">
+	    	<li class="on arrow-icon"><{t}>公司基本信息<{/t}></li>
+	    	<li class="on arrow-icon"><{t}>银行及税务信息<{/t}></li>
+	        <li class="on arrow-icon"><{t}>店铺信息<{/t}><span class="arrow"></span></li>
+	        <li class="arrow-icon"><{t}>提交完成，等待审核<{/t}></li>
+	        <li><{t}>审核通过，等待签约<{/t}></li>
+	    </ul>
+	</div>
+</div>
+<div class="signup-box signup-wrap">
+	<form action="" method="post" class="form-horizontal" role="form" data-validate-onsuccess="ajaxSubmit">
+	    <input type="hidden" name="enterapply_id" value="<{$applydata.enterapply_id}>">
+	    <fieldset>
+	      <div class="panel panel-outter">
+	        <div class="panel-body">
+		        <div class="col-md-12">
+		            <div>
+		              <legend id="license">店铺信息</legend>
+		            </div>
+		            <div class="form-group">
+		              <label for="shop_type" class="control-label col-md-3"><span class="text-red">*</span>店铺类型：</label>
+		              <div class="col-md-5">
+		                <select name="shop_type" id="shop_type" class="form-control">
+		                  <option value="" data-suffix="">请先选择店铺类型</option>
+		                  <{foreach from=$shoptypelist item=shoptype key=key}>
+                      <{if $shoptype.shop_type != 'self'}>
+                      <option value="<{$shoptype.shop_type}>" data-suffix="<{$shoptype.suffix}>" <{if $shoptype.shop_type == $applydata.shop_type}>selected<{/if}>><{$shoptype.name}> (后缀名为<{$shoptype.suffix}>)</option>
+                      <{/if}>
+		                  <{/foreach}>
+		                </select>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="shop_cart" class="control-label col-md-3"><span class="text-red">*</span>店铺经营类目：</label>
+		              <div class="col-md-5">
+		                <select name="shop[shop_cat][]" id="shop_cat" class="form-control" autocomplete="off">
+		                  <option value="">请先选择经营类目</option>
+		                  <{foreach from=$catlist item=catname key=key}>
+		                  <option  value="<{$key}>"><{$catname}></option>>
+		                  <{/foreach}>
+		                </select>
+		                <div class="select-cat">
+		                  <label for="">已选类目：</label>
+		                  <div class="select-cat-item"></div>
+		                </div>
+		              </div>
+		            </div>
+		            <div class="form-group brand-type" style="display:none;">
+		              <label for="shop_brand" class="control-label col-md-3">经营品牌：</label>
+		              <div class="col-md-5">
+		                <div class="col-xs-5">
+		                  <select name="shop[shop_brand]" id="shop_brand" class="form-control" autocomplete="off">
+		                  </select>
+		                </div>
+		                <div class="col-xs-1">
+		                  <p class="form-control-static" id="">或</p>
+		                </div>
+		                <div class="col-xs-5">
+		                  <input type="text" name="new_brand" value="<{$applydata.new_brand}>" id="new_brand" maxlength="50" class="form-control form-control-static" placeholder="新增品牌" autocomplete="off">
+		                </div>
+		              </div>
+		            </div>
+		            <div class="form-group brand-type" style="display:none;">
+		              <label for="brand_warranty" class="control-label col-md-3"><span class="text-red">*</span>品牌授权书电子版：</label>
+		              <div class="col-md-5">
+		                <div class="choose-image">
+		                  <input type="file" class="action-file-input" style="display:none;" data-size="<{$env.config.image.uploadedFileMaxSize}>" name="shop_info[brand_warranty]" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop type=shop_apply}>" accept="image/*" />
+		                  <span class="image-box action-upload">
+		                    <img src="<{$shop_info.brand_warranty|storager:t}>" />
+		                    <input type="hidden" name="shop_info[brand_warranty]" value="<{$shop_info.brand_warranty}>">
+		                    </span><b class="choose-handle action-upload" title="选择图片">
+		                    <i class="icon-arrow-right-b"></i>
+		                  </b>
+                      <span class="text-red">品牌授权书电子版不能大于<{$env.config.image.uploadedFileMaxSize|format_filesize}></span>
+		                </div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+                  <label for="shop_name" class="control-label col-md-3"><span class="text-red">*</span>店铺名称：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_name" value="<{$applydata.shop_name}>" id="shop_name" class="form-control" placeholder="店铺名称" maxlength="20" required>
+		                <div class="shop-name-all">
+		                  <span class="txt">店铺全称：</span>
+		                  <span class="shop-name-remind"></span><span class="shop-name-suffix"></span>
+		                </div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="shop_name" class="control-label col-md-3"><span class="text-red"></span>店铺描述：</label>
+		              <div class="col-md-5">
+		                <textarea name="shop[shop_descript]" class="form-control" maxlength="200"><{$shop.shop_descript}></textarea>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="shopuser_name" class="control-label col-md-3"><span class="text-red">*</span>店主姓名：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shopuser_name" value="<{$applydata.shopuser_name}>" id="shopuser_name" class="form-control" placeholder="店主姓名" maxlength="20" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="shopuser_identity_img" class="control-label col-md-3"><span class="text-red">*</span>店主身份证电子版正面：</label>
+		              <div class="col-md-5">
+		                <div class="choose-image">
+		                  <input type="file" class="action-file-input" style="display:none;" data-size="<{$env.config.image.uploadedFileMaxSize}>" name="shop_info[shopuser_identity_img_z]" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop type=shop_apply}>" accept="image/*" required/>
+		                  <span class="image-box action-upload">
+		                    <img src="<{$shop_info.shopuser_identity_img_z|storager:t}>" />
+		                    <input type="hidden" name="shop_info[shopuser_identity_img_z]" value="<{$shop_info.shopuser_identity_img_z}>">
+		                  </span><b class="choose-handle action-upload" title="选择图片">
+		                    <i class="icon-arrow-right-b"></i>
+		                  </b>
+		                  <span class="text-red">店主身份证电子版不能大于<{$env.config.image.uploadedFileMaxSize|format_filesize}></span>&nbsp;&nbsp;<a href="<{$resUrl}>/images/idcardfont.jpg" class="img-example">查看示例</a>
+		                </div>
+		              </div>
+		            </div>
+
+		            <div class="form-group">
+		              <label for="shopuser_identity_img" class="control-label col-md-3"><span class="text-red">*</span>店主身份证电子版反面：</label>
+		              <div class="col-md-5">
+		                <div class="choose-image">
+		                  <input type="file" class="action-file-input" style="display:none;" data-size="<{$env.config.image.uploadedFileMaxSize}>" name="shop_info[shopuser_identity_img_f]" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop type=shop_apply}>" accept="image/*" required/>
+		                  <span class="image-box action-upload">
+		                    <img src="<{$shop_info.shopuser_identity_img_f|storager:t}>" />
+		                    <input type="hidden" name="shop_info[shopuser_identity_img_f]" value="<{$shop_info.shopuser_identity_img_f}>">
+		                  </span><b class="choose-handle action-upload" title="选择图片">
+		                    <i class="icon-arrow-right-b"></i>
+		                  </b>
+		                  <span class="text-red">店主身份证电子版不能大于<{$env.config.image.uploadedFileMaxSize|format_filesize}></span>&nbsp;&nbsp;<a href="<{$resUrl}>/images/idcardback.jpg" class="img-example">查看示例</a>
+		                </div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="shop_addr" class="control-label col-md-3"><span class="text-red">*</span>地址：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop[shop_addr]" value="<{$shop.shop_addr}>" id="shop_addr" class="form-control" placeholder="地址" maxlength="50" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="mobile" class="control-label col-md-3"><span class="text-red">*</span>手机号码：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop[mobile]" value="<{$shop.mobile}>" id="mobile" class="form-control" placeholder="手机号码" maxlength="11" required data-validate-mobile>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="email" class="control-label col-md-3"><span class="text-red"></span>邮箱：</label>
+		              <div class="col-md-5">
+		                <input type="email" name="shop[email]" value="<{$shop.email}>" id="email" class="form-control" placeholder="邮箱" maxlength="50">
+		              </div>
+		            </div>
+		      	</div>
+	      	</div>
+	      </div>
+	    </fieldset>
+	    <div class="navbar-fixed-bottom navbar-fixed-btn btn-group-lg">
+	    	<button type="button" class="btn btn-primary btn-back">保存，返回上一步修改</button>
+	      	<button type="submit" class="btn btn-primary btn-next">申请入驻</button>
+	    </div>
+	  </form>
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="example_img_modal" tabindex="-1" role="dialog">
+  <div class="panel panel-default modal-dialog modal-lg">
+    <div class="panel-heading">
+      <div class="clearfix">
+      	<div class="pull-left">示例</div>
+        <div class="pull-right">
+          <i class="glyphicon glyphicon-remove" data-dismiss="modal"></i>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body text-center">
+      <div class="big-img-show example-img-show"><div class="show-position"><img src="" alt="" ></div></div>
+    </div>
+  </div>
+</div>
+<script>
+	var selectCats = [];
+	var flag = 0;
+	$('#shop_cat').val(<{$shop.shop_cat|json_encode}>);
+	$(function(){
+		if($('#shop_type').val() == 'store') {
+			$('#shop_cat').val(<{$shop.shop_cat|json_encode}>);
+			var selectCatIds = $('#shop_cat').val();
+			$(selectCatIds).each(function(i) {
+			  var catValue = selectCatIds[i];
+			  if($.inArray(catValue, selectCats) == -1 && catValue != '') {
+			    selectCats.push(catValue);
+			  }
+			});
+			loadSelectCat(selectCats);
+		}
+	});
+
+	$('.wrapper').scrollspy({
+	target: '.sidebar'
+	});
+
+	$('#shop_type').on('change',function(){
+	  $('.select-cat').hide();
+	  if($(this).val() == "cat" || $(this).val() == "store"){
+	    if($(this).val() == "store"){
+	      $('#shop_cat').attr('multiple','multiple');
+	      $('.select-cat').show();
+	    }else{
+	      $('#shop_cat').removeAttr('multiple');
+	    }
+	    $('.brand-type').hide();
+	  }else{
+	      $('#shop_cat').removeAttr('multiple');
+	    $('.brand-type').show();
+	  }
+	  $('.shop-name-suffix').html($(this).find('option:selected').attr('data-suffix'));
+
+	}).trigger('change');
+
+	//用于记录选中的经营类目
+	$('#shop_cat').on('change',function(){
+	  var shoptypeval = $('#shop_type').val();
+	  //记录选中的经营类目
+	  if(shoptypeval == 'store') {
+	    $(this).find('option:selected').each(function() {
+	      var catValue = $(this).val();
+	      if($.inArray(catValue, selectCats) == -1 && catValue != '') {
+	        selectCats.push(catValue);
+	      }
+	    });
+	    loadSelectCat(selectCats);
+	  }
+	  var url = "<{url action=topshop_ctl_enterapply@ajaxCatBrand}>";
+	  if($(this).val() && shoptypeval != "cat" && shoptypeval != "store" ) {
+	    $.post(url,'cat_id='+$(this).val(),function(rs){
+	      var optionstring = "";
+	      for (var j = 0; j < rs.length; j++) {
+	        optionstring += '<option value="' + rs[j].brand_id + '"';
+	        if(rs[j].brand_id == '<{$shop.shop_brand}>') {
+	          optionstring += ' selected';
+	        }
+	        optionstring += '>' + rs[j].brand_name + '</option>';
+	      }
+	      $("#shop_brand").html("<option value=''>请选择...</option> "+optionstring).trigger('change');
+
+	    });
+	  }
+	}).trigger('change');
+
+	//删除选中的经营类目
+	$('.select-cat').on('click', '.del', function() {
+	  var parent = $(this).parent();
+	  var catIndex = parent.attr('data-value');
+	  parent.remove();
+	  selectCats.splice($.inArray(catIndex,selectCats), 1);
+	  loadSelectCat(selectCats);
+	});
+
+	//选中并加载店铺经营类目文本提示
+	function loadSelectCat(arr) {
+	  var selectCatHtml = '';
+	  $('#shop_cat').val(arr);
+	  $(arr).each(function(index) {
+	    var selOption = $('#shop_cat option[value="'+arr[index]+'"]');
+	    selectCatHtml += '<span data-value="'+arr[index]+'">'+ selOption.text() +'<i class="del">x</i></span>';
+	  });
+	  $('.select-cat-item').html(selectCatHtml);
+	}
+
+	$('#shop_brand').on('change',function(){
+	  var shoptypeval = $('#shop_type').val();
+	  if(this.value !== '' || shoptypeval == "cat") {
+	    $('#new_brand').val('');
+	  }
+	}).trigger('change');
+
+	$('#new_brand').on('change',function(){
+	  var shoptypeval = $('#shop_type').val();
+	  if(this.value || shoptypeval == "cat") {
+	    $('#shop_brand').val('');
+	  }
+	});
+
+	//店铺名称提示
+	$('.shop-name-remind').html($.trim($('input[name="shop_name"]').val()));
+	$('input[name="shop_name"]').on('keyup', function() {
+	  $('.shop-name-remind').html($.trim($(this).val()));
+	  if($('#shop_type').val() != '') {
+	    console.log($('#shop_type').find('option:selected').attr('data-suffix'));
+	    $('.shop-name-suffix').html($('#shop_type').find('option:selected').attr('data-suffix'));
+	  }
+	});
+
+	//查看示例
+	$('.img-example').on('click', function(e) {
+		e.preventDefault();
+		var that = $(this);
+		$('.show-position').empty();
+		$('#example_img_modal').modal('show').on('shown.bs.modal', function() {
+			$(this).find('.show-position').html('<img src="'+ that.attr('href') +'">');
+		});
+	});
+
+	function ajaxSubmit (e) {
+		var form = e.target;
+		e.preventDefault();
+		$.post(form.action, $(form).serialize(), function(rs) {
+			if(rs.error) {
+				$('#messagebox').message(rs.message);
+			  	return;
+			}
+			if(rs.redirect) {
+			  location.href = rs.redirect;
+			}
+		});
+	}
+
+$('.btn-back').click(function(e){
+  var form = $('form')[0];
+  $.post(form.action + '?action=back', $(form).serialize(), function(rs) {
+    if(rs.error) {
+    	$('#messagebox').message(rs.message);
+      	return;
+    }
+    if(rs.redirect) {
+      location.href = rs.redirect;
+    }
+  });
+});
+</script>

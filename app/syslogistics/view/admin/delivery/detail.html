@@ -1,0 +1,80 @@
+<div class="tableform">
+  <table >
+    <tr>
+      <th>订单号:</th>
+      <td>
+        <{$delivery.tid}>
+      </td>
+      <th>发货单编号:</th>
+      <td>
+        <{$delivery.delivery_id}>
+      </td>
+    </tr>
+    <tr>
+      <th>店铺名称:</th>
+      <td>
+        <{$delivery.shop_id|shopname}>
+      </td>
+      <th>运费:</th>
+      <td>
+        <{$delivery.post_fee|cur}>
+      </td>
+    </tr>
+    <tr>
+      <th>物流公司:</th>
+      <td>
+        <{$delivery.logi_name}>
+      </td>
+      <th>运单号:</th>
+      <td><{$delivery.logi_no}></td>
+    </tr>
+    <tr>
+      <th>收货人姓名:</th>
+      <td><{$delivery.receiver_name}></td>
+      <th>收货人手机/电话:</th>
+      <td><{if $delivery.receiver_mobile}><{$delivery.receiver_mobile}><{/if}>  <{if $delivery.receiver_phone}><{$delivery.receiver_phone}><{/if}></td>
+    </tr>
+    <tr>
+      <th>收货地址:</th>
+      <td colspan="3">
+        <{$delivery.receiver_state}><{$delivery.receiver_city}><{$delivery.receiver_district}>&nbsp;<{$delivery.receiver_address}> <{if $delivery.receiver_zip}>(<{$delivery.receiver_zip}>) <{/if}>
+      </td>
+    </tr>
+    <tr>
+      <th>发货单创建时间:</th>
+      <td><{$delivery.t_begin|cdate}></td>
+      <th>配送类型:</th>
+      <td><{$delivery.shipping_type}></td>
+    </tr>
+  </table>
+</div>
+<div class="tableform">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="gridlist">
+    <thead>
+      <tr>
+        <th><{t}>商品类型<{/t}></th>
+        <th><{t}>子订单号<{/t}></th>
+        <th><{t}>商品名称<{/t}></th>
+        <th><{t}>商品货号<{/t}></th>
+        <th><{t}>发货量<{/t}></th>
+      </tr>
+    </thead>
+    <tbody>
+      <{foreach from=$detail item=item}>
+      <tr>
+        <td class="red">
+          <{if $item.item_type == "item"}> 商品
+          <{elseif $item.item_type=="gift"}> 赠品
+          <{elseif $item.item_type=="pkg"}> 捆绑商品
+          <{elseif $item.item_type=="adjunct"}> 配件商品
+          <{/if}>
+        </td>
+        <td><{$item.oid}></td>
+        <td><{$item.sku_title}></td>
+        <td><{$item.sku_bn}></td>
+        <td><{$item.number}></td>
+      </tr>
+      <{/foreach}>
+    </tbody>
+  </table>
+</div>

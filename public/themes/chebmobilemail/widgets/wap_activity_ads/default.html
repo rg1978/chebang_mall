@@ -1,0 +1,5 @@
+<div class="box-display activity-ads">
+<{foreach from=$setting.pic item=pic key=key}>
+  <div class="box-item-flex1 ads-item"><a href="<{$pic.linktarget}>" title='<{$pic.linkinfo}>' alt='<{$pic.linkinfo}>'><img src="<{$pic.link|storager}>"></a></div>
+<{/foreach}>
+</div>

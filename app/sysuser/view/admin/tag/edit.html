@@ -1,0 +1,43 @@
+<form id='userTagForm' action='?app=sysuser&ctl=admin_tag&act=save' method='post'>
+  <div class="tableform">
+    <div class="division">
+      <{if $tag.tag_id}>
+      <input type='hidden' name='tag_id' value='<{$tag.tag_id}>'>
+      <{/if}>
+      <table width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <th><label><{t}>标签名称：<{/t}></label></th>
+          <td><{input type='text' name='tag_name' value=$tag.tag_name vtype='required' maxlength='50'}></td>
+        </tr>
+        <tr>
+          <th><label><{t}>标签颜色：<{/t}></label></th>
+          <td><{input type='color' name='tag_color' value=$tag.tag_color vtype='required' }></td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+  <div class="table-action">
+    <button class="btn btn-primary" type="submit"><span><span><{t}>确认<{/t}></span></span></button>
+  </div>
+
+</form>
+<script>
+  $('userTagForm').store('target',{
+    onComplete:function(rs){
+      if(!rs) return;
+      rs = JSON.decode(rs);
+      if(rs.success){
+        if(window.finderGroup) window.finderGroup['<{$env.get.finder_id}>'].refresh();
+        if($('userTagForm').getParent('.dialog')){
+          var Dlg = $('userTagForm').getParent('.dialog').retrieve('instance');
+          if(Dlg.update){
+            Dlg.update.retrieve('instance').initContent();
+          }
+          Dlg.close();
+        }
+      }
+    }
+  });
+
+</script>

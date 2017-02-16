@@ -1,0 +1,113 @@
+<div class="membercenter-box">
+  <div class="membercenter-box-hd">
+    取消订单记录
+  </div>
+  <div class="membercenter-box-bd">
+    <div class="orderdtl-box membercenter-ordert1-unpay-hd">
+      <div class="status-bar2 status-bar2-large">
+        <div class="first on">
+          <div class="bg"><span class="number">1</span></div>
+          <div class="txt">提交申请</div>
+        </div>
+        <div <{if $data.process >= 0}>class='on' <{/if}>>
+          <div class="bg"><span class="number">2</span></div>
+          <div class="txt">审核申请</div>
+        </div>
+        <div <{if $data.process >= 2}>class='on' <{/if}>>
+          <div class="bg"><span class="number">3</span></div>
+          <div class="txt">退款处理</div>
+        </div>
+        <div class="last <{if $data.process >= 3}>on<{/if}>">
+          <div class="bg"><span class="number">4</span></div>
+          <div class="txt">完成&nbsp;&nbsp;&nbsp;</div>
+        </div>
+      </div>
+    </div>
+    <div class="orderdtl-box text-center">
+      <div class="orderdtl-hd">亲爱的客户，
+        <{if $data.refunds_status == 'WAIT_CHECK' }>
+        此订单已提交取消申请，正在审核
+        <{elseif $data.refunds_status == 'WAIT_REFUND'}>
+        此订单正在进行退款处理
+        <{elseif $data.refunds_status == 'SUCCESS'}>
+            <{if $data.payed_fee && $data.payed_fee != '0.00'}>
+            此订单已取消成功，并已完成退款
+            <{else}>
+            此订单已取消成功
+            <{/if}>
+        <{else}>
+        此订单已取消失败
+        <{/if}>
+      </div>
+      <!--div class="orderdtl-bd canceled-detail">
+        <span>订单编号：卢女士</span>
+        <span>取消进度：13612344321</span>
+        <span>支付总额：0.00</span>
+      </div-->
+    </div>
+  </div>
+</div>
+<div class="membercenter-box">
+  <div class="membercenter-box-hd">
+    取消订单记录
+  </div>
+  <div class="membercenter-box-bd">
+    <table class="item-table">
+      <thead>
+        <tr>
+          <th width="25%">处理时间</th>
+          <th width="50%">处理信息</th>
+          <th width="25%">操作人</th>
+        </tr>
+      </thead>
+      <tbody>
+        <{foreach from=$data.log item=log}>
+        <tr class="text-center">
+          <td width="25%"><{$log.log_time|cdate}></td>
+          <td width="50%"><{$log.log_text}></td>
+          <td width="25%">
+            <{if $log.op_role == 'buyer'}> 客户 <{elseif $log.op_role == 'seller' }> 商家 <{elseif $log.op_role == 'shopadmin' }> 平台 <{else}> 系统 <{/if}>
+          </td>
+        </tr>
+        <{/foreach}>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="membercenter-box">
+  <div class="membercenter-box-hd">
+    申请单详细信息
+  </div>
+  <div class="membercenter-box-bd">
+    <table class="item-table table-goods">
+      <colgroup>
+        <col class="table-col-5">
+        <col>
+      </colgroup>
+      <tbody>
+        <tr>
+          <td width="20%">订单编号：</td>
+          <td width="80%"><{$data.tid}></td>
+        </tr>
+        <tr>
+          <td>支付明细：</td>
+          <td>支付总额：<{$data.payed_fee|cur}></td>
+        </tr>
+        <tr>
+          <td>取消原因：</td>
+          <td><{$data.reason}></td>
+        </tr>
+        <{if $data.shop_reject_reason}>
+        <tr>
+          <td>拒绝取消理由：</td>
+          <td><{$data.shop_reject_reason}></td>
+        </tr>
+        <{/if}>
+        <!--tr>
+          <td>联系方式：</td>
+          <td>联系人：小龙 联系电话：13****5678</td>
+        </tr-->
+      </tbody>
+    </table>
+  </div>
+</div>

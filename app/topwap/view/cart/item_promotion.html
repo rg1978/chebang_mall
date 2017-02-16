@@ -1,0 +1,17 @@
+<div class="section-container content-center">促销活动</div>
+<ul class="shopex-table-view shopex-table-view-radio bbc-radio">
+    <{foreach from=$promotions item=promotion}>
+      <li class="shopex-table-view-cell" data-id="<{$promotion.promotion_id}>">
+          <a class="shopex-navigate-right">
+              <span class="tag tag-outline"><{$promotion.promotion_tag}></span>
+              <{$promotion.promotion_name}>
+          </a>
+      </li>
+    <{/foreach}>
+      <li class="shopex-table-view-cell" data-id="0">
+          <a class="shopex-navigate-right">不参加活动  </a>
+      </li>
+</ul>
+<div class="action-bar-mini">
+    <div class="action-bar-op-btn">确定</div>
+</div>

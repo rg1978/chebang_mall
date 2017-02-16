@@ -1,0 +1,30 @@
+
+<form action="?app=syscategory&ctl=admin_cat&act=saveRelBrand&from_finder=<{$from_finder}>" method="post" id='type_form' >
+  <input type="hidden" name="cat_id" value=<{$cat_id}>>
+  <h2 class="head-title"><{t}>对应分类(<{$nav_catname}>)<{/t}></h2>
+  <div class="division">
+    <{input type="object" name="checked_brand_ids" object="brand" app="syscategory" select="checkbox" vtype="required" textcol="brand_name" filter="" multiple="true" emptytext="选择关联品牌" value=$checkedBrand}>
+  </div>
+  <{area inject='.mainFoot'}>
+  <div class="table-action">
+    <{button type="button" label=$___syscategory="保存"|t:'syscategory' id="type_submit"}>
+  </div>
+  <{/area}>
+</form>
+
+<script>
+(function(){
+    $('type_submit').addEvent('click',function(){
+        $('type_form').fireEvent('submit',{stop:$empty});
+    });
+})();
+$('type_form').store('target',{
+    onComplete:function(rs){
+        var json={};
+        try{json = JSON.decode(rs)}catch(e){}
+        if(json.error) return false;
+        if($('type_form').getParent('.dialog'))
+          $('type_form').getParent('.dialog').retrieve('instance').close();
+    }
+});
+</script>

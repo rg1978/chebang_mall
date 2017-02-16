@@ -1,0 +1,23 @@
+<div class="module-hd"><{$data.block_name}><span><{$data.desc}></span></div>
+<div class="module-bd daily-purchase">
+  <ul>
+  <{foreach from=$data.pic item=item}>
+  <{if $item.link}>
+    <li>
+      <div class="purchase-img"><a href="<{$item.linktarget}>"><img src="<{$item.link|storager}>" alt="<{$item.linkinfo}>"></a></div>
+      <div class="purchase-info">
+        <div class="descript-info fl">
+          <a href="<{$item.linktarget}>" title="<{$item.title}>"><{$item.title}></a>
+          <span title="<{$item.small_title}>"><{$item.small_title}></span>
+        </div>
+        <div class="info-operate fr">
+          <a href="<{$item.linktarget}>" class="btn btn-simple btn-lg">
+            <span><span>立即抢购</span></span>
+          </a>
+        </div>
+      </div>
+    </li>
+    <{/if}>
+    <{/foreach}>
+  </ul>
+</div>

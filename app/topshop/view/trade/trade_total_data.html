@@ -1,0 +1,39 @@
+<h4><{t}>发票信息<{/t}></h4>
+<{if $trade.need_invoice == 'false'}>
+<dl class="dl-horizontal">
+  <dt><{t}>是否要发票<{/t}>：</dt><dd><{if $trade.need_invoice}><{t}>是<{/t}><{else}><{t}>否<{/t}><{/if}></dd>
+</dl>
+<{else}>
+<dl class="dl-horizontal">
+  <dt><{t}>是否要发票<{/t}>：</dt><dd><{if $trade.need_invoice}><{t}>是<{/t}><{else}><{t}>否<{/t}><{/if}></dd>
+  <dt><{t}>发票类型<{/t}>：</dt><dd><{if $trade.invoice_type=='normal'}><{t}>普通发票<{/t}><{elseif $trade.invoice_type=='vat'}><{t}>增值税发票<{/t}><{/if}></dd>
+  <{if $trade.invoice_type=='normal'}>
+  <dt><{t}>发票抬头<{/t}>：</dt><dd><{if $trade.invoice_name=='individual'}><{t}>个人<{/t}><{else}><{t}>单位<{/t}><{/if}>-<{$trade.invoice_main}></</</dd>
+  <dt><{t}>发票内容<{/t}>：</dt><dd><{t}>由商家直接开具<{/t}></dd>
+  <{/if}>
+  <{if $trade.invoice_type=='vat'}>
+  <dt><{t}>公司名<{/t}>：</dt><dd><{$trade.invoice_vat_main.company_name}></dd>
+  <dt><{t}>公司登记号<{/t}>：</dt><dd><{$trade.invoice_vat_main.registration_number}></dd>
+  <dt><{t}>公司地址<{/t}>：</dt><dd><{$trade.invoice_vat_main.company_address}></dd>
+  <dt><{t}>公司电话<{/t}>：</dt><dd><{$trade.invoice_vat_main.company_phone}></dd>
+  <dt><{t}>银行开户名<{/t}>：</dt><dd><{$trade.invoice_vat_main.bankname}></dd>
+  <dt><{t}>银行账号<{/t}>：</dt><dd><{$trade.invoice_vat_main.bankaccount}></dd>
+  <{/if}>
+</dl>
+<{/if}>
+<h4><{t}>收货信息<{/t}></h4>
+<dl class="dl-horizontal">
+  <dt><{t}>会员用户名<{/t}>：</dt><dd><{$trade.login_account}></dd>
+  <dt><{t}>收货人<{/t}>：</dt><dd><{$trade.receiver_name}></dd>
+  <dt><{t}>收货人手机<{/t}>：</dt><dd><{$trade.receiver_mobile}></dd>
+  <{if $trade.receiver_phone}><dt><{t}>收货人电话<{/t}>：</dt><dd><{$trade.receiver_phone}></dd><{/if}>
+  <{if !$trade.ziti_addr}>
+  <dt><{t}>收货地区<{/t}>：</dt><dd><{$trade.receiver_state}><{$trade.receiver_city}><{$trade.receiver_district}></dd>
+  <dt><{t}>收货地址<{/t}>：</dt><dd><{$trade.receiver_address}></dd>
+  <{else}>
+  <dt><{t}>自提地址<{/t}>：</dt><dd><{$trade.ziti_addr}></dd>
+  <{/if}>
+</dl>
+
+
+

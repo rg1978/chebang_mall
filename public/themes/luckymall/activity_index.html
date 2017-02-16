@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <{header app=topc}>
+    <link rel="stylesheet" href="images/index.css" />
+  </head>
+  <body>
+    <{require file="block/header.html"}>
+    <div class="wrap-lg purchase-view clearfix">
+      <div class="purchase-banner">
+        <{widgets id="activity_slider"}>
+      </div>
+      <div class="col-lg-4 banner-ad">
+        <{widgets id="activity_advertising"}>
+      </div>
+    </div>
+    <div id="main" class="main purchase-main">
+      <{main}>
+    </div>
+    <{require file="block/footer.html"}>
+  </body>
+</html>

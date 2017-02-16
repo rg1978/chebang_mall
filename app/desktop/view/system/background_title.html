@@ -1,0 +1,22 @@
+
+<div class="tabs-wrap">
+  <ul>
+    <li class="tab current"><span><{t}>平台后台登录界面快捷链接配置<{/t}></span></li>
+  </ul>
+</div>
+
+<form method="post" action="?app=desktop&ctl=system&act=set_title" class="tableform">
+  <div class="division">
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <th><{t}>链接标题：<{/t}></th>
+        <td><{input type="string" name="background_title" value=$background_title maxlength="20"}>
+        </td>
+      </tr>
+    </table>
+  </div>
+<div class="table-action">
+  <{button label="保存"|t:'image' class="btn-primary" type="submit"}>
+</div>
+</form>
+

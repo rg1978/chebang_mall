@@ -1,0 +1,20 @@
+<header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title">选择自提点</div>
+  <a class="header-right txt-func">确定</a>
+</header>
+<section class="section-white container">
+  <div class="shopex-input-group">
+    <{foreach from=$data item=ziti}>
+    <div class="shopex-input-row shopex-radio bbc-radio <{if $ziti_id == $ziti.id}>active <{/if}>" data-id="<{$ziti.id}>" data-addr="<{$ziti.name}>">
+      <label>
+        <p><{$ziti.name}></p>
+        <p class="ziti-ads fontS font-gray-20">
+          <{t}>地址：<{$ziti.area}> <{$ziti.addr}><{/t}>
+        </p>
+      </label>
+      <input type="radio" name="" id="">
+    </div>
+    <{/foreach}>
+  </div>
+</section>

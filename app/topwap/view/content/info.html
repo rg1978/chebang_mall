@@ -1,0 +1,24 @@
+<{include file="topwap/content/content_header.html"}>
+  <section class="container section-white">
+    <section class="content-padded border-bottom">
+      <h3>《<{$info.title}>》</h3>
+      <p class="font-gray-40 content-left fontS content-vertical-padded theme-border-bottom content-bottom-padded "><{$info.modified|cdate:'FDATE_STIME'}></p>
+      <div class="fontS font-gray-20 single-img">
+      <{$info.content}>
+      </div>
+    </section>
+  </section>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<{script src="share.js" app="topwap"}>
+<script>
+//微信分享
+  var title = "<{$info.title}>";
+  $(function(){
+    wxShare({
+      title: title,
+      desc: '',
+      link: location.href,
+    });
+  });
+</script>

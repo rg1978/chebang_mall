@@ -1,0 +1,219 @@
+
+    <div class="tableform">
+        <div class="division" style="position:static;">
+            <h3><{t}>基本信息<{/t}></h3>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shop-setting">
+                <tr>
+                    <th><{t}>所属类目<{/t}>：</th>
+                    <td><{$catInfo.lv1.cat_name}>><{$catInfo.lv2.cat_name}>><{$catInfo.lv3.cat_name}></td>
+                    <tr>
+                    <th><{t}>店铺分类<{/t}>：</th>
+                    <{if $parent_id}>
+                    <{foreach from=$parentCatInfo item=parentInfo}>
+                    <td><{$parentInfo['cat_name']}> > <{$childCatName}></td>
+                    <{/foreach}>
+                    <{else}>
+                    <td><{$childCatName}></td>
+                    <{/if}>
+                    <tr>
+                    <th><{t}>商品标题<{/t}>：</th>
+                    <td>
+                        <img src="<{$item_default_image|storager:t}>">
+                        <a href="<{url action=topc_ctl_item@index  item_id=$item_id}>" target="_blank"><{$title}></a>
+                    </td>
+                    </tr>
+                    <tr>
+                    <th><{t}>商品副标题<{/t}>：</th>
+                    <td>
+                    <{if $sub_title}><{$sub_title}><{else}><{$title}><{/if}></td>
+                    </tr>
+                <tr>
+                    <th><{t}>商品品牌<{/t}>：</th>
+                    <td><{$brand_id|brandname}></td>
+                </tr>
+                <tr>
+                    <th><{t}>商品库存<{/t}>：</th>
+                    <td><{$store}><{$unit}></td>
+                </tr>
+                <tr>
+                    <th><{t}>商品重量<{/t}>：</th>
+                    <td><{$weight}> 千克(kg)</td>
+                </tr>
+                <tr>
+                    <th><{t}>计价单位<{/t}>：</th>
+                    <td><{$unit}></td>
+                </tr>
+                <tr>
+                    <th><{t}>运费模板<{/t}>：</th>
+                    <td><{$templateName}></td>
+                </tr>
+                <tr>
+                    <th><{t}>库存计数<{/t}>：</th>
+                    <td>
+                    <{if $sub_stock == '0'}>付款减库存<{/if}>
+                    <{if $sub_stock == '1'}>下单减库存<{/if}></td>
+                </tr>
+                <tr>
+                    <th><{t}>发布平台<{/t}>：</th>
+                    <td>
+                        <{if $use_platform=='0' || !$use_platform}>全平台(pc+wap)
+                        <{elseif $use_platform=='1'}>pc端
+                        <{elseif $use_platform=='2'}>wap端
+                        <{/if}>
+                    </td>
+                </tr>
+                
+                
+            </table>
+        </div>
+        <div class="division" style="position:static;">
+            <h3><{t}>店铺信息<{/t}></h3>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shop-setting">
+                <tr>
+                    <th><{t}>店铺名称<{/t}>：</th>
+                    <td><{$shop_id|shopname}></td>
+                </tr>
+                <{if $examine_setting}>
+                <tr>
+                    <th><{t}>审核状态<{/t}>：</th>
+                    <td class="red"><{$approve_status|json2value:'{"pending":"待审核","onsale":"审核通过","refuse":"审核拒绝"}'}></td>
+                </tr>
+                <tr>
+                    <{if $approve_status =='refuse'}>
+                    <th><{t}>驳回原因<{/t}>：</th>
+                    <td class="red"><{$reason}></td>
+                    <{/if}>
+                </tr>
+                <{/if}>
+            </table>
+        </div>
+        <div class="division" style="position:static;">
+            <h3><{t}>商品信息<{/t}></h3>
+            <div class="tableform">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="gridlist">
+                    <thead>
+                        <tr>
+                            <th><{t}>商品规格<{/t}></th>
+                            <th><{t}>商品售价<{/t}></th>
+                            <th><{t}>商品原价<{/t}></th>
+                            <th><{t}>商品成本价<{/t}></th>
+                            <th><{t}>商品库存<{/t}></th>
+                            <th><{t}>商品货号<{/t}></th>
+                            <th><{t}>条形码<{/t}></th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$sku item=spec}>
+                    <tr>
+                        <th><{$spec.spec_info}></th>
+                        <th><{$spec.price|cur}></th>
+                        <th><{$spec.mkt_price|cur}></th>
+                        <th><{$spec.cost_price|cur}></th>
+                        <th><{$spec.store}></th>
+                        <th><{$spec.bn}></th>
+                        <th><{$spec.barcode}></th> 
+                    </tr>
+                    <{/foreach}> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="division" style="position:static;">
+            <h3><{t}>审核记录<{/t}></h3>
+            <div class="tableform">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="gridlist">
+                    <thead>
+                        <tr>
+                            <th style="width:200px;"><{t}>审核时间<{/t}></th>
+                            <th style="width:200px;"><{t}>审核结果<{/t}></th>
+                            <th><{t}>拒绝原因<{/t}></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$examineLog item=loginfo}> 
+                    <tr>
+                        <td><{$loginfo['time']|cdate:FDATE_STIME}></td>
+                        <{if $loginfo['approve_status'] =='onsale'}>
+                        <td>审核通过</td>
+                        <{/if}>
+                        <{if $loginfo['approve_status'] =='refuse'}>
+                        <td>审核驳回</td>
+                        <{/if}>
+                        <td><{$loginfo['reason']}></td>
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <{if $examine_setting}>
+            <{if $approve_status == "pending"}>
+            <div class="table-action">
+                <{button id="action-agree" class="button" target="{update:'messagebox'}" label="审批通过"}>
+                <{button id="action-refuse-dialog" class="button" label="审批驳回"}>
+            </div>
+            <{/if}>
+        <{/if}>
+    </div>
+
+<script>
+    var approve_url = "?app=sysitem&ctl=admin_item&act=approve";
+    var refuse_url = "?app=sysitem&ctl=admin_item&act=refuse&shop_id=<{$shop_id}>&item_id=<{$item_id}>&approve_status=refuse&finder_id=<{$env.get.finder_id}>";
+
+    $('action-refuse-dialog').addEvent('click',function(e){
+        e.stop();
+        new Dialog(
+            refuse_url,
+            {
+                modal:true,
+                height:180,
+                width:360,
+                ajaks: false,
+                ajaksable: false,
+                title:'<{t}>填写审核驳回原因<{/t}>'
+            }
+        );
+    })
+
+    function getflag(singlepage){
+        var reg = new RegExp("(^|&)"+ singlepage +"=([^&]*)(&|$)" );
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)
+        var $flag = true;
+        
+    }
+
+    $('action-agree').addEvent('click',function(e){
+        var flag = false;
+        var url = window.location.href;
+        if(url.indexOf("singlepage") == -1){
+            var flag = true;
+        }else{
+            var flag = false;
+        }
+        e.stop();
+        var cfm_str = '确认审核通过？';
+        if(cfm_str&&!confirm(cfm_str)){ return; }
+        new Request.JSON({
+            url:approve_url,
+            method:'post',
+            data:'shop_id=<{$shop_id}>&item_id=<{$item_id}>&approve_status=onsale',
+            onComplete:function(rs){
+                if(rs.success){
+                    MessageBox.success(rs.success);
+                    if(flag){
+                        window.finderGroup['<{$env.get.finder_id}>'].refresh();
+                        window.close();
+                    }else{
+                        window.opener.finderGroup['<{$env.get.finder_id}>'].refresh();
+                        window.close();
+                    }
+                }else{
+                    MessageBox.error(rs.error);
+                }
+            }
+        }).send();
+    });
+
+</script>

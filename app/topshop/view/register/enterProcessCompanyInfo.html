@@ -1,0 +1,283 @@
+<div class="signup-box-header">
+	<div class="signup-state">
+	    <h3>商家入驻流程</h3>
+	    <ul class="signup-flow-list">
+	    	<li class="on arrow-icon"><{t}>公司基本信息<{/t}><span class="arrow"></span></li>
+	    	<li class="arrow-icon"><{t}>银行及税务信息<{/t}></li>
+	        <li class="arrow-icon"><{t}>店铺信息<{/t}></li>
+	        <li class="arrow-icon"><{t}>提交完成，等待审核<{/t}></li>
+	        <li><{t}>审核通过，等待签约<{/t}></li>
+	    </ul>
+	</div>
+</div><div class="signup-box signup-wrap">
+	<form action="" method="post" class="form-horizontal" role="form" data-validate-onsuccess="ajaxSubmit">
+	    <input type="hidden" name="enterapply_id" value="<{$applydata.enterapply_id}>">
+	    <fieldset>
+	      <div class="panel panel-outter">
+	        <div class="panel-body">
+		        <div class="col-md-12">
+		            <div>
+		              <legend id="license">基本信息</legend>
+		            </div>
+		            <div class="form-group">
+		              <label for="company_name" class="control-label col-md-3"><span class="text-red">*</span>公司名称：</label>
+		              <div class="col-md-5 relative">
+		                <input type="text" name="company_name" value="<{$applydata.company_name}>" id="company_name" class="form-control" placeholder="公司名称" maxlength="50" required><div class="remind-content"><i class="glyphicon glyphicon-exclamation-sign"></i><span>请按照公司营业执照上的公司名称填写，不可多字或少字。</span></div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="company_area" class="control-label col-md-3"><span class="text-red">*</span>所在地区：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[company_area]" value="<{$shop_info.company_area}>" id="company_area" class="form-control" placeholder="公司所在地" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="company_addr" class="control-label col-md-3"><span class="text-red">*</span>地址：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[company_addr]" value="<{$shop_info.company_addr}>" id="company_addr" class="form-control" placeholder="公司地址" maxlength="50" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="establish_date" class="control-label col-md-3"><span class="text-red">*</span>成立日期：</label>
+		              <div class="col-md-5">
+		                <span class="form-act input-group date col-md-2" data-provide="datepicker">
+		                  <input class="form-control" type="date" name="shop_info[establish_date]" value="<{$shop_info.establish_date|date_format:'%Y-%m-%d'}>" required placeholder="如2014-12-31" style="width:161px;">
+		                  <span class="input-group-addon"><i class="icon icon-calendar"></i></span>
+		                </span>
+		              </div>
+		            </div>
+		            <div>
+		              <legend></legend>
+		            </div>
+		            <div class="form-group">
+		              <label for="representative" class="control-label col-md-3"><span class="text-red">*</span>法人姓名：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[representative]" value="<{$shop_info.representative}>" id="representative" class="form-control" placeholder="公司法定代表人姓名" maxlength="20" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="is_mainland" class="control-label col-md-3"><span class="text-red">*</span>法人身份：</label>
+		              <div class="col-md-5">
+		                <label>
+		                        <select name="shop_info[is_mainland]" id="form-select-nat">
+		                                  <option value="1" <{if $shop_info.is_mainland == 1}> selected<{/if}>>中国大陆居民</option>
+		                                  <option value="2" <{if $shop_info.is_mainland == 2}> selected<{/if}>>非中国大陆居民</option>
+		                        </select>
+		                </label>
+		              </div>
+		            </div>
+		            <div class="form-group" id="form-identity">
+		              <label for="corporate_identity" class="control-label col-md-3"><span class="text-red">*</span>身份证号：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[corporate_identity]" value="<{$shop_info.corporate_identity}>" id="corporate_identity" class="form-control" placeholder="法人身份证号" maxlength="18" required data-validate-id>
+		              </div>
+		            </div>
+		            <div class="form-group" id="form-passport" style="display:none;">
+		              <label for="passport_number" class="control-label col-md-3"><span class="text-red">*</span>护照号：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[passport_number]" value="<{$shop_info.passport_number}>" id="passport_number" class="form-control" placeholder="法人护照号" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="license_num" class="control-label col-md-3"><span class="text-red">*</span>营业执照号码：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[license_num]" value="<{$shop_info.license_num}>" id="license_num" class="form-control" placeholder="营业执照注册号" maxlength="50" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="license_indate" class="control-label col-md-3"><span class="text-red">*</span>营业期限：</label>
+		              <div class="col-md-5">
+		                <span class="form-act input-group date col-md-2" data-provide="datepicker">
+		                  <input class="form-control" max='2286-01-01' type="date" name="shop_info[license_indate]" value="<{$shop_info.license_indate|date_format:'%Y-%m-%d'}>" required placeholder="如2014-12-31" style="width:161px;">
+		                  <span class="input-group-addon"><i class="icon icon-calendar"></i></span>
+		                </span>
+		              </div>
+		            </div>
+		            <div>
+		              <legend></legend>
+		            </div>
+		            <div class="form-group">
+		              <label for="tissue_code" class="control-label col-md-3"><span class="text-red">*</span>组织机构代码：</label>
+		              <div class="col-md-5 relative">
+		                <input type="text" name="shop_info[tissue_code]" value="<{$shop_info.tissue_code}>" id="tissue_code" class="form-control" placeholder="组织机构代码" maxlength="50" required>
+		                <div class="remind-content"><i class="glyphicon glyphicon-exclamation-sign"></i><span>请按照公司组织机构代码证上的代码填写，不要省略“—”。</span></div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="scope" class="control-label col-md-3"><span class="text-red">*</span>经营范围：</label>
+		              <div class="col-md-5">
+		                <textarea name="shop_info[scope]" class="form-control" maxlength="200" placeholder="经营范围" required><{$shop_info.scope}></textarea>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="enroll_capital" class="control-label col-md-3"><span class="text-red">*</span>注册资本：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[enroll_capital]" value="<{$shop_info.enroll_capital}>" id="enroll_capital" class="form-control" placeholder="注册资本" maxlength="20" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="company_url" class="control-label col-md-3">公司官网：</label>
+		              <div class="col-md-5">
+		                <input type="url" name="shop_info[shop_url]" value="<{$shop_info.shop_url}>" id="company_url" class="form-control" placeholder="公司官网，http://..." maxlength="30">
+		              </div>
+		            </div>
+		            <div>
+		              <legend id="license"></legend>
+		            </div>
+		            <div class="form-group">
+		              <label for="company_contacts" class="control-label col-md-3"><span class="text-red">*</span>公司联系人：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[company_contacts]" value="<{$shop_info.company_contacts}>" id="company_contacts" class="form-control" placeholder="公司联系人" maxlength="20" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="company_cmobile" class="control-label col-md-3"><span class="text-red">*</span>联系人手机：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[company_cmobile]" value="<{$shop_info.company_cmobile}>" id="company_cmobile" class="form-control" placeholder="公司联系人手机" maxlength="11" required data-validate-mobile>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="company_phone" class="control-label col-md-3"><span class="text-red"></span>联系人电话：</label>
+		              <div class="col-md-5">
+		                <input type="tel" name="shop_info[company_phone]" value="<{$shop_info.company_phone}>" id="company_phone" class="form-control" placeholder="公司电话" maxlength="20">
+		              </div>
+		            </div>
+		            <div>
+		              <legend id="shop"></legend>
+		            </div>
+		            <div class="form-group">
+		              <label for="corporate_identity_img" class="control-label col-md-3"><span class="text-red">*</span>法人身份证正面复印件：</label>
+		              <div class="col-md-6 relative">
+		                <div class="choose-image">
+		                  <input type="file" class="action-file-input" style="display:none;" data-size="<{$env.config.image.uploadedFileMaxSize}>" name="shop_info[corporate_identity_img_z]" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop type=shop_apply}>" accept="image/*" required/>
+		                  <span class="image-box action-upload">
+		                    <img src="<{$shop_info.corporate_identity_img_z|storager:t}>" />
+		                    <input type="hidden" name="shop_info[corporate_identity_img_z]" value="<{$shop_info.corporate_identity_img_z}>">
+		                  </span><b class="choose-handle action-upload" title="选择图片">
+		                    <i class="icon-arrow-right-b"></i>
+		                  </b>
+		                  <span class="text-red">法人身份证正面复印件不能大于<{$env.config.image.uploadedFileMaxSize|format_filesize}></span>&nbsp;&nbsp;<a href="<{$resUrl}>/images/idcardfont.jpg" class="img-example">查看示例</a>
+		                </div>&nbsp;&nbsp;
+		                <div class="remind-content"><i class="glyphicon glyphicon-exclamation-sign"></i><span class="w45p">外国人请上传护照个人信息页</span></div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="corporate_identity_img" class="control-label col-md-3"><span class="text-red">*</span>法人身份证反面复印件：</label>
+		              <div class="col-md-6">
+		                <div class="choose-image">
+		                  <input type="file" class="action-file-input" style="display:none;" data-size="<{$env.config.image.uploadedFileMaxSize}>" name="shop_info[corporate_identity_img_f]" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop type=shop_apply}>" accept="image/*" required/>
+		                  <span class="image-box action-upload">
+		                    <img src="<{$shop_info.corporate_identity_img_f|storager:t}>" />
+		                    <input type="hidden" name="shop_info[corporate_identity_img_f]" value="<{$shop_info.corporate_identity_img_f}>">
+		                  </span><b class="choose-handle action-upload" title="选择图片">
+		                    <i class="icon-arrow-right-b"></i>
+		                  </b>
+                      		<span class="text-red">法人身份证反面复印件不能大于<{$env.config.image.uploadedFileMaxSize|format_filesize}></span>&nbsp;&nbsp;<a href="<{$resUrl}>/images/idcardback.jpg" class="img-example">查看示例</a>
+		                </div>&nbsp;&nbsp;
+		                <div class="remind-content"><i class="glyphicon glyphicon-exclamation-sign"></i><span class="w45p">外国人请上传个人签证页</span></div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="license_img" class="control-label col-md-3"><span class="text-red">*</span>营业执照副本复印件：</label>
+		              <div class="col-md-5 relative">
+		                <div class="choose-image">
+		                  <input type="file" class="action-file-input" style="display:none;" data-size="<{$env.config.image.uploadedFileMaxSize}>" name="shop_info[license_img]" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop type=shop_apply}>" accept="image/*" required />
+		                  <span class="image-box action-upload">
+		                    <img src="<{$shop_info.license_img|storager:t}>" />
+		                    <input type="hidden" name="shop_info[license_img]" value="<{$shop_info.license_img}>">
+		                  </span><b class="choose-handle action-upload" title="选择图片">
+		                    <i class="icon-arrow-right-b"></i>
+		                  </b>
+		                  <span class="text-red">营业执照副本复印件不能大于<{$env.config.image.uploadedFileMaxSize|format_filesize}></span>&nbsp;&nbsp;<a href="<{$resUrl}>/images/yyzz.jpg" class="img-example">查看示例</a>
+		                </div>
+		                <div class="remind-content"><i class="glyphicon glyphicon-exclamation-sign"></i><span class="w145p">若营业执照上未体现注册资本信息，请将注册资本信息证明与营业执照合并扫描上传</span></div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+                  <label for="tissue_code_img" class="control-label col-md-3"><span class="text-red">*</span>组织机构代码证复印件：</label>
+		              <div class="col-md-6">
+		                <div class="choose-image">
+		                  <input type="file" class="action-file-input" style="display:none;" data-size="<{$env.config.image.uploadedFileMaxSize}>" name="shop_info[tissue_code_img]" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop type=shop_apply}>" accept="image/*" required/>
+		                  <span class="image-box action-upload">
+		                    <img src="<{$shop_info.tissue_code_img|storager:t}>" />
+		                    <input type="hidden" name="shop_info[tissue_code_img]" value="<{$shop_info.tissue_code_img}>">
+		                    </span><b class="choose-handle action-upload" title="选择图片">
+		                    <i class="icon-arrow-right-b"></i>
+		                  </b>
+		                  <span class="text-red">组织机构代码证复印件不能大于<{$env.config.image.uploadedFileMaxSize|format_filesize}></span>&nbsp;&nbsp;<a href="<{$resUrl}>/images/zzjgdm.jpg" class="img-example">查看示例</a>
+		                </div>
+		              </div>
+		            </div>
+		      	</div>
+	      	</div>
+	      </div>
+	    </fieldset>
+	    <div class="navbar-fixed-bottom navbar-fixed-btn btn-group-lg">
+	      <button type="submit" class="btn btn-primary btn-next">下一步</button>
+	    </div>
+	</form>
+</div>
+<!-- modal -->
+<div class="modal fade" id="example_img_modal" tabindex="-1" role="dialog">
+  <div class="panel panel-default modal-dialog modal-lg">
+    <div class="panel-heading">
+      <div class="clearfix">
+      	<div class="pull-left">示例</div>
+        <div class="pull-right">
+          <i class="glyphicon glyphicon-remove" data-dismiss="modal"></i>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body text-center">
+      <div class="big-img-show example-img-show"><div class="show-position"><img src="" alt="" ></div></div>
+    </div>
+  </div>
+</div>
+<script>
+	var ismainland = '<{$shop_info.is_mainland}>';
+	if(ismainland != '') {
+		formNat(ismainland);
+	}
+	$('#form-select-nat').on('change',function(){
+	  formNat($('#form-select-nat').val());
+	});
+	function formNat(natval){
+	  if(natval == '1'){
+	      $('#form-identity').show();
+	      $('#form-passport').hide();
+	  }else{
+	    $('#form-identity').hide();
+	    $('#form-passport').show();
+	  }
+	}
+
+	//查看示例
+	$('.img-example').on('click', function(e) {
+		e.preventDefault();
+		var that = $(this);
+		$('.show-position').empty();
+		$('#example_img_modal').modal('show').on('shown.bs.modal', function() {
+			$(this).find('.show-position').html('<img src="'+ that.attr('href') +'">');
+		});
+	});
+
+	$('.remind-content > .glyphicon').on('mouseover', function() {
+		$(this).siblings('span').show();
+	}).on('mouseout', function() {
+		$(this).siblings('span').hide();
+	});
+
+	function ajaxSubmit (e) {
+	  var form = e.target;
+	  e.preventDefault();
+	  $.post(form.action, $(form).serialize(), function(rs) {
+	    if(rs.error) {
+	    	$('#messagebox').message(rs.message);
+		    return;
+	    }
+	    if(rs.redirect) {
+	      location.href = rs.redirect;
+	    }
+	  });
+	}
+</script>

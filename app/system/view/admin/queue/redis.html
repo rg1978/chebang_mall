@@ -1,0 +1,47 @@
+<div class="notice">
+  <{t}>当前队列策略为<{/t}>：Redis队列
+  <br/>
+  <br/>
+  <{t}>默认每个队列标识只显示（10个）队列数据，查看更多数据请使用Redis管理工具查看<{/t}>
+</div>
+<div class="tableform tableform-tabs">
+  <div class="tabs-wrap clearfix">
+    <ul>
+      <li id="_wait" class="tab <{if $type!=delayed && $type!=active}>current<{/if}>" onclick="setTab(['wait',['wait','delayed','active']],['current'])">
+        <span>等待执行队列(<{$total.wait}>)</span>
+      </li>
+      <li id="_active" class="tab <{if $type==active}>current<{/if}> " onclick="setTab(['active',['wait','delayed','active']],['current'])">
+        <span>执行中的队列(<{$total.active}>)</span>
+      </li>
+      <li id="_delayed" class="tab <{if $type==delayed}>current<{/if}> " onclick="setTab(['delayed',['wait','delayed','active']],['current'])">
+        <span>延时队列(<{$total.delayed}>)</span>
+      </li>
+    </ul>
+  </div>
+  <div class="division" id="wait" <{if $type==delayed || $type==active }>style="display: none;"<{/if}>>
+    <{include file="system/admin/queue/redis/wait.html"}>
+  </div>
+
+  <div class="division" id="active" <{if $type!=active}>style="display: none;"<{/if}>>
+    <{include file="system/admin/queue/redis/active.html"}>
+  </div>
+  <div class="division" id="delayed" <{if $type!=delayed}>style="display: none;"<{/if}>>
+    <{include file="system/admin/queue/redis/delayed.html"}>
+  </div>
+</div>
+
+<script>
+  function deleteRow(act,event){
+    e=$(new Event(event).stop().target);
+
+    if(confirm('<{t}>您确定要删除该队列？<{/t}>')){
+      W.page(act,{
+        method:'get',
+        update:'messagebox',
+        onComplete:function(re){
+          console.log(re)
+        }
+      });
+    }
+  }
+</script>

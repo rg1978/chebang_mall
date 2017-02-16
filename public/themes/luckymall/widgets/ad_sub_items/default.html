@@ -1,0 +1,30 @@
+<div class="module">
+  <div class="module-hd"><{$data.texttag}></div>
+  <div class="module-bd">
+    <div class="switchable-container goods-scrollable" data-toggle="switchable" data-switchable-config='{
+    "effect": "scrollx", 
+    "viewSize": [1190], 
+    "lazyload": true, 
+    "hasFlips": true, 
+    "circle": true, 
+    "step": 5
+    }'>
+      <span class="next red pointer">换一批</span>
+      <div class="scroller">
+        <div class="switchable-content">
+          <{foreach from=$data.item item=item}>
+            <div class="goods-content">
+              <div class="goods-pic">
+                <a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>">
+                  <img src="<{$item.image_default_id|default:$data.defaultImg.S.default_image|storager:'s'}>" alt="">
+                </a>
+              </div>
+              <div class="goods-name"><a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>"><{$item.title}></a></div>
+              <div class="goods-price"><{$item.price|cur}></div>
+            </div>
+          <{/foreach}>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

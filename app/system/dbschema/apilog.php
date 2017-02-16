@@ -1,0 +1,111 @@
+<?php
+return array(
+    'columns'=>array(
+        'apilog_id' =>array (
+            'type' => 'string',
+            'required' => true,
+        ),
+        'msg_id'=>array(
+            'type' => 'string',
+            'length' => '50',
+            'filtertype' => 'yes',
+            'filterdefault' => true,
+            'in_list' => true,
+            'default_in_list' => true,
+            'filtertype' => 'normal',
+            'filterdefault' => true,
+            'searchtype' => 'has',
+            'label' => 'msg_id',
+            'width' => 200,
+            'order'=>12,
+        ),
+        'runtime'=>array(
+            'type'=>'string',
+            'label' => app::get('system')->_('运行时间(秒)'),
+            'in_list' => true,
+            'default_in_list' => true,
+            'width'=>'10',
+            'order'=>12,
+        ),
+        'calltime'=>array(
+            'type'=>'time',
+            'label' => app::get('system')->_('创建时间'),
+            'in_list' => true,
+            'default_in_list' => true,
+            'width'=>'100',
+            'order'=>13,
+        ),
+        'status'=>array(
+            'type' =>
+            array (
+                'running' => '运行中',
+                'success' => '成功',
+                'fail' => '失败',
+            ),
+            'required' => true,
+            'default' => 'running',
+            'in_list' => true,
+            'default_in_list' => true,
+            'filtertype' => 'yes',
+            'filterdefault' => true,
+            'label' => '状态',
+            'width' => 60,
+            'order'=>14,
+        ),
+        'worker'=>array(
+            'type' => 'string',
+            'in_list' => true,
+            'default_in_list' => true,
+            'filtertype' => 'normal',
+            'filterdefault' => true,
+            'searchtype' => 'has',
+            'label' => app::get('system')->_('api方法名'),
+        ),
+        'params'=>array(
+            'type' => 'serialize',
+            'filtertype' => true,
+            'filterdefault' => true,
+            'searchtype' => 'has',
+            'comment' => '任务参数',
+            'label' => '任务参数',
+        ),
+        'result'=>array(
+            'type' => 'serialize',
+            'filtertype' => true,
+            'filterdefault' => true,
+            'searchtype' => 'has',
+            'comment' => '返回数据',
+            'label' => '返回数据',
+        ),
+        'api_type'=>array(
+            'type' =>
+            array (
+                'response' => '响应',
+                'request' => '请求',
+            ),
+            'default' => 'response',
+            'required' => true,
+            'in_list' => true,
+            'default_in_list' => true,
+            'filtertype' => 'yes',
+            'filterdefault' => true,
+            'label' => '同步类型',
+            'width' => 70,
+            'order' => 15,
+        ),
+        'last_modify' =>
+        array (
+            'type' => 'last_modify',
+            'label' => app::get('system')->_('更新时间'),
+            'width' => 110,
+            'in_list' => true,
+            'orderby' => true,
+        ),
+    ),
+    'primary' => 'apilog_id',
+    'index' => array(
+        'msg_id' => ['columns' => ['msg_id']],
+    ),
+    'comment' => app::get('system')->_('API调用日志'),
+);
+

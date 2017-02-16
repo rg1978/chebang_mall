@@ -1,0 +1,74 @@
+<div class="summary-outbox">
+  <ul class="summary">
+    <li>
+    <{if $item.show_mkt_price}>
+      <div class="dt del">原价：</div>
+      <div class="dd"><span class="price price-del action-update-mkt-price"><{$item.mkt_price|cur}></span></div>
+    <{/if}>
+      <div class="dt del"><{if $activityDetail}><del>价格：</del><{else}>价格：<{/if}></div>
+      <div class="dd fl"><span class="<{if !$activityDetail}>price<{/if}> action-update-price"><{if $activityDetail}><del><{$item.price|cur}></del><{else}><{$item.price|cur}><{/if}></span></div>
+      <div class="goods-qrcode">
+        <span>手机购买<i class="icon icon-arrow-down-b"></i><i class="icon icon-arrow-up-b"></i></span>
+        <div class="qrcode"><img src="<{$item.qrCodeData}>"></div>
+      </div>
+    </li>
+    <!-- 活动价，单品活动促销 -->
+    <{if $activityDetail}>
+    <li>
+      <div class="dt red"><{$activityDetail.activity_info.activity_tag}>价：</div>
+      <div class="dd"><span class="price"><{$activityDetail.activity_price|cur}></span></div>
+    </li>
+    <{/if}>
+
+    <{if $promotionDetail || $giftDetail}>
+    <li class="activity">
+      <div class="activity-wrap">
+        <div class="dt">优惠信息：</div>
+        <div class="dd activity-content">
+          <{assign var="gifcount" value=$giftDetail.gift_item|count}>
+          <div class="promotion-list <{if $gifcount > 2}>more-gift<{/if}>">
+            <{if $giftDetail}>
+            <{assign var=gift_count value=1}>
+            <div class="activity-txt">
+              <span class="label-danger">赠品</span>
+              <{foreach from=$giftDetail.gift_item item=gift key=key name=giftdata}>
+              <a href="<{url action=topc_ctl_item@index item_id=$gift.item_id}>">
+                <img src="<{$gift.image_default_id|default:$image_default_id.S.default_image|storager:s}>" alt="" title="<{$gift.title}>[<{$gift.spec_info}>]">
+              </a>
+              x <{$gift.gift_num}>&nbsp;&nbsp;<{if $env.foreach.giftdata.last}>（购满<{$giftDetail.limit_quantity}>件即赠，赠完为止）<{/if}>
+              <{/foreach}>
+            </div>
+            <{/if}>
+            <{foreach from=$promotionDetail item=promotionDetail name=name}>
+            <a href="<{url action=topc_ctl_promotion@getPromotionItem promotion_id=$promotionDetail.promotion_id}>" class="activity-txt"><span class="label-danger"><{$promotionDetail.promotion_tag}></span>
+                <{$promotionDetail.promotion_name}></a>
+            <{/foreach}>
+          </div>
+          <{if $promotion_count+$gift_count>1}>
+            <div class="more">共<{$promotion_count+$gift_count}>条促销活动 <i class="icon icon-arrow-down-b"></i><i class="icon icon-arrow-up-b"></i></div>
+          <{/if}>
+      </div>
+     </div>
+    </li>
+    <{/if}>
+  </ul>
+
+</div>
+<ul class="goods-other-info">
+  <li>
+    <span>销量：<em><{$item.sold_quantity|default:'0'}></em> 件</span>
+  </li>
+  <li>
+    <span>商品评分：<em><{$shopDsrData.countDsr.tally_dsr}></em> 分</span>
+    <!-- <span>
+      <a href="#" class="icon icon-star"></a>
+      <a href="#" class="icon icon-star"></a>
+      <a href="#" class="icon icon-star"></a>
+      <a href="#" class="icon icon-star"></a>
+      <a href="#" class="icon icon-star disabled"></a>
+    </span> -->
+  </li>
+  <li>
+    <span>商品评论：<em><{$item.rate_count|default:"0"}></em> 条</span>
+  </li>
+</ul>

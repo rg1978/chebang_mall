@@ -1,0 +1,123 @@
+<section id="select" class="activity-filters">
+  <ul id="activity_id" data-id="<{$activity.activity_id}>">
+    <li class="default contition active" data-key="item_id" data-order="desc"><span>默认</span></li>
+    <li class="down contition" data-key="activity_price" data-order="desc">
+      <span>价格</span>
+    </li>
+    <li class="down contition" data-key="sales_count" data-order="desc">
+      <span>销量</span>
+    </li>
+  </ul>
+</section>
+<div class="activity-prolist">
+  <section class="ui-refresh">
+    <{if $group_item}>
+    <ul class="data-list">
+      <{include file="topm/shop/promotion/list.html"}>
+    </ul>
+    <div class="ui-refresh-handle">
+      <div class="ui-refresh-down"></div>
+    </div>
+    <{else}>
+    <div class="empty-area">
+      <span><i class="icon-result"></i>暂无相关商品</span>
+    </div>
+    <{/if}>
+  </section>
+</div>
+
+<script>
+  $(function(){
+    $('.option-fa li').eq(0).trigger('tap');
+  })
+
+  $('.option-fa li').tap(function(){
+    var catid = $(this).attr('data-cat-id');
+    var id = $(this).attr('data-id');
+    $.ajax({
+      url:"<{url action=topm_ctl_activity@getCatLv3}>",
+      type:"get",
+      dataType:"json",
+      data:{
+        'catid':catid,
+        'id':id
+      },
+      success:function(rs){
+        var list="";
+        if(rs){
+          for(var i=0;i<rs.length; i++){
+            list+='<li data-cat-id='+rs[i].cat_id+' data-id='+id+'>'+rs[i].cat_name+'</li>';
+          }
+          $('.option-ch ul').html(list);
+        }
+      }
+    });
+  })
+
+$('.contition').tap(function(){
+  $(this).addClass('active').siblings().removeClass('active');
+  if($(this).hasClass('down')){
+    $(this).attr('data-order','desc');
+    $(this).removeClass('down').addClass('up');
+  }else if($(this).hasClass('up')){
+    $(this).attr('data-order','asc');
+    $(this).removeClass('up').addClass('down');
+  }
+    var key= $(this).attr('data-key');
+    var order= $(this).attr('data-order');
+    var catid=$('#cat_id').val();
+    var id=$('#activity_id').attr('data-id');
+    var orderBy=key+' '+order;
+
+    getList(orderBy,id,catid);
+});
+
+function getList(orderBy,id,catid){
+  $.ajax({
+    url:"<{url action=topm_ctl_activity@itemlist}>",
+    type:"get",
+    dataType:"html",
+    data:{
+       'orderBy':orderBy,
+       'id':id,
+       'cat_id':catid
+    },
+    success:function(rs){
+      if(rs){
+      $('.data-list').html(rs);
+      }
+    }
+  });
+}
+
+var pagers = <{$pagers|json_encode}>;
+console.log(pagers);
+pagers.next = pagers.current + 1;
+$('.ui-refresh').refresh({
+  init: function () {
+    if(pagers.current == pagers.total) {
+      this.disable();
+    }
+  },
+  load: function (dir, type) {
+    var self = this;
+    var $list = $('.data-list');
+    var slice = location.search.slice(1);
+    if(!slice) {
+      slice = "id="+$('#activity_id').val();
+    }
+    $.get('<{url action=topm_ctl_activity@ajaxItemShow}>', slice + '&pages=' + pagers.next, function (rs) {
+      if(rs.success) {
+        pagers.next = +rs.pagers.current + 1;
+        $list[dir == 'up' ? 'prepend' : 'append'](rs.html);
+      }
+      self.afterDataLoading();
+      if(rs.pagers.current == rs.pagers.total) {
+        self.disable();
+      }
+    });
+  }
+});
+</script>
+
+

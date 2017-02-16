@@ -1,0 +1,28 @@
+<div class="section-title">
+    <div class="title-txt">优惠券</div>
+    <div class="more-link"><a href="<{url action=topwap_ctl_shop_coupon@index shop_id=$shopId}>">更多优惠券 <i class="bbc-icon bbc-icon-forward"></i></a></div>
+</div>
+<div class="section-container coupon-list coupons-inline">
+
+  <{foreach from=$homeCouponList item=coupon name=couponlist}>
+  <{if $env.foreach.couponlist.iteration > 3}> <{break}> <{/if}>
+    <div class="coupon coupon-data" data-id="<{$coupon.coupon_id}>" data-shopid="<{$coupon.shop_id}>">
+        <div data-denomination="coupon" class="coupon-denomination"><{$coupon.deduct_money|cur}></div>
+        <div class="coupon-rule"><{$coupon.coupon_name}></div>
+    </div>
+    <{/foreach}>
+</div>
+<script>
+  stylePrice('coupon',true);
+$('.coupon-data').on('tap',function(){
+  var coupon_id = $(this).data('id');
+  var shop_id = $(this).data('shopid');
+  $.post('<{url action=topwap_ctl_shop_coupon@receiveConpon}>',{'coupon_id':coupon_id,'shop_id':shop_id},function(rs){
+    if( rs.error ){
+      shopex.alert(rs.message);
+    }else{
+      shopex.toast(rs.message);
+    }
+  })
+})
+</script>

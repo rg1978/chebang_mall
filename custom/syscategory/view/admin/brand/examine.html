@@ -1,0 +1,106 @@
+<form id="brandForm" action="?app=syscategory&ctl=admin_brand&act=saveExamine"  method="POST" >
+  <input type="hidden" name="brand_id" value="<{$brandInfo.brand_id}>">
+  <input type="hidden" name="seller_id" value="<{$brandInfo.seller_id}>">
+  <div class="tableform">
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>品牌名称：<{/t}></th>
+          <td><{$brandInfo.brand_name}></td>
+        </tr>
+        <tr>
+          <th><{t}>品牌别名：<{/t}></th>
+          <td><{$brandInfo.brand_alias}></td>
+        </tr>
+		<tr>
+          <th><{t}>品牌网址：<{/t}></th>
+          <td><{$brandInfo.brand_url}></td>
+        </tr>
+        		<tr>
+          <th><{t}>品牌介绍：<{/t}></th>
+          <td><{$brandInfo.brand_desc}></td>
+        </tr>
+        <tr>
+          <th><{t}>商家账号：<{/t}></th>
+          <td><{$brandInfo.login_account}></td>
+        </tr>
+        <tr>
+          <th><{t}>店铺名称：<{/t}></th>
+          <td><{$brandInfo.shop_name}></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th>LOGO：</th>
+          <td>
+           	<img width="50" height="50"  src="<{$brandInfo.brand_logo|storager:t}>">
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+   <div class="division">
+    <div class="item">
+      <div class="dashbd-bd">
+        <h5>审核结果</h5>
+          <div class="list-content">
+            <div class="clearfix">
+              <span class="dt">审核结果：</span>
+              <span class="dd">
+                <input type="radio" name ="status" value="successful" class="act-status">通过
+                <input type="radio" name ="status" value="failing" class="act-status" checked>不通过
+                <div class="apply-result">
+                  <{input class="reason" type="textarea" value=$brandInfo.reason name="reason" cols="50" rows="5" maxlength="200" vtype="required"}>
+                </div>
+              </span>
+            </div>
+          </div>
+      </div>
+    </div>
+  <div class="table-action">
+    <{button type="submit" id='brand-form-submit' label="确认"|t:'syscategory'}>
+  </div>
+
+</form>
+
+<script>
+  (function(){
+    var _form = $('brandForm');
+    var btn =$('brand-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+  })();
+
+   $$('.act-status').addEvent('click', function(e){
+    if(this.value == 'failing') {
+      $$('.apply-result').show();
+    }
+    else {
+      $$('.apply-result').hide();
+    }
+  });
+</script>

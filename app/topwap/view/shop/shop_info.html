@@ -1,0 +1,47 @@
+ <section class="container">
+    <header class="page-header">
+      <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+      <div class="header-title">店铺信息</div>
+    </header>
+    <section>
+      <div class="section-container content-top-padded">
+        <div class="shop-info-brand"><img src="<{$shopinfo.shop_logo}>" alt=""></div>
+      </div>
+      <div class="content-center shop-info-name content-bottom-padded"><{$shopinfo.shop_name}></div>
+    </section>
+    <section>
+      <div class="shopex-input-group">
+        <div class="shopex-input-row">
+          <label>店铺简介</label>
+          <div class="shopex-input-info"><{$shopinfo.shop_descript}></div>  
+        </div>
+        <div class="shopex-input-row">
+          <label>联系电话</label>
+          <div class="shopex-input-info"><{$shopinfo.mobile}></div>  
+        </div>
+        <div class="shopex-input-row">
+          <label>开店时间</label>
+          <div class="shopex-input-info"><{$shopinfo.open_time|cdate:''}></div>
+        </div>
+        <div class="shopex-input-row">
+          <label>服务评分</label>
+          <div class="shopex-input-info"><{$shopDsrData.countDsr.attitude_dsr}>分</div>  
+        </div>
+        <div class="shopex-input-row">
+          <label>商品评分</label>
+          <div class="shopex-input-info"><{$shopDsrData.countDsr.tally_dsr}>分</div>  
+        </div>
+        <div class="shopex-input-row">
+          <label>配送评分</label>
+          <div class="shopex-input-info"><{$shopDsrData.countDsr.delivery_speed_dsr}>分</div>  
+        </div>
+        <div class="shopex-input-row">
+          <label>店铺二维码</label>
+          <div class="shopex-input-info">
+            <img src="<{$qrCodeData}>">
+          </div>
+        </div>
+      </div>
+    </section>
+</section>
+

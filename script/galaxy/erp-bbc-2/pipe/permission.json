@@ -1,0 +1,22 @@
+{
+    "module": "control.map",
+    "mapping": {
+        "data_from"        :"poll",
+        "to_node_id"       :"${var.to_node_id",
+        "node_type"        :"${var.to_node_type}",
+        "to_certi"         :"${var.to_certi}",
+        "to_url"           :"${var.to_api_url}",
+        "to_token"         :"${var.to_token}",
+        "from_certi"       :"${var.from_certi}",
+        "from_type"        :"${var.from_type}",
+        "from_token"       :"${var.from_auth_code}",
+        "from_shop_name"   :"${var.from_auth_unikey}",
+        "from_secrt"       :"${var.from_api_secret}",
+        "from_node_id"     :"${var.from_node_id}",
+        "from_key"         :"${var.from_api_key}",
+        "status"           :"${var.status}",
+        "queue_type"       :"${var.queue_type}",
+        "release_version"  :"${var.release_version}",
+        "channel_ver"      :"${var.channel_ver}"
+    }
+}

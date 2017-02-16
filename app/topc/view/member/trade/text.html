@@ -1,0 +1,66 @@
+<{if $env.foreach.orderlist.iteration==1}>
+              <td rowspan="<{if !orderGiftCount}><{$orderItemCount}><{/if}>">
+                <div class="price text-center">
+                  <{$tradeitem.payment|cur}>
+                  <div>
+                    (含运费：<{$tradeitem.post_fee|cur}>)
+                  </div>
+                  <{if $tradeitem.discount_fee>0}>
+                  <div>
+                    (促销优惠：-<{$tradeitem.discount_fee|cur}>)
+                  </div>
+                  <{/if}>
+                </div>
+              </td>
+              <td class="col-operate" rowspan="<{if !orderGiftCount}><{$orderItemCount}><{/if}>">
+                <{if $tradeitem.status == "WAIT_BUYER_PAY"}>
+                <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">等待买家付款</a>
+                <{elseif $tradeitem.status == "WAIT_SELLER_SEND_GOODS" && $tradeitem.pay_type == "online"}>
+                <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">买家已付款</a>
+                <{elseif $tradeitem.status == "WAIT_SELLER_SEND_GOODS" && $tradeitem.pay_type == "offline"}>
+                <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">未付款(货到付款)</a>
+                <{elseif $tradeitem.status == "WAIT_BUYER_CONFIRM_GOODS"}>
+                <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">卖家已发货</a>
+                <{elseif $tradeitem.status == "TRADE_FINISHED"}>
+                <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">订单已完成</a>
+                <{elseif $tradeitem.status == "TRADE_CLOSED_BY_SYSTEM" || $tradeitem.status == "TRADE_CLOSED"}>
+                <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">订单已关闭</a>
+                <{/if}>
+              </td>
+              <td class="col-operate" rowspan="<{if !orderGiftCount}><{$orderItemCount}><{/if}>">
+                <{if $tradeitem.cancel_status == 'WAIT_PROCESS'}>
+                <a href="<{url action=topc_ctl_member_trade@canceledTradeList tid=$tradeitem.tid}>">正在审核</a>
+                <{elseif $tradeitem.cancel_status == 'REFUND_PROCESS' }>
+                <a href="<{url action=topc_ctl_member_trade@canceledTradeList tid=$tradeitem.tid}>">退款处理中</a>
+                <{elseif $tradeitem.cancel_status == 'SUCCESS' }>
+                <a href="<{url action=topc_ctl_member_trade@canceledTradeList tid=$tradeitem.tid}>">取消成功</a>
+                <{/if}>
+                <{if $tradeitem.is_buyer_rate }>
+                <a href="<{url action=topc_ctl_member_rate@createRate tid=$tradeitem.tid}>" target="_blank"  class="btn btn-simple"><span><span>去评价</span></span></a>
+                <{/if}>
+                <{if $tradeitem.status == "WAIT_BUYER_PAY"}>
+                <a href="<{$tradeitem.tid}>" class="btn btn-import act-pay"><span><span>付款</span></span></a>
+                <{elseif $tradeitem.status == "WAIT_SELLER_SEND_GOODS"}>
+                <span><span>等待卖家发货</span></span>
+                <{elseif $tradeitem.status == "WAIT_BUYER_CONFIRM_GOODS" && $tradeitem.pay_type=="online"}>
+                <{if $tradeitem.cancel_status == 'NO_APPLY_CANCEL' || $tradeitem.cancel_status == 'FAILS'}>
+                <a href="javascript:void(0);" id="<{$tradeitem.tid}>" class="btn btn-import btn-confirm">
+                  <span><span>确认收货</span></span>
+                </a>
+                <{/if}>
+                <{elseif $tradeitem.status == "WAIT_BUYER_CONFIRM_GOODS" && $tradeitem.pay_type=="offline"}>
+                <span><span>商品已发货</span></span>
+                <{/if}>
+                <!-- || ($tradeitem.status == "WAIT_SELLER_SEND_GOODS" && $tradeitem.pay_type == "offline")-->
+                <{if ($tradeitem.status == "WAIT_BUYER_PAY" || $tradeitem.status == "WAIT_SELLER_SEND_GOODS") && $tradeitem.cancel_status == 'NO_APPLY_CANCEL'}>
+                <div>
+                  <a href="javascript:void(0);" id="<{$tradeitem.tid}>" class="btn_dialog">
+                    <span><span>取消订单</span></span>
+                  </a>
+                </div>
+                <{/if}>
+                <div>
+                  <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">查看订单详情</a>
+                </div>
+              </td>
+              <{/if}>

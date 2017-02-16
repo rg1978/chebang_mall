@@ -1,0 +1,11 @@
+{
+    "enabled": true,
+    "service": "httpd",
+    "title": "erp_bbc",
+    "pipe": "store.logistics.offline.send.sync",
+    "service_args": {
+        "path": "ecos.ome-bbc/store.logistics.offline.send/sync"
+    },
+    "pipe_params": {},
+    "input": null
+}

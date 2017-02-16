@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <{include file="topshop/common/head.html"}>
+    </head>
+    <body class="skin-blue login-skin" style="background: url(<{$backgroundImgUrl}>) 0 / cover fixed;">
+        <div class="alert-warn">商家中心不支持您的浏览器，无法保证使用效果，请使用Chrome、Firefox或Safari（mac系统）<span class="txt-know">我知道了</span></div>
+        <div class="alert alert-error message in" role="alert" id="messagebox" style="display:none;"></div>
+        <div class="form-box-wrap signin-box-wrap">
+            <{include file=$topshop.view}>
+        </div>
+    </body>
+</html>
+<script>
+    //判断当前浏览器
+    function getBrowser(){
+        var Sys={};
+        var ua=navigator.userAgent.toLowerCase();
+        var s;
+        (s=ua.match(/msie ([\d.]+)/))?Sys.ie=s[1]:
+        (s=ua.match(/firefox\/([\d.]+)/))?Sys.firefox=s[1]:
+        (s=ua.match(/chrome\/([\d.]+)/))?Sys.chrome=s[1]:
+        (s=ua.match(/opera.([\d.]+)/))?Sys.opera=s[1]:
+        (s=ua.match(/version\/([\d.]+).*safari/))?Sys.safari=s[1]:0;
+        if(Sys.ie){
+          // if(Sys.ie=='9.0'){
+          // }else if(Sys.ie=='8.0'){
+          // }else{
+          // }
+          return 'ie';
+        }
+        if(Sys.firefox){ return 'firefox'; }
+        if(Sys.chrome){ return 'chrome'; }
+        if(Sys.opera){ return 'opera'; }
+        if(Sys.safari){ return 'safari'; }
+    }
+    var browser = getBrowser();
+    if(browser && browser != 'chrome' && browser != 'firefox' && browser != 'safari') {
+        $('.alert-warn').css('top', '0');
+    }
+    $('.txt-know').on('click', function() {
+        $('.alert-warn').css('top', '-42px');
+    });
+</script>

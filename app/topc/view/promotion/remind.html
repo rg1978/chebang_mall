@@ -1,0 +1,63 @@
+<div class="popup-body">
+  <div class="popup-header clearfix">
+    <h2>订阅开团提醒</h2>
+    <span><button type="button" title="关闭" class="popup-btn-close" hidefocus=""><i>×</i></button></span>
+  </div>
+  <div class="minicart-infos">
+  </div>
+  <div class="popup-content clearfix">
+    <div class="minicart-infos">
+      <form action="<{url action=topc_ctl_activity@saleRemind}>" method="post" id="remind_form">
+        <input type="hidden" name="remind[activity_id]" value="<{$activity.activity_id}>">
+        <{if $activity.remind_way == 'email'}>
+        <p>
+          <label for="txt-phone">电子邮件：</label>
+          <input type="text" id="txt-phone" name="remind[email]" placeholder="请输入电子邮箱">
+          <br>
+        </p>
+        <div class="actions">
+          <button class="btn popup-btn-course">确&nbsp;定</button>
+        </div>
+        <{/if}>
+        <{if $activity.remind_way == 'mobile'}>
+        <{if $remind_residue <= 0}>
+        <p>
+          根据您的设置，在开团前通过手机短信通知您本次团购消息。<br>
+          （您今天可订阅的机会已经用完）
+        </p>
+        <{else}>
+        <p>
+          根据您的设置，在开团前通过手机短信通知您本次团购消息。<br>
+          （每天最多定制<{$remind_total.mobile_num}>条，今日您还可以定制<{$remind_residue}>条短信）
+        </p>
+        <p>
+          <label for="txt-phone">手机短信：</label>
+          <input type="text" id="txt-phone" name="remind[mobile]" placeholder="请输入手机号">
+        </p>
+        <div class="actions">
+          <button class="btn popup-btn-course">确&nbsp;定</button>
+        </div>
+        <{/if}>
+        <{/if}>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.popup-btn-close').on('click', function() {
+    $('#remind_dialog').stop().fadeOut();
+  });
+  $('#remind_form').submit(function(e){
+    e.preventDefault();
+    $.post($(this).attr('action'),$(this).serialize(),function(re){
+      if(re.success == true) {
+        Message.success(re.message);
+        setTimeout($('#remind_dialog').stop().fadeOut(),3000);
+      }else if(re.error == true){
+        Message.error(re.message);
+      }
+    })
+  });
+</script>

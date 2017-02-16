@@ -1,0 +1,17 @@
+<div class="panel-heading">
+  <div class="text-center">
+    <ul class="step-bar">
+      <li <{if $info.status >= '0'}> class="on"<{/if}>>
+        <div class="state">待处理</div>
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </li>
+      <li <{if $info.status == '1' || $info.status == '2'}> class="on" <{/if}>>
+        <div class="state">处理中</div>
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </li>
+      <li <{if $info.status == '2' || $info.status == '3' }> class="on" <{/if}> >
+        <div class="state">已完成</div>
+      </li>
+    </ul>
+  </div>
+</div>

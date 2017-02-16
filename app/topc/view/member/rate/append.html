@@ -1,0 +1,84 @@
+<form action="<{url action=topc_ctl_member_rate@appendRate}>" method="post" id="ajaxForm" class="form-tip-horizontal">
+  <input type='hidden' name="rate_id" value=<{$rateInfo.rate_id}>>
+  <div class="box">
+    <div class="membercenter-box">
+      <div class="comment-header">
+        <span class="detail-header">追加评论</span>
+      </div>
+      <div class="membercenter-box-bd bd">
+        <div class="rate-edit-orderinfo"><span><{$rateInfo.created_time|cdate}></span><span>订单编号：<{$rateInfo.tid}></span><span><{$rateInfo.shop_id|shopname}></span></div>
+        <div class="goods-score">
+          <div class="score-level no-bg no-bd clearfix">
+            <div class="goods-comment-l goods-infor fl">
+              <div class="goods-img"><img width="64" height="64" src="<{$rateInfo.item_pic|storager:t}>"></div>
+              <div class="goods-title"><a href="<{url action=topc_ctl_item@index item_id=$rateInfo.item_id}>"><{$rateInfo.item_title}></a></div>
+              <span class="rate-price">成交价：<{$rateInfo.item_price|cur}></span>
+            </div>
+            <div class="goods-comment-r fl">
+              <span>
+                <i class="icon icon-flower <{$rateInfo.result}>"></i>
+                  <{if $rateInfo.result == 'good'}>好评<{elseif $rateInfo.result == 'bad'}>差评<{else}>中评<{/if}>
+              </span>
+              <span class="rate-content"><{$rateInfo.content}>&nbsp;&nbsp;[<{$rateInfo.created_time|cdate}>]</span>
+            </div>
+          </div>
+        </div>
+        <div class="goods-score edit-score-comment">
+          <div class="score-comment">
+            <span>追加评论：</span><textarea class="comment" name='content' placeholder="分享一下您使用商品的感受吧！"></textarea>
+            <div class="letter-limit">还可以输入<span>300</span>字</div>
+          </div>
+          <div class="score-imgs">
+            <div class="images-uploader">
+              <div class="handle img-thumbnail action-upload">
+                <input type="file" name="pic[]" multiple accept="image/*" data-size="<{$env.config.image.uploadedFileMaxSize}>" data-max="5" data-remote="<{url action=toputil_ctl_image@uploadImages from=user type=rate}>" class="action-file-input">
+                <span class="icon-add"></span>
+              </div>
+            </div>
+            <div class="imgs-key">晒图仅限5张</div>
+          </div>
+        </div>
+        <div class="evaluation-submit mb10">
+          <div><button id="submitForm" type="submit" class="btn btn-import"><span><span>确认提交</span></span></button></div>
+          <div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<script>
+  $(function(){
+    limitContent('.comment', 300);
+
+    //限制评论输入字数
+    function limitContent(content, length) {
+      $('.letter-limit').find('span').text(length);
+      $(content).keydown(function(e){
+        var numView = $(this).parent().find('.letter-limit').find('span');
+        var remaining = length - $(this).val().length;
+        if(remaining < 0){
+          numView.css('color', '#ff0000');
+          numView.css('font-weight', 'bold');
+        }else{
+          numView.css('color', '#aaa');
+          numView.css('font-weight', 'normal');
+        }
+        numView.text(remaining);
+      });
+
+      $(content).keyup(function(e){
+        var numView = $(this).parent().find('.letter-limit').find('span');
+        var remaining = length - $(this).val().length;
+        numView.text(remaining);
+        if(remaining < 0){
+          numView.css('color', '#ff0000');
+          numView.css('font-weight', 'bold');
+        }else{
+          numView.css('color', '#aaa');
+          numView.css('font-weight', 'normal');
+        }
+      });
+    };
+  })
+</script>

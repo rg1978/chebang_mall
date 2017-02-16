@@ -1,0 +1,56 @@
+<div class="tableform">
+	<form action="?app=sysuser&ctl=admin_user&act=updateDeposit"  method="post">
+	<div class="division">
+	    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+	    	<input type="hidden" name="user_id" value="<{$user_id}>">
+	      <tbody>
+	        <tr>
+	          <th><{t}>会员预存款余额：<{/t}></th>
+	          <td><span class="price0"><{$deposit|cur}></span></td>
+          </tr>
+	        <tr>
+            <th ><{t}>充值金额：<{/t}></th>
+	          <td><{input type="number" vtype="required&&number" maxlength="10" name='deposit'}></td>
+	        </tr>
+	        <tr>
+            <th ><{t}>备注：<{/t}></th>
+	          <td><{input type="text" maxlength="50" name='memo'}></td>
+	        </tr>
+	      </tbody>
+	    </table>
+	</div>
+	<div class="table-action"><{button type="submit" label="保存"|t:'___sysuser' }></div>
+	</form>
+  <div>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="gridlist">
+      <thead>
+        <tr>
+          <th><{t}>交易时间<{/t}></th>
+          <th><{t}>存入金额<{/t}></th>
+          <th><{t}>支出金额<{/t}></th>
+          <th><{t}>操作员<{/t}></th>
+          <th><{t}>管理备注<{/t}></th>
+        </tr>
+      </thead>
+      <tbody>
+      <{foreach from=$list item=log}>
+        <tr>
+          <td><{$log.logtime|cdate}></td>
+          <td><{if $log.type=='add'}><{$log.fee|cur}><{else}>--<{/if}></td>
+          <td><{if $log.type=='expense'}><{$log.fee|cur}><{else}>--<{/if}></td>
+          <td><{$log.operator}></td>
+          <td><{$log.message}></td>
+        </tr>
+      <{/foreach }>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+  $$('.table-action button').addEvent('click',function(e){
+    var dom = this.getParent('form');
+    $$(dom).addEvent('submit',function(e){
+      $$(dom)[0].reset();
+    })
+  })
+</script>

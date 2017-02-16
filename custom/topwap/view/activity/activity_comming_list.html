@@ -1,0 +1,100 @@
+
+  <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title">活动预告</div>
+    <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more btn-mini-menu"></a>
+  </header>
+  <section class="container">
+   <{if $activity_list}>
+    <{foreach from=$activity_list item=group}>
+    <section class="section-white">
+      <a href="<{url action=topwap_ctl_activity@detail id=$group.activity_id}>" class="thumbs" data-id="<{$group.activity_id}>">
+        <div class="page-banner"><img src="<{$group.slide_images|storager}>"></div>
+        <div class="content-padded">
+          <p class="activity-title"><span class="tag"><{$group.discount_min/10}>折起</span><{$group.activity_name}></p>
+          <p class="fontS font-gray-20"><i class="bbc-icon bbc-icon-countdown"></i> 距离活动开始还有：<mark class="countdown-view" data-time="<{$group.start_time}>"></mark></p>
+        </div>
+      </a>
+    </section>
+    <{/foreach}>
+    <{elseif $nodata}>
+    <{include file="topwap/empty/activity_active.html"}>
+    <{else}>
+    <{include file="topwap/empty/activity_comming.html"}>
+    <{/if}>
+  </section>
+
+  <!-- 右上角menu菜单 -->
+  <div id="minimenu" class="bbc-mini-menu shopex-popover">
+    <div class="shopex-popover-arrow"></div>
+    <div>
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category-empty"></i> 分类</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 购物车</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+<script>
+shopex.init({
+  swipeBack: false,
+});
+
+//实现ios平台的侧滑关闭页面；
+if (shopex.os.plus && shopex.os.ios) {
+  offCanvasWrapper[0].addEventListener('shown', function(e) { //菜单显示完成事件
+    plus.webview.currentWebview().setStyle({
+      'popGesture': 'none'
+    });
+  });
+  offCanvasWrapper[0].addEventListener('hidden', function(e) { //菜单关闭完成事件
+    plus.webview.currentWebview().setStyle({
+      'popGesture': 'close'
+    });
+  });
+}
+
+var flag = true;
+
+$('#show_style').on('tap',function(){
+  if(flag==true){
+    $(this).find('.bbc-icon').removeClass('bbc-icon-thumb').addClass('bbc-icon-gallery');
+    flag = false;
+  }else{
+    $(this).find('.bbc-icon').removeClass('bbc-icon-gallery').addClass('bbc-icon-thumb');
+    flag = true;
+  }
+
+});
+
+$('.goods-filters-item').on('tap',function(e){
+  $(this).addClass('active').siblings().removeClass('active');
+  var filterItem = $(this).find('.goods-filters-order')
+  if(filterItem && $(this).hasClass('active')){
+    if(filterItem.hasClass('order-desc')){
+      filterItem.removeClass('order-desc').addClass('order-asc');
+    }else{
+      filterItem.removeClass('order-asc').addClass('order-desc');
+    }
+  }
+});
+
+$('.thumbs').each(function(el,index){
+  countdown($(index).find('.countdown-view'),{
+    'start': $(index).find('.countdown-view').attr('data-time') - "<{$env.now}>",
+    'secondOnly': false,
+    'callback': null
+  });
+})
+
+</script>

@@ -1,0 +1,42 @@
+<{foreach from=$items item=item}>
+<li class="col-xs-6">
+  <div class="pro-pic list-item-pic">
+    <a href="<{url action=topm_ctl_item@index item_id=$item.item_id}>">
+      <{*img src="loading_bg.png" app="topm" data-echo=$item.image_default_id|default:$image_default_id.M.default_image|storager:'m' class="ui-imglazyload preload" alt=""*}>
+      <img src=<{$item.image_default_id|default:$image_default_id.M.default_image|storager:'m'}>
+    </a>
+  </div>
+  <div class="pro-info">
+    <div class="info-n">
+      <a href="<{url action=topm_ctl_item@index item_id=$item.item_id}>"><{if $item.activity.activity_tag}><span class="activity-tag"><{$item.activity.activity_tag}></span><{/if}><{$item.title}></a>
+    </div>
+    <div class="info-p">
+      <div class="p-lf"><{$item.price|cur}></div>
+      <div class="p-rt icon">
+        <{if $nologin!=1}>
+        <a href="<{url action=topm_ctl_passport@signin next_page=$next_page}>" class="save"><span class="icon icon-favor"></span></a>
+        <{else}>
+        <a href="javascript:void(0);" class="save collect-goods <{if $item.itemCollect}>curr<{/if}>" rel="_request" data-ajax-data="item_id=<{$item.item_id}>" data-item-id="<{$item.item_id}>" data-ajax-type="post"><span class="icon icon-favor"></span></a>
+        <{/if}>
+      </div>
+    </div>
+  </div>
+</li>
+<{/foreach}>
+<script>
+//收藏商品
+// var Message = new gmu.Message();
+//   $('.collect-goods').on('click', function(e) {
+//     e.preventDefault();
+//     var itemId = $(this).attr('data-item-id');
+//     $.post('<{url action=topm_ctl_collect@ajaxFav}>', $(this).attr('data-ajax-data'), function(rs) {
+//         if(rs.error) {
+//           Message.error(rs.message);
+//         }
+//         if(rs.success) {
+//           $('a[data-item-id="'+itemId+'"]').addClass('curr');
+//           Message.success(rs.message);
+//         }
+//       });
+//   });
+</script>

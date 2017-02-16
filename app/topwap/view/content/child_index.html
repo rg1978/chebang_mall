@@ -1,0 +1,35 @@
+<{include file="topwap/content/content_header.html"}>
+
+  <section class="container section-white">
+      <div class="shoex-content">
+        <ul class="shopex-table-view ">
+        <{foreach from=$childList item=nodelist}>
+          <li class="shopex-table-view-cell shopex-collapse directory-item">
+            <a class="shopex-navigate-right" data-node="<{$nodelist.node_id}>"><{$nodelist.node_name}></a>
+            <div class="item"></div>
+          </li>
+          <{/foreach}>
+        </ul>
+      </div>
+  </section>
+  <script>
+    $('.directory-item').on('tap', function() {
+      var that = $(this);
+      var child_node = $(this).find('a').first();
+      var node_id = child_node.attr('data-node');
+      $.post('<{url action=topwap_ctl_content@ajaxContentList}>', {'node_id' : node_id , 'index': '1'} , function(rs) {
+        if(rs && rs.articleList) {
+          var articleList = rs.articleList
+          var child_article = '<ul class="shopex-table-view section-white font-gray-20 fontS">';
+          $.each(articleList,function(i) {
+              child_article += '<li class="shopex-table-view-cell"><a href="<{url action=topwap_ctl_content@getContentInfo}>?aid=' + articleList[i].article_id + '" class="shopex-navigate-right">- ' + articleList[i].title + '</a></li>';
+          });
+          if(rs.articlecount > 5) {
+            child_article += '<li class="content-center shopex-content-padded"><a href="<{url action=topwap_ctl_content@contentList}>?node_id='+ node_id +'" class="font-red shopex-linkto">查看更多></a></li>';
+          }
+          child_article += '</ul>';
+          that.find('.item').html(child_article);
+        }
+      });
+    });
+  </script>

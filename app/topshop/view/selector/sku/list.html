@@ -1,0 +1,42 @@
+<ul class="clearfix">
+<{if !$skusList}>
+  <p class="text-muted well no-shadow text-center">暂无数据</p>
+  <script>
+    $('#orderCancel,#orderEdit').on('hide.bs.modal', function(e) {
+      $(this).removeData('bs.modal');
+    })
+  </script>
+<{else}>
+  <{foreach from=$skusList item=data}>
+  <li data-id="<{$data.sku_id}>" data-src="<{$data.image_default_id}>" title="<{$data.title}>" data-specinfo="<{$data.spec_info}>" >
+    <div class="thumb">
+        <div class="thumb-wrap">
+          <{if $data.image_default_id}>
+          <img src="<{$data.image_default_id|storager:'s'}>">
+          <{else}>
+          <img src="<{$image_default_id.S.default_image}>">
+          <{/if}>
+        </div>
+    </div>
+    <div class="sku-info">
+      <div class="title"><{$data.title}></div>
+      <div class="sku-spec"><{$data.spec_info}></div>
+      <div class="price text-orange"><{$data.price|cur}></div>
+    </div>
+  </li>
+  <{/foreach}>
+<{/if}>
+</ul>
+<div class="pages-wrap">
+  <{pagers data=$pagers}>
+  <div class="btn-operate">
+    <button id="check_all" type="button" class="btn btn-info btn-sm">全选当前页</button>&nbsp;&nbsp;
+    <a id="uncheck_all" href="#" class="btn btn-default btn-sm">清空当前页</a>
+    <!-- &nbsp; <a id="clear_brand" href="#">清空品牌</a> -->
+  </div>
+<{if $count > 0}>
+<span class="page-number">共&nbsp;<em class="text-aqua"><{$count}></em>&nbsp;条记录</span>
+<{/if}>
+
+</div>
+

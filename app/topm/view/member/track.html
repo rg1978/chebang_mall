@@ -1,0 +1,19 @@
+<i class="icon icon-down"></i>
+<ul>
+  <{if $track.tracker}>
+  <{foreach from=$track.tracker item=tracker}>
+  <li>
+    <div class="dot"></div>
+    <div class="step-con">
+      <div><{$row.AcceptStation}></div>
+      <div><{$row.AcceptTime}></div>
+    </div>
+  </li>
+  <{/foreach}>
+  <{elseif $track.logmsg}>
+  <li>
+    <{$track.logmsg}>
+  </li>
+  <{/if}>
+</ul>
+

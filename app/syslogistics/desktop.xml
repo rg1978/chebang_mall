@@ -1,0 +1,58 @@
+<desktop>
+
+    <permissions>
+        <permission id="syslogisticslist" display='true' parent="0" workground='sysshop.workground.logistics'>物流公司列表</permission>
+        <permission id="syslogistics_edit" display='true' parent="syslogisticslist" workground='sysshop.workground.logistics'>添加\编辑 物流公司</permission>
+        <permission id="syslogistics_delete" display='true' parent="syslogisticslist" workground='sysshop.workground.logistics'>物流公司删除</permission>
+        
+        <permission id="syslogistics_tracking" display='true' parent="0" workground='sysshop.workground.logistics'>物流跟踪配置</permission>
+        
+        <permission id="syslogisticslist_regions" display='true' parent="0" workground='sysshop.workground.logistics'>地区管理列表</permission>
+        <permission id="syslogistics_edit_regions" display='true' parent="syslogisticslist_regions" workground='sysshop.workground.logistics'>添加\编辑 地区管理</permission>
+        <permission id="syslogistics_delete_regions" display='true' parent="syslogisticslist_regions" workground='sysshop.workground.logistics'>地区删除</permission>
+
+        <permission id="syslogisticslist_ziti" display='true' parent="0" workground='sysshop.workground.logistics'>自提列表</permission>
+        <permission id="syslogistics_edit_ziti" display='true' parent="syslogisticslist_ziti" workground='sysshop.workground.logistics'>增加\编辑 自提地址</permission>
+        <permission id="syslogistics_delete_ziti" display='true' parent="syslogisticslist_ziti" workground='sysshop.workground.logistics'>自提地址删除</permission>
+
+        <permission id="syslogistics_set_ziti" display='true' parent="0" workground='sysshop.workground.logistics'>自提配置</permission>
+
+        <permission id="deliveryList" display='true' parent="0" workground='systrade.workground.trades'>发货单列表</permission>
+    </permissions>
+
+    <workground name="物流" id="syslogistics.workground.logistics" controller="admin_logistics" action="index" order='99'>
+        <menugroup name="物流中心">
+            <menu controller='admin_logistics' action='index' permission='syslogisticslist' display='true' order='1'>物流公司</menu>
+            <menu controller='admin_logistics' action='index' params='action:dodelete' permission='syslogistics_delete' display='false' order='1'>物流公司删除</menu>
+            <menu controller='admin_logistics' action='create' permission='syslogistics_edit' display='false' order='1'>物流公司添加</menu>
+            <menu controller='admin_logistics' action='dlycorpSave' permission='syslogistics_edit' display='false' order='1'>物流公司保存</menu>
+            <menu controller='admin_logistics' action='edit' permission='syslogistics_edit' display='false' order='1'>编辑物流公司</menu>
+            <menu controller='admin_logistics' action='init' permission='syslogistics_edit' display='false' order='1'>初始化物流公司</menu>
+            <menu controller='admin_tracker' action='index' permission='syslogistics_tracking' display='true' order='1'>物流跟踪设置</menu>
+        </menugroup>
+        <menugroup name="地区管理">
+             <menu controller='admin_regions' action='index' permission='syslogisticslist_regions' display='true' order='1'>地区管理</menu>
+             <menu controller='admin_regions' action='toRemoveArea' permission='syslogistics_delete_regions' display='false' order='1'>删除地区</menu>
+             <menu controller='admin_regions' action='detailDlArea' permission='syslogistics_edit_regions' display='false' order='1'>编辑地区</menu>
+             <menu controller='admin_regions' action='showNewArea' permission='syslogistics_edit_regions' display='false' order='1'>添加地区</menu>
+             <menu controller='admin_regions' action='saveDlArea' permission='syslogistics_edit_regions' display='false' order='1'>地区保存</menu>
+             <menu controller='admin_regions' action='init' permission='syslogistics_edit_regions' display='false' order='1'>初始化地区</menu>
+             <menu controller='admin_regions' action='resetFile' permission='syslogistics_edit_regions' display='false' order='1'>保存地区并推至前端</menu>
+             <menu controller='admin_regions' action='getChildNode' permission='syslogisticslist_regions' display='false' order='1'>查看子地区</menu>
+        </menugroup>
+        <menugroup name="自提管理">
+             <menu controller='admin_ziti' action='index' permission='syslogisticslist_ziti' display='true' order='1'>自提列表</menu>
+             <menu controller='admin_ziti' action='index' permission='syslogistics_delete_ziti' params="action:dodelete" display='false' order='1'>自提列表</menu>
+             <menu controller='admin_ziti' action='edit' permission='syslogistics_edit_ziti' display='false' order='1'>更新自提地址页面</menu>
+             <menu controller='admin_ziti' action='save' permission='syslogistics_edit_ziti' display='false' order='1'>更新自提地址保存</menu>
+             <menu controller='admin_ziti' action='setting' permission='syslogistics_set_ziti' display='true' order='1'>自提配置</menu>
+        </menugroup>
+
+    </workground>
+    <workground name="交易" id="systrade.workground.trades" controller="admin_trade" action="index" order='80'>
+        <menugroup name="发货单据">
+            <menu controller='admin_delivery' action='index' permission='deliveryList' display='true' order="10">发货单列表</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

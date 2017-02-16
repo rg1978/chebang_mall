@@ -1,0 +1,11 @@
+<services>
+    <service id="desktop_finder.sysopen_mdl_keys">
+        <class>sysopen_finder_keys</class>
+    </service>
+    <service id="desktop_finder.sysopen_mdl_chebang_appurl">
+    	<class>sysopen_finder_chebang_appurl</class>
+    </service>
+    <service id="desktop_finder.sysopen_mdl_chebang_partner">
+    	<class>sysopen_finder_chebang_partner</class>
+    </service>
+</services>

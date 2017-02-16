@@ -1,0 +1,123 @@
+<div class="tableform complain" >
+  <div class="division">
+    <h4>初次评价信息</h4>
+    <table width="100%" cellspacing="0" cellpadding="0">
+      <tbody>
+        <tr>
+          <th>商品评分:</th>
+          <td><{if $rateData.result=='good'}>好评<{elseif $rateData.result=='bad'}>差评<{else}>中评<{/if}></td>
+        </tr>
+        <tr>
+          <th>评价内容:</th>
+          <td><{$rateData.content}></td>
+        </tr>
+        <{if $rateData.rate_pic}>
+        <tr>
+          <th>晒图:</th>
+          <td>
+            <{if $rateData.rate_pic}>
+            <ul class="thumb">
+              <{foreach from=$rateData.rate_pic item=pic}>
+              <li>
+                <span data-href='<{$pic|storager}>' style="color:red" class='img-tip pointer lnk enterapply-pic' target='_blank'>
+                  <img width="150" height="100"  src="<{$pic|storager:t}>">
+                </span>
+              </li>
+              <{/foreach}>
+            </ul>
+            <{else}>
+            没有晒图
+            <{/if}>
+          </td>
+        </tr>
+        <{/if}>
+        <tr>
+          <th>评价时间:</th>
+          <td><{$rateData.created_time|cdate}></td>
+        </tr>
+        <{if $rateData.is_reply}>
+        <tr class="reject-edit">
+          <th>卖家回复：</th>
+          <td><{$rateData.reply_content}></td>
+        </tr>
+        <tr>
+          <th>回复时间：</th>
+          <td><{$rateData.reply_time|cdate}></td>
+        </tr>
+        <{/if}>
+      </tbody>
+    </table>
+  </div>
+  <{if $rateData.is_append && $rateData.append}>
+  <div class="division">
+    <h4>追加评论信息
+      [<a href="?app=sysrate&ctl=traderate&act=doDelAppendRate&rate_id=<{$rateData.rate_id}>&finder_id=<{$env.get._finder.finder_id}>"  target="{update:'main'}"><{t}>删除追评<{/t}></a>]
+    </h4>
+    <table width="100%" cellspacing="0" cellpadding="0">
+      <tbody>
+        <tr>
+          <th>追评内容:</th>
+          <td><{$rateData.append.append_content}></td>
+        </tr>
+        <{if $rateData.append.append_rate_pic}>
+        <tr>
+          <th>晒图:</th>
+          <td>
+            <ul class="thumb">
+              <{foreach from=$rateData.append.append_rate_pic item=pic}>
+              <li>
+                <span data-href='<{$pic|storager}>' style="color:red" class='img-tip pointer lnk enterapply-pic' target='_blank'>
+                  <img width="150" height="100"  src="<{$pic|storager:t}>">
+                </span>
+              </li>
+              <{/foreach}>
+            </ul>
+          </td>
+        </tr>
+        <{/if}>
+        <tr>
+          <th>追评时间:</th>
+          <td><{$rateData.append.created_time|cdate}></td>
+        </tr>
+        <{if $rateData.append.is_reply}>
+        <tr class="reject-edit">
+          <th>卖家回复：</th>
+          <td><{$rateData.append.append_reply_content}></td>
+        </tr>
+        <tr>
+          <th>回复时间：</th>
+          <td><{$rateData.append.reply_time|cdate}></td`>
+        </tr>
+        <{/if}>
+      </tbody>
+    </table>
+  </div>
+<{/if}>
+</div>
+<div class="carrousel">
+  <span class="close-img entypo-cancel">x</span>
+  <div class="wrapper">
+    <a href="javascript:void(0);"><img src="" class="showImg"/></a>
+  </div>
+</div>
+<script>
+  var carrousel = $$( ".carrousel" );
+  $$( ".enterapply-pic" ).addEvent('click', function(e){
+    var _this = this;
+    var src = _this.getProperty('data-href');
+    carrousel.getElement("img").setProperty( "src", src );
+    // console.log(carrousel.getElement("img").getProperty( "src"));
+    carrousel.setStyle("display","block");
+  });
+
+  $$( ".close-img" ).addEvent('click', function(e){
+    closeShowImg();
+  });
+  $$( ".carrousel a" ).addEvent('click', function() {
+    closeShowImg();
+  });
+  function closeShowImg() {
+    carrousel.getElement( "img" ).setProperty( "src", '' );
+    carrousel.setStyle("display","none");
+  }
+</script>

@@ -1,0 +1,11 @@
+{
+    "enabled": true,
+    "service": "httpd",
+    "title": "erp_bbc",
+    "pipe": "store.trade.aftersale.status.update.async",
+    "service_args": {
+        "path": "ecos.ome-bbc/store.trade.aftersale.status.update/async"
+    },
+    "pipe_params": {},
+    "input": null
+}

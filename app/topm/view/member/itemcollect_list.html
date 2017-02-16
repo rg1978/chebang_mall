@@ -1,0 +1,30 @@
+<ul>
+  <{foreach from=$fav_info item=fav}>
+  <li class="col-xs-6">
+    <input type="hidden" value="<{$fav.item_id}>" name="item_id[]"/>
+    <div class="pro-pic list-item-pic">
+      <a href="<{url action=topm_ctl_item@index item_id=$fav.item_id}>
+        ">
+        <{*img style="background:url(<{$fav.image_default_id|default:$defaultImageId.S.default_image|storager:t}>) no-repeat center center" alt=""*}>
+        <img src="<{$fav.image_default_id|default:$defaultImageId.S.default_image|storager:t}>">
+      </a>
+    </div>
+    <div class="pro-info">
+      <div class="info-n">
+        <a href="<{url action=topm_ctl_item@index item_id=$fav.item_id}>">
+          <{$fav.goods_name}>
+        </a>
+      </div>
+      <div class="info-p">
+        <div class="p-lf">
+          <{$fav.goods_price|cur}>
+        </div>
+        <{if $fav.is_online=='yes'}>
+        <span class="ui-badge badge-rec p-rt">已失效</span>
+        <{/if}>
+      </div>
+    </div>
+  </li>
+  <{/foreach}>
+</ul>
+

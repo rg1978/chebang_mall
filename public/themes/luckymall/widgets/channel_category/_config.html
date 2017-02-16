@@ -1,0 +1,73 @@
+<div class="tableform">
+  <h4>专题页对应一级分类选择，展示一级分列的二三级分类：</h4>
+  <div class="division">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th width="100%">二级分类标题：</th>
+        <td width="100%">
+          <input type="text" class="x-input"  name="topics_cat_title" value="<{$setting.topics_cat_title}>" />
+        </td>
+      </tr>
+      <tr>
+        <th width="100%">分类链接在新窗口打开？：</th>
+        <td width="100%">
+          <input type="checkbox" name="target_blank" value="1" <{if $setting.target_blank}> checked <{/if}> /></td>
+      </tr>
+      <tr>
+        <th width="100%">选择一级类目：</th>
+        <td width="100%">
+          <select name="topics_cat_id" id="topics_cat_id">
+          <{foreach from=$data.cats item=item key=key}>
+              <{if $item.level=='1'}>
+              <option value="<{$item.cat_id}>" <{if $setting.topics_cat_id==$item.cat_id}> selected="selected" <{/if}> ><{$item.cat_name}></option>
+              <{/if}>
+          <{/foreach}>
+          </select>
+          <div class="division">
+            <h4>推荐分类</h4>
+            <div class="tableform" id="category_list">
+              
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<script>
+var catsJson = '<{$data.cats|json_encode}>';
+var cats = JSON.decode(catsJson);
+var categoryStr ='';
+var categoryId = $('topics_cat_id').value;
+var category;
+
+if(categoryId != '') {
+  category = cats[categoryId];
+  if(category) {
+    loadCategory(category["lv2"]);
+  }
+}
+$('topics_cat_id').addEvent('change', function() {
+  categoryId = this.value;
+  category = cats[categoryId];
+  var scondCategory = category["lv2"];
+  loadCategory(scondCategory);
+});
+function loadCategory(categoryObj) {
+  categoryStr = '';
+  for (var key in categoryObj) {
+    categoryStr += '<div class="category-list clearfix"><div class="fl second-category">'+categoryObj[key]["cat_name"]+'</div><div class="fl third-category">';
+    var thirdCategory = categoryObj[key]["lv3"];
+    for (var secondKey in thirdCategory) {
+      var chk = '';
+      if(thirdCategory[secondKey]["checked"] == 1) {
+        chk = ' checked="checked"';
+      }
+      categoryStr += '<label><input type="checkbox" name="rec_cat_id['+key+'][]" value="'+thirdCategory[secondKey]['cat_id']+'"'+chk+'>'+thirdCategory[secondKey]["cat_name"]+'</label>';
+    };
+    categoryStr += "</div></div>";
+  }
+  $('category_list').set('html', categoryStr);
+}
+
+</script>

@@ -1,0 +1,47 @@
+
+<header class="page-header">
+  <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{t}>订阅提醒<{/t}></div>
+</header>
+<section class="container">
+  <form class="form-container" action="<{url action=topwap_ctl_activity@saveRemind}>" method="post">
+    <input type="hidden" name="remind[activity_id]" value="<{$activity.activity_id}>">
+    <{if $activity.remind_way == 'email'}>
+    <section class="shopex-input-group">
+      <div class="shopex-input-row">
+        <label><{t}>电子邮箱<{/t}>：</label>
+        <input type="text" name="remind[email]" class="shopex-input-clear" placeholder="请输入您的电子邮箱地址">
+      </div>
+    </section>
+    <section class="shopex-content-padded form-op-section">
+      <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" onclick="return false;"><{t}>立即订阅<{/t}></button>
+    </section>
+    <{/if}>
+    <{if $activity.remind_way == 'mobile'}>
+    <{if $remind_residue <= 0}>
+    <section>
+      <div>
+          活动前通过手机短信通知您本次活动消息。<br>
+          （您今天可订阅的机会已经用完）
+      </div>
+    </section>
+    <{else}>
+    <section>
+      <div>
+          活动前通过手机短信通知您本次活动消息。<br>
+          (每天最多定制<{$remind_total.mobile_num}>条，今日您还可以定制<{$remind_residue}>条短信）
+      </div>
+    </section>
+    <section class="shopex-input-group">
+      <div class="shopex-input-row">
+        <label><{t}>手机号码<{/t}>：</label>
+        <input type="text" name="remind[mobile]" class="shopex-input-clear" placeholder="请输入手机号">
+      </div>
+    </section>
+    <section class="shopex-content-padded form-op-section">
+      <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" onclick="return false;"><{t}>立即订阅<{/t}></button>
+    </section>
+    <{/if}>
+    <{/if}>
+  </form>
+</section>

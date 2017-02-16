@@ -1,0 +1,125 @@
+<{if $openInfo.contact_type == null}>
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title">申请绑定开发者</h3>
+  </div>
+  <div class="box-body">
+    <div class="text-center">
+      <form  action="<{url action=topshop_ctl_open@applyForOpen}>" method="post" class="form-horizontal" data-validate-onsuccess="ajaxSubmit" id="form_delivery" role="form">
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" >绑定的KEY：</label>
+            <div class="col-sm-3">
+              <input type="text" name="key">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" >绑定的Secret：</label>
+            <div class="col-sm-3">
+              <input type="text" name="secret">
+            </div>
+          </div>
+          <div class="modal-footer text-center">
+            <button type="submit" class="btn btn-primary btn-flat"><{t}>申请绑定<{/t}></button>
+          </div>
+       </form>
+    </div>
+  </div>
+</div>
+<script>
+  function ajaxSubmit (e) {
+    var form = e.target;
+    e.preventDefault();
+    $.post(form.action, $(form).serialize(), function(rs) {
+      if(rs.error) {
+        $('#messagebox').message(rs.message);
+        return;
+      }
+      if(rs.success) {
+        $('#messagebox').message(rs.message, 'success');
+      }
+      if(rs.redirect) {
+        location.href = rs.redirect;
+      }
+    });
+  }
+</script>
+<{elseif $openInfo.contact_type == 'notallowopen'}>
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title">运营商禁止该商户开放API</h3>
+  </div>
+  <div class="box-body">
+      <dl class="dl-horizontal merchant-info">
+        <dt>平台留言：</dt>
+        <dd> <{$openInfo.mark}> </dd>
+      </dl>
+  </div>
+</div>
+
+<{elseif $openInfo.contact_type == 'applyforopen'}>
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title">平台审核中，请稍后</h3>
+  </div>
+</div>
+<{else}>
+
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title">开发者ID</h3>
+  </div>
+  <div class="box-body">
+    <dl class="dl-horizontal merchant-info">
+      <dt>连通 Key：</dt>
+      <dd><{$openInfo.key}></dd>
+      <dt>连通 Secret：</dt>
+      <dd><span class='prism-secret' secret="<{$openInfo.secret}>">点击我显示密码</span></dd>
+    </dl>
+  </div>
+</div>
+
+<div class="box box-primary">
+  <div class="box-header">
+      <h3 class="box-title">配置参数</h3>
+  </div>
+  <div class="box-body">
+    <form method="post" class="form-horizontal save-dev-conf-form" action="<{url action=topshop_ctl_open@setConf}>" role="form" >
+      <dl class="dl-horizontal merchant-info">
+        <dt>开发者模式：</dt>
+        <dd><input type='radio' name='developer' value='DEVELOP' <{if $shopConf.develop_mode=="DEVELOP"}>checked='checked'<{/if}> > 可以通过接口进行操作 </dd>
+        <dt>编辑模式：</dt>
+        <dd><input type='radio' name='developer' value='PRODUCT' <{if $shopConf.develop_mode !="DEVELOP"}>checked='checked'<{/if}> > 禁止通过接口进行操作 </dd>
+      </dl>
+      <div class="text-center">
+        <button type="button" class="btn btn-primary save-dev-conf">提交</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+$('.prism-secret').bind(
+  'click', function(e){
+    if(this.innerHTML == $(this).attr('secret')){
+      this.innerHTML = '点击我显示密码';
+    }else{
+      this.innerHTML = $(this).attr('secret');
+    }
+  });
+
+$('.save-dev-conf').click(function(){
+  $.post(
+      '<{url action=topshop_ctl_open@setConf}>',
+      $('.save-dev-conf-form').serialize(),
+      function(rs){
+        if(rs.error) {
+          $('#messagebox').message(rs.message);
+        }
+        if(rs.success) {
+          $('#messagebox').message(rs.message, 'success');
+        }
+      });
+});
+</script>
+<{/if}>

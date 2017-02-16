@@ -1,0 +1,154 @@
+<{if $flag}>
+<div class="tableform">
+  <form id="webcall_platform_form" action="?app=sysim&ctl=webcall&act=platformConfigSave"  method="post">
+    <div class="division">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+          <tr>
+            <th><{t}>365webcall账号：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[email]" value=$wc.email}></td>
+          </tr>
+          <tr>
+            <th><{t}>365webcall账号管理：<{/t}></th>
+            <td><a href='http://shopex.365webcall.com' target='_blank'>365webcall 管理平台</a></td>
+          </tr>
+          <tr>
+            <th><{t}>是否开启365webcall平台客服：<{/t}></th>
+            <td>
+              <input type="radio" name="wc[use_im]" value=1 <{if $wc.use_im == 1}>checked="checked"<{/if}>>打开
+              <input type="radio" name="wc[use_im]" value=0 <{if $wc.use_im != 1}>checked="checked"<{/if}>>关闭
+            </td>
+          </tr>
+          <tr>
+            <td>
+            </td>
+            <td> <a href='?app=sysim&ctl=webcall&act=platformConfig&sign=1&finder_id=<{$env.get.finder_id}>'> <{t}>没有账号？点此申请<{/t}> </a> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody>
+        <tr valign="middle">
+          <td>
+            <{button label="保存设置"|t:'sysshop' class="btn-primary" type="button" }>
+            <{button label="关  闭"|t:'content' class="btn-secondary" type="button" isclosedialogbtn="1"}>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+<script>
+  $$('.btn-primary').addEvent('click',function(event){
+
+    var _form=$('webcall_platform_form');
+
+    var target={
+      onComplete:function(rs){
+        if(rs&&!!JSON.decode(rs).success){
+          window.finderGroup['<{$env.get.finder_id}>'].refresh();
+          _form.getParent('.dialog').retrieve('instance').close();
+        }
+      }};
+    _form.store('target',target);
+    _form.fireEvent('submit',new Event(event));
+
+  });
+</script>
+<{else}>
+<div class="tableform">
+  <form id="webcall_platform_form" action="?app=sysim&ctl=webcall&act=platformAccountApply"  method="post">
+    <div class="division">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+          <tr>
+            <th><{t}>E-mail：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[email]" }></td>
+          </tr>
+          <tr>
+            <th><{t}>密码：<{/t}></th>
+            <td><{input type="password" vtype="required"  name="wc[pwd]" }></td>
+          </tr>
+          <tr>
+            <th><{t}>重复密码：<{/t}></th>
+            <td><{input type="password" vtype="required"  name="wc[pwd_confirm]" }></td>
+          </tr>
+           <tr>
+            <th><{t}>昵称：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[name]" }></td>
+          </tr>
+           <tr>
+            <th><{t}>网址：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[url]" }></td>
+          </tr>
+          <tr>
+            <th><{t}>地区：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[are]" }></td>
+          </tr>
+          <tr>
+            <th><{t}>公司名称：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[corpName]" }></td>
+          </tr>
+          <tr>
+            <th><{t}>电话号码：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[phone]" }></td>
+          </tr>
+          <tr>
+            <th><{t}>QQ：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[qq]" }></td>
+          </tr>
+           <tr>
+            <th><{t}>联系人：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="wc[contact]" }></td>
+          </tr>
+          <tr>
+            <th><{t}>是否开启：<{/t}></th>
+            <td>
+              <input type="radio" name="wc[use_im]" value=1 checked='checked'><{t}>打开<{/t}>
+              <input type="radio" name="wc[use_im]" value=0 ><{t}>关闭<{/t}>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><a href='?app=sysim&ctl=webcall&act=platformConfig&flag=1&finder_id=<{$env.get.finder_id}>'><{t}>已有账号?点此配置<{/t}></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody>
+        <tr valign="middle">
+          <td>
+            <{button label="申请账号"|t:'sysshop' class="btn-primary" type="button" }>
+            <{button label="关  闭"|t:'content' class="btn-secondary" type="button" isclosedialogbtn="1"}>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+<script>
+  $$('.btn-primary').addEvent('click',function(event){
+
+    var _form=$('webcall_platform_form');
+
+    var target={
+      onComplete:function(rs){
+        if(rs&&!!JSON.decode(rs).success){
+          window.finderGroup['<{$env.get.finder_id}>'].refresh();
+          _form.getParent('.dialog').retrieve('instance').close();
+        }
+      }};
+    _form.store('target',target);
+    _form.fireEvent('submit',new Event(event));
+
+  });
+
+  $$('.btn-secondary').addEvent('click',function(event){
+    $('webcall_platform_form').getParent('.dialog').retrieve('instance').close();;
+  });
+</script>
+<{/if}>

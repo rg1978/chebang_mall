@@ -1,0 +1,14 @@
+<style>
+  ol{ font-size:16px; margin-top:30px; width:800px;text-indent:2em;}
+  li{ margin-top:10px; margin-bottom:10px; margin-left:30px;}
+  .php{ background:#ddd; margin-left:5px; margin-right:5px; padding-left:5px; padding-right:5px; }
+  .dir{ background:#ddd; margin-left:5px; margin-right:5px; padding-left:5px; padding-right:5px; }
+  .command{ background:#ddd; margin-left:5px; margin-right:5px; padding-left:5px; padding-right:5px; }
+</style>
+<ol>
+  <li>在配置文件(<span class='dir'>%%b2b2c_root%%/config/compatible.php</span>)中，将<span class='php code'>define('XHPROF_DEBUG', false);</span>这一项改为<span class='php code'>define('XHPROF_DEBUG', true);</span></li>
+  <li>将(<span class='dir'>%%b2b2c_root%%/app/serveradm/vender</span>)目录复制到(<span class='dir'>%%b2b2c_root%%/public/app/serveradm/</span>)目录下</li>
+  <li>用curl访问页面(执行这条命令) <span class='command'>curl -b xhprof=1 http://yourdomain/index.php/gallery.html?scontent=</span></li>
+  <li>进入xhprof列表查找你的访问的url</li>
+  <li>查看分析报告</li>
+</ol>

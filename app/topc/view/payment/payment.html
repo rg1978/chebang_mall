@@ -1,0 +1,379 @@
+<div class="payment mod-bottom">
+  <{if $payment_type}>
+  <div class="payment-info payment-success-info">
+    <div class="success-info">
+      <div class="success-info-l1"><i class="icon icon-checkmark-c"></i>下单成功，我们会尽快为您发货！</div>
+      <div class="success-info-l1-txt">请您在提交订单后尽快完成支付，否则订单将被取消。</div>
+      <div class="success-info-l1-txt success-info-l2"><span class="dt">付款金额：</span><span class="price"><{$trades.cur_money|cur}></span></div>
+    </div>
+  </div>
+  <div class="payment-line">您可以：<a href="<{url action=topc_ctl_member_trade@tradeList}>"><span class="dt">查看我的订单</span></a></div>
+  <{else}>
+  <div class="payment-info payment-success-info">
+    <div class="success-info">
+      <div class="success-info-l1"><i class="icon icon-checkmark-c"></i>订单提交成功，请您尽快付款！</div>
+      <div class="success-info-l1-txt">请您在提交订单后尽快完成支付，否则订单将被取消。</div>
+    </div>
+  </div>
+   <div class="payment-line"><span class="dt">应付金额：</span><span class="price"><{$trades.cur_money|cur}></span></div>
+  <div class="payment-choose">
+    <form id="dopay_form" target="_blank" action="<{url action=topc_ctl_paycenter@dopayment}>" method="post" data-async="false">
+      <input type="hidden" name="payment[payment_id]" value="<{$trades.payment_id}>">
+      <input type="hidden" name="payment[money]" value="<{$trades.cur_money}>">
+      <input type="hidden" name="payment[tids]" value="<{$tids}>">
+      <!-- <div class="payment-choose-tab">支付平台</div> -->
+      <div class="payment-choose-bd">
+        <{if $hongbao_list}>
+        <div class="payment-choose-title">使用红包<button type="button" class="btn btn-redpacket-choose">选择红包&nbsp;+</button>
+          <span>红包抵扣：<span class="price redpacket-total">-<{0|cur}></span></span></div>
+        <div class="payment-redpacket-choose-list">
+        </div>
+        <{/if}>
+        <div class="choose-pay-type">
+          <div class="payment-choose-title">选择支付方式</div>
+          <{if $payments}>
+          <div class="payment-choose-list payment-type form-row">
+            <{foreach from=$payments item=item}>
+            <{if $item.app_id != teegonali and $item.app_id != teegonwxpay}>
+            <div class="payment-choose-item">
+              <label class="choose-item-content">
+                <input data-password="<{$hasDepositPassword.result}>" type="radio" name="payment[pay_app_id]" value="<{$item.app_id}>" data-validate="onerequired"> <img src="<{$item.img|storager}>" alt="<{$item.app_name}>" >
+                <i class="icon icon-checkmark"></i>
+                <span></span>
+              </label>
+            </div>
+            <{/if}>
+            <{/foreach}>
+            </div>
+            <{foreach from=$payments item=item}>
+            <{if $item.app_id == teegonali or $item.app_id == teegonwxpay}>
+              <div class="payment-choose-title">选择天工支付</div>
+              <div class="payment-choose-list payment-type form-row">
+              <{break}>
+            <{/if}>
+            <{/foreach}>
+            <{foreach from=$payments item=item}>
+            <{if $item.app_id == teegonali or $item.app_id == teegonwxpay}>
+            <div class="payment-choose-item">
+              <label class="choose-item-content">
+                <input data-password="<{$hasDepositPassword.result}>" type="radio" name="payment[pay_app_id]" value="<{$item.app_id}>" data-validate="onerequired"> <img src="<{$item.img|storager}>" alt="<{$item.app_name}>" >
+                <i class="icon icon-checkmark"></i>
+                <span></span>
+              </label>
+            </div>
+            <{/if}>
+            <{/foreach}>
+
+            <{foreach from=$payments item=item}>
+              <{if $item.app_id == teegonali or $item.app_id == teegonwxpay}>
+              </div>
+              <{break}>
+            <{/if}>
+            <{/foreach}>
+        </div>
+        <!-- <div class="form-row hidden" id='deposit-password-input'>
+          <span>支付密码：</span>
+          <span><input type='password' name='deposit_password' autocomplete='off'></span>
+          <span><a href="<{url action='topc_ctl_member_deposit@forgetPassword'}>">忘记密码?</a></span>
+        </div> -->
+        <{else}>
+        <div class="payment-choose-list">
+          <div class="payment-choose-item">
+            没有可用的支付方式，请联系商家协调
+          </div>
+        </div>
+        <{/if}>
+      </div>
+      <{if $payments}>
+      <div class="btn-action">
+        <input type="hidden" id="paypassword" name="deposit_password">
+        <input type="hidden" name="depositpwd" value="<{$hasDepositPassword.result}>">
+        <button type="button" class="btn btn-import btn-lg act-next"><span><span>去支付</span></span></button>
+      </div>
+      <{/if}>
+    </form>
+  </div>
+  <{/if}>
+</div>
+
+<div id="dialog" style="display:none;">
+  <div class="payment-pop">
+    <div class="payment-pop-bd">
+      <div>请您在新打开的支付平台页面进行支付，支付完成前请不要关闭该窗口</div>
+      <div><a href="<{url action=topc_ctl_member_trade@tradeList}>" class="btn btn-simple"><span><span>已完成支付</span></span></a></div>
+    </div>
+    <!--
+    <div><a href="">选择其他支付方式</a></div>
+    -->
+  </div>
+</div>
+<!-- 支付弹窗 -->
+<div id="pay-dialog" style="display:none">
+  <div class="payment-pop">
+    <div class="payment-pop-bd success-info">
+      <div>请您在新打开的支付平台页面进行支付，支付完成前请不要关闭该窗口</div>
+      <div class="pull-left "><a href="<{url action=topc_ctl_paycenter@errorPay payment_id=$trades.payment_id}>" class="btn btn-simple btn-lg"><span><span>付款遇到问题</span></span></a></div>
+      <div class="pull-right"><a target="_blank" href="<{url action=topc_ctl_paycenter@finish payment_id=$trades.payment_id}>" class="btn btn-lg btn-import"><span><span>&nbsp;&nbsp;付款完成&nbsp;&nbsp;</span></span></a></div>
+    </div>
+  </div>
+</div>
+
+<!-- 支付密码设置弹框 -->
+<div id="password_dialog" style="display:none">
+  <div class="password-dialog">
+    <p><i class="icon icon-tip"></i><span>您还未设置支付密码！</span></p>
+    <a type="button" class="btn btn-simple" href="<{url action=topc_ctl_member@security payment_id=$trades.payment_id}>"><span><span>去设置</span></span></a>
+    <div class="pay-type"><a href=""><i class="icon icon-arrow-left"></i>选择其他支付方式</a></div>
+  </div>
+</div>
+
+<!-- 支付密码输入弹框 -->
+<div id="paypassword_dialog" style="display:none;">
+  <div class="password-dialog">
+    <span>支付密码：</span>
+    <span><input type='password' name='deposit_password' autocomplete='off' placeholder="请输入支付密码"></span>
+    <span><a href="<{url action='topc_ctl_member_deposit@forgetPassword'}>">忘记密码?</a></span><br><br>
+    <div>
+      <button class="btn btn-import btn-paypassword"><span><span>确定</span></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- 选择红包弹框 -->
+<div id="redpacket_dialog" class="redpacket-dialog" style="display:none">
+  <div class="payment-redpacket-list">
+    <{foreach from=$hongbao_list item=item}>
+    <div class="payment-redpacket-item" data-id="<{$item.id}>">
+      <i class="icon icon-redpacket"></i>
+      <div class="red-packetinfo">
+        <div class="red-packetname" title="<{$item.name}>"><{$item.name}></div>
+        <div class="out-time">过期时间：<{$item.end_time|cdate:FDATE_STIME}></div>
+      </div>
+      <span class="price"><{$item.money|cur}></span>
+    </div>
+    <{/foreach}>
+  </div>
+  <div class="redpacket-dialog-action">
+    <button class="btn btn-import btn-choose-redpacket"><span><span>确认</span></span></button>
+  </div>
+</div>
+
+<script>
+
+var totalMoney = "<{$trades.cur_money|default:0}>";
+
+$('.act-next').click(function(){
+  var input = $('input[type="radio"]:checked');
+  if(input.length <= 0 && getTotalRedpacketMoney() < totalMoney){
+    Message.error('请选择支付方式');
+    return;
+  }
+
+  //判断是否设置了支付密码
+  var $input = $('.payment-choose-item.on').find('input');
+
+  var redpacket_total_money = getTotalRedpacketMoney();
+  if(($input.val() === "deposit" || redpacket_total_money > 0) && $('input[name="depositpwd"]').val() === "") {
+    console.log('true');
+    $("#password_dialog").dialog({
+      width: 440,
+      height: 260,
+      title: '提示',
+      modal: true
+    });
+    return;
+  }
+
+  var depositPasswordInput = $('input[name="deposit_password"]').val();
+  var choosePacketLength = $('.payment-redpacket-choose-list').find('.payment-redpacket-choose-item').length;
+  if((input.val() == 'deposit' || choosePacketLength > 0) && depositPasswordInput.length <= 0){
+    showPayPasswordDialog();
+    return;
+  }
+  if(input.val() == 'wxqrpay'){
+    $.dialog($('#dopay_form').attr('action'), {
+          modal: true,
+          async: 'ajax',
+          type: 'nohead',
+          asyncOptions:{
+              data: $('#dopay_form').serialize(),
+              method: 'post',
+          }
+    });
+  }else{
+    if(input.val() == 'deposit'){
+      $('#dopay_form').attr('target', '_self');
+    }else{
+      $('#pay-dialog').dialog({
+        width:480,
+        height:240,
+        title:'支付状态',
+        modal:true
+      });
+    }
+   $('#dopay_form').submit();
+  }
+});
+
+$('.btn_dialog').click(function (e) {
+  $('#dialog').dialog({
+    width: 480,
+    title:'登录平台支付'
+  });
+});
+
+$('.payment-choose-item').click(function(e){
+  e.preventDefault();
+  $('.payment-choose-bd').find('.payment-choose-item').removeClass('on');
+  $(this).addClass('on');
+  var $input = $(this).find('input');
+  $input.prop('checked', true);
+  var payPassword = $('#deposit-password-input');
+});
+
+var currmoney = 0;
+var chooseMoney = 0;
+priceControl.spec.sign = '<{$cur_symbol.sign}>';
+priceControl.spec.decimals = '<{$cur_symbol.decimals}>';
+
+//选择红包
+$('.btn-redpacket-choose').on('click', function() {
+  var dialog = new Dialog('#redpacket_dialog', {
+    title: '选择要使用的红包',
+    height: 530,
+    modal: true,
+    onShow: function() {
+      var that = this;
+      $('body').addClass('overflow-hidden');
+      var redpacket_list = this.content.find('.payment-redpacket-item');
+      var choosen_redpacket_list = $('.payment-redpacket-choose-item');
+      for(var i = 0; i < choosen_redpacket_list.length; i++) {
+        for (var j = 0; j < redpacket_list.length; j++) {
+          if($(choosen_redpacket_list[i]).find('input[type="hidden"]').val() == $(redpacket_list[j]).attr('data-id')) {
+            $(redpacket_list[j]).addClass('on');
+          }
+        }
+      }
+      this.content.find('.payment-redpacket-item').on('click', function() {
+        chooseMoney = 0;
+        $(this).toggleClass('on');
+        that.content.find('.payment-redpacket-item.on').each(function(){
+          chooseMoney += Number($(this).find('.price').text().substr(1));
+        });
+        displayPayType(chooseMoney, totalMoney);
+      });
+      this.content.find('.btn-choose-redpacket').on('click', function() {
+        var choose_packet = "";
+        var redpacketList = that.content.find('.payment-redpacket-item.on');
+        var chooseList = $('.payment-redpacket-choose-item');
+        chooseMoney = 0;
+        for(var i = 0; i < redpacketList.length; i++) {
+          var choosethat = redpacketList[i];
+          chooseMoney += Number($(redpacketList[i]).find('.price').text().substr(1));
+            choose_packet += '<div class="payment-redpacket-choose-item">'
+            + '<input type="hidden" name="user_hongbao_id['+ $(choosethat).attr('data-id') +']" value="'+$(choosethat).attr('data-id')+'" />'
+            + '<i class="icon icon-redpacket"></i>'
+            + '<span class="red-packetname" title="'+ $(choosethat).find('.red-packetname').html() +'">'+ $(choosethat).find('.red-packetname').html() +'</span>'
+            + '<span class="price">'+ $(choosethat).find('.price').text().substr(1) +'元</span>'
+            + '<i class="icon icon-close-b redpacket-remove"></i>'
+            + '</div>';
+        }
+        if(displayPayType(chooseMoney, totalMoney)){
+          $('.payment-redpacket-choose-list').html(choose_packet);
+          dialog.hide();
+          if(chooseMoney == totalMoney) {
+            $('.choose-pay-type').hide();
+          } else if(chooseMoney < totalMoney){
+            $('.choose-pay-type').show();
+          }
+        }
+      });
+    },
+    close: function() {
+      var totalRedpacket = 0;
+      displayPayType(getTotalRedpacketMoney(), totalMoney);
+      $('body').removeClass('overflow-hidden');
+      $('.payment-redpacket-choose-list').find('.payment-redpacket-choose-item').each(function(){
+        var money = $(this).find('.price').html();
+        totalRedpacket += Number(money.substr(0, money.length-1));
+      });
+      $('.redpacket-total').html('-' + priceControl.format(totalRedpacket));
+    }
+  });
+});
+
+//移除红包
+$('.payment-redpacket-choose-list').on('click', '.redpacket-remove', function() {
+  $(this).parent().remove();
+  var left_totalmoney = getTotalRedpacketMoney();
+  $('.redpacket-total').html('-' + priceControl.format(left_totalmoney));
+  displayPayType(left_totalmoney, totalMoney);
+});
+
+function displayPayType(chooseMoney, totalMoney) {
+  if(chooseMoney > totalMoney) {
+    Message.error('红包总金额不能大于付款总金额');
+    return false;
+  } else {
+    if(chooseMoney == totalMoney) {
+      $('.choose-pay-type').hide();
+      return true;
+    } else {
+      $('.choose-pay-type').show();
+      return true;
+    }
+  }
+}
+//获取选择的红包总金额
+function getTotalRedpacketMoney() {
+  var money = 0;
+  var total = 0;
+  $('.payment-redpacket-choose-item').find('.price').each(function() {
+    money = $(this).text();
+    total += Number(money.substr(0,money.length-1));
+  });
+  return total;
+}
+
+//支付密码弹框
+function showPayPasswordDialog() {
+  var dialog = new Dialog("#paypassword_dialog", {
+    title: "支付密码验证",
+    width: 440,
+    modal: true,
+    onShow: function(){
+      var that = this;
+      this.content.find('.btn-paypassword').on('click', function(){
+        $('input[name="deposit_password"]').val(that.content.find('input[name="deposit_password"]').val());
+        dialog.hide();
+        if($('input[name="deposit_password"]').val() != '') {
+          var $input = $('.payment-choose-item.on').find('input');
+          if($input.val() == 'wxqrpay'){
+            $.dialog($('#dopay_form').attr('action'), {
+                  modal: true,
+                  async: 'ajax',
+                  type: 'nohead',
+                  asyncOptions:{
+                      data: $('#dopay_form').serialize(),
+                      method: 'post',
+                  }
+            });
+          }else{
+            if($input.val() == 'deposit'){
+              $('#dopay_form').attr('target', '_self');
+            }else{
+              $('#pay-dialog').dialog({
+                width:480,
+                height:240,
+                title:'支付状态',
+                modal:true
+              });
+            }
+           $('#dopay_form').submit();
+          }
+        }
+      });
+    }
+  })
+}
+</script>

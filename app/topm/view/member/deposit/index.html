@@ -1,0 +1,74 @@
+ <div class="saveaccount-detail">
+    <header>
+      <div class="list-hd">
+        <div class="backto icon-back">
+          <input type="button" name="returnBcak" onclick="history.back()">
+        </div>
+        <div class="tit">我的预存款</div>
+        <a class="edit"><i class="icon-note"></i></a>
+      </div>
+    </header>
+    <div class="main">
+      <div class="info-hd">
+        <div class="info-top clearfix">
+          <span><i class="icon icon-money"></i>可用余额：</span>
+          <strong><{$deposit.deposit|cur}></strong>
+        </div>
+        <div class="recharge">
+          <a href='<{url action=topm_ctl_member_deposit@rechargeSubmit}>'>
+            <button type="button" class="ui-btn-warning">去充值</button>
+          </a>
+        </div>
+      </div>
+        <div class="showarea ui-refresh">
+      <div class="info-bd">
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>账户变动</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody class='ui-refresh data-list' id='depositLogList'>
+            <{include file="topm/member/deposit/logitem.html"}>
+          </tbody>
+        </table>
+        <div class="ui-refresh-handle">
+          <div class="ui-refresh-down"></div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+  <script>
+  //$('.list-hd .edit').click(function(){
+  //  $('table tr .have').css('display':'none');
+  //});
+
+
+  var pagers = <{$pagers|json_encode}>;
+  pagers.next = pagers.current + 1;
+  $('.ui-refresh').refresh({
+      init: function () {
+          if(pagers.current == pagers.total) {
+              this.disable();
+          }
+      },
+      load: function (dir, type) {
+          var self = this;
+          var $list = $('.data-list');
+          $.get('<{url action=topm_ctl_member_deposit@ajaxDepositLog}>', location.search.slice(1) + '&pages=' + pagers.next, function (rs) {
+                if(rs.success) {
+                  pagers.next = +rs.pagers.current + 1;
+                  $list[dir == 'up' ? 'prepend' : 'append'](rs.html);
+                }
+                self.afterDataLoading();
+                if(rs.pagers.current == rs.pagers.total) {
+                  self.disable();
+                }
+          });
+      }
+  });
+
+  </script>

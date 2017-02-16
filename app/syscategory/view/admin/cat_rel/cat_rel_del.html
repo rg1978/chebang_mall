@@ -1,0 +1,33 @@
+<form class='tableform' action='?app=syscategory&ctl=admin_cat&act=toRemove' method='post' id="prop_del_form">
+	<input type="hidden" name="parent_id"  id="parent_id" value="<{$parent_id}>">
+	<input type="hidden" name="nCatId"  id="nCatId" value="<{$nCatId}>">
+	<p>您确定要删除？</p>
+	<div class="table-action">
+		<button type="button" id="cancel" class="btn-secondary ">取消</button>
+		<{button class='close-btn'  id="btn_save" label="确定"|t:'syscategory'}>
+	</div>
+	
+</form>
+
+<script type="text/javascript">
+	$('cancel').addEvent('click',function(){
+		$('prop_del_form').getParent('.dialog').retrieve('instance').close();
+	});
+	$('btn_save').addEvent('click', function(){
+		var url = $('prop_del_form').get('action');
+		var req = new Request.JSON({url: $('prop_del_form').get('action'),
+		        method:'get' ,
+		        data:{'nCatId': $('nCatId').get('value'), 'parent_id': $('parent_id').get('value')},
+		        onComplete: function(rs, text) {
+		        	if(rs.error) {
+		        		alert(rs.error);
+		        	}
+		        	if(rs.success) {
+		        		var itemId = $('nCatId').get('value');
+		        		$$('.row[item-id="'+itemId+'"]').dispose();
+		        	}
+		        	$('prop_del_form').getParent('.dialog').retrieve('instance').close();
+		        }
+		    }).send();
+	});
+</script>

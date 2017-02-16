@@ -1,0 +1,22 @@
+<desktop>
+    <panelgroup id="currency" icon="panel-currency.png" order="20">支付与货币</panelgroup>
+
+    <adminpanel group="ectools_currency" controller="setting" action="index" permission='currency' order="30" display='true'>价格精度及货币设置</adminpanel>
+    <adminpanel group="ectools_currency" controller="payment_cfgs" action="index" permission='payment_cfgs' order="10" display='true'>支付方式管理</adminpanel>
+
+    <permissions>
+        <permission id="currency" display="true" parent='0'>价格精度及货币设置</permission>
+        <permission id="payment_cfgs" display="true" parent='0'>支付方式管理</permission>
+        <permission id="paymentList" display='true' parent='0' workground='systrade.workground.trades'>支付单列表</permission>
+        <permission id="chongzhi" display='true' parent='0' workground='systrade.workground.trades'>预存款充值列表</permission>
+        <permission id="chongzhi_delete" display='true' parent='chongzhi' workground='systrade.workground.trades'>删除预存款充值记录</permission>
+    </permissions>
+    <workground name="交易" id="systrade.workground.trades" controller="admin_trade" action="index" order='80'>
+        <menugroup name="交易信息">
+            <menu controller='admin_tradepayment' action='index' permission='paymentList' display='true' order="80">支付单列表</menu>
+            <menu controller='admin_payments' action='index' permission='chongzhi' display='true' order="90">预存款充值列表</menu>
+            <menu controller='admin_payments' action='index' params="action:dodelete" permission='chongzhi_delete' display='false' order="90">预存款充值列表</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

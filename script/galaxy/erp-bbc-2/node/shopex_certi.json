@@ -1,0 +1,10 @@
+{
+    "title": "test",
+    "type": "rabbitmq",
+    "config": {
+        "server":"192.168.65.48:27017",
+        "database":"shopex_certi",
+        "user":"",
+        "password":""
+    }
+}

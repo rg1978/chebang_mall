@@ -1,0 +1,31 @@
+<desktop>
+
+    <permissions>
+        <permission id="tradeList" display='true' parent='0' workground='systrade.workground.trades'>交易列表</permission>
+        <permission id="trade_cancel" display='true' parent='tradeList' workground='systrade.workground.trades'>取消订单</permission>
+        <!-- <permission id="trade_del" display='true' parent='0' workground='systrade.workground.trades'>删除订单</permission> -->
+
+        <permission id="tradecancelList" display='true' parent='0' workground='systrade.workground.tradecancel'>取消订单列表</permission>
+        
+        <permission id="complaints" display='true' parent='0' workground='systrade.workground.complaints'>在线投诉</permission>
+        <permission id="complaints_edit" display='true' parent='complaints' workground='systrade.workground.complaints'>处理订单投诉</permission>
+        <permission id="complaints_del" display='true' parent='complaints' workground='systrade.workground.complaints'>订单投诉删除</permission>
+    </permissions>
+
+    <workground name="交易" id="systrade.workground.trades" controller="admin_trade" action="index" order='80'>
+        <menugroup name="交易信息">
+            <menu controller='admin_trade' action='index' permission='tradeList' display='true' order="1">交易列表</menu>
+            <menu controller='admin_trade' action='doCancel' permission='trade_cancel' display='false' order="1">取消订单页面</menu>
+            <menu controller='admin_trade' action='cancelTrade' permission='trade_cancel' display='false' order="1">取消订单</menu>
+            <menu controller='admin_trade' action='doDelete' permission='tradeList' display='false' order="1">删除订单</menu>
+
+            <menu controller='admin_canceltrade' action='index' permission='tradecancelList' display='true' order="1">取消订单列表</menu>
+        </menugroup>
+        <menugroup name="在线投诉">
+            <menu controller='admin_complaints' action='index' permission='complaints' display='true' order="1">订单投诉</menu>
+            <menu controller='admin_complaints' action='edit' permission='complaints_edit' display='false' order="1">订单投诉编辑</menu>
+            <menu controller='admin_complaints' action='doComplaints' permission='complaints_edit' display='false' order="1">处理投诉</menu>
+            <menu controller='admin_complaints' action='index' params="action:dodelete" permission='complaints_del' display='false' order="1">删除投诉</menu>
+        </menugroup>
+    </workground>
+</desktop>

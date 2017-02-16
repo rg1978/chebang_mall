@@ -1,0 +1,52 @@
+<div class="tabs-wrap">
+  <ul>
+    <li class="tab current"><span><{t}>平台IM使用配置<{/t}></span></li>
+  </ul>
+</div>
+  <form method="post" action="?app=sysim&ctl=config&act=save" id="whitelist">
+    <div style="text-align:right;padding:3px 30px"></div>
+    <table class="tableform" style="width:99%;">
+    <tbody>
+      <tr>
+        <th><{t}>是否开启新的IM插件：<{/t}></th>
+        <td>
+          <{input type="bool" name='im_enable' value=$im_enable width=100 height=100}>
+          <span class="notice-inline">
+            <{t}>新im插件包含平台客服，旧插件用户请尽快开启新插件<{/t}></span>
+        </td>
+      </tr>
+
+      <tr>
+        <th><{t}>请选择IM插件类型：<{/t}></th>
+        <td>
+          <select name='im_plugin'>
+            <{foreach from=$plugin_options key=key item=option}>
+            <option value='<{$key}>' <{if $key==$im_plugin }>selected='selected'<{/if}>><{$option}></option>
+            <{/foreach}>
+          </select>
+          <span class="notice-inline">
+            <{t}>使用365WebCall，请在“商家->im工具管理->365webcall”页面配置<{/t}></span>
+        </td>
+      </tr>
+
+      <tr>
+        <th><{t}>平台QQ号配置：<{/t}></th>
+        <td>
+          <{input type='text' name='im_account_qq' value=$im_account_qq}>
+        </td>
+      </tr>
+
+      <tr>
+        <th><{t}>平台旺旺号配置：<{/t}></th>
+        <td>
+          <{input type='text' name='im_account_wangwang' value=$im_account_wangwang}>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="table-action">
+    <{button type="submit"  label=$___desktop="保存"|t:'site'}>
+  </div>
+</form>
+

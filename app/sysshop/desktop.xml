@@ -1,0 +1,93 @@
+<desktop>
+    <permissions>
+        <permission id="shoptypelist" display='true' parent="0" workground='sysshop.workground.shoptype'>店铺类型列表</permission>
+        <permission id="shoptype_edit" display='true' parent="shoptypelist" workground='sysshop.workground.shoptype'>店铺类型配置</permission>
+
+        <permission id="enterapplylist" display='true' parent="0" workground='sysshop.workground.shoptype'>入驻申请列表</permission>
+        <permission id="enter_audit" display='true' parent="enterapplylist" workground='sysshop.workground.shoptype'>入驻申请审核及店铺开通</permission>
+        <permission id="enterapply_delete" display='true' parent="enterapplylist" workground='sysshop.workground.shoptype'>删除入驻申请</permission>
+        <permission id="enterapplylist_setProtocol" display='true' parent="enterapplylist" workground='sysshop.workground.shoptype'>入驻申请协议设置</permission>
+
+
+        <permission id="shoplist" display='true' parent="0" workground='sysshop.workground.shoptype'>店铺列表</permission>
+        <permission id="shop_self_edit" display='true' parent="shoplist" workground='sysshop.workground.shoptype'>自营店铺增改</permission>
+        <permission id="shop_catFee_update" display='true' parent="shoplist" workground='sysshop.workground.shoptype'>更改店铺类目费率</permission>
+        <permission id="shop_info_update" display='true' parent="shoplist" workground='sysshop.workground.shoptype'>更改店铺信息</permission>
+        <permission id="shop_status_update" display='true' parent="shoplist" workground='sysshop.workground.shoptype'>开启与关闭店铺</permission>
+        <permission id="shop_subdomain" display='true' parent="shoplist" workground='sysshop.workground.shoptype'>开启与关闭店铺</permission>
+
+        <permission id="sellerList" display='true' parent="0" workground='sysshop.workground.shoptype'>商家账号列表</permission>
+        <permission id="seller_self_add" display='true' parent="sellerList" workground='sysshop.workground.shoptype'>商家自营账号添加</permission>
+        <permission id="seller_edit" display='true' parent="sellerList" workground='sysshop.workground.shoptype'>更改商家登录密码</permission>
+
+        <permission id="enterapplylist_agreement" display='true' parent="0" workground='sysshop.workground.shoptype'>商家注册协议设置</permission>
+
+        <permission id="shopNotice" display='true' parent="0" workground='sysshop.workground.shoptype'>商家通知列表</permission>
+        <permission id="noticeType" display='true' parent="shopNotice" workground='sysshop.workground.shoptype'>商家通知类型设置</permission>
+        <permission id="stationNotice_delete" display='true' parent="shopNotice"  workground='sysshop.workground.shoptype'>删除商家通知</permission>
+        <permission id="stationNotice" display='true' parent="shopNotice" workground='sysshop.workground.shoptype'>添加商家通知</permission>
+
+        <permission id="applycat" display='true' parent="0" workground='sysshop.workground.shoptype'>申请类目权限列表</permission>
+        <permission id="applycat_delete" display='true' parent="applycat" workground='sysshop.workground.shoptype'>申请类目权限删除</permission>
+        <permission id="applycat_Examine" display='true' parent="applycat" workground='sysshop.workground.shoptype'>审核申请类目权限</permission>
+    </permissions>
+
+    <workground name="商家" id="sysshop.workground.shoptype" controller="admin_seller" action="index" order='90'>
+        <menugroup name="商家账号">
+            <menu controller='admin_seller' action='index' permission='sellerList' display='true' order='10'>账号列表</menu>
+            <menu controller='admin_seller' action='addSelfUser' permission='seller_self_add' display='false' order='10'>添加自营账号</menu>
+            <menu controller='admin_seller' action='saveSelfUser' permission='seller_self_add' display='false' order='10'>添加自营账号保存</menu>
+            <menu controller='admin_seller' action='sysshopUpdatePwd' permission='seller_edit' display='false' order='10'>更改商家登录密码</menu>
+            <menu controller='admin_seller' action='update_shop_pwd' permission='seller_edit' display='false' order='10'>更改商家登录密码保存</menu>
+            <menu controller='admin_enterapply' action='license' permission='enterapplylist_agreement' display='true' order='20'>商家注册协议</menu>
+        </menugroup>
+        <menugroup name="商家设置">
+             <menu controller='admin_shoptype' action='index' permission='shoptypelist' display='true' order='20'>店铺类型列表</menu>
+             <menu controller='admin_shoptype' action='edit' permission='shoptype_edit' display='false' order='20'>店铺类型更改</menu>
+             <menu controller='admin_shoptype' action='saveShoptype' permission='shoptype_edit' display='false' order='20'>店铺类型更改</menu>
+        </menugroup>
+        <menugroup name="入驻申请">
+             <menu controller='admin_enterapply' action='index' permission='enterapplylist' display='true' order='30'>入驻申请列表</menu>
+             <menu controller='admin_enterapply' action='index' permission='enterapply_delete' params='action:dodelete' display='false' order='30'>入驻申请删除</menu>
+             <menu controller='admin_enterapply' action='setProtocol' permission='enterapplylist_setProtocol' display='false' order='30'>入驻申请协议设置</menu>
+             <menu controller='admin_enterapply' action='doRelevance' permission='enter_audit' display='false' order='30'>审核时关联商家品牌</menu>
+             <menu controller='admin_enterapply' action='goRelevance' permission='enter_audit' display='false' order='30'>审核时关联商家品牌</menu>
+             <menu controller='admin_enterapply' action='doExamine' permission='enter_audit' display='false' order='30'>入驻申请审核页面</menu>
+             <menu controller='admin_enterapply' action='goExamine' permission='enter_audit' display='false' order='30'>入驻申请审核</menu>
+             <menu controller='admin_enterapply' action='openShop' permission='enter_audit' display='false' order='30'>店铺开通</menu>
+        </menugroup>
+        <menugroup name="商家店铺管理">
+
+             <menu controller='admin_shop' action='index' permission='shoplist' display='true' order='40'>店铺列表</menu>
+             <menu controller='admin_shop' action='addSelfShop' permission='shop_self_edit' display='false' order='40'>添加自营店铺</menu>
+             <menu controller='admin_shop' action='updateSelfShop' permission='shop_self_edit' display='false' order='40'>更新自营店铺</menu>
+             <menu controller='admin_shop' action='saveSelfShop' permission='shop_self_edit' display='false' order='40'>自营店铺信息保存</menu>
+             <menu controller='admin_shop' action='doUpdateShopStatus' permission='shop_status_update' display='false' order='40'>店铺状态更改</menu>
+             <menu controller='admin_shop' action='updateShopStatus' permission='shop_status_update' display='false' order='40'>店铺状态更改</menu>
+             <menu controller='admin_shop' action='catFeeList' permission='shoplist' display='false' order='40'>类目费率查看</menu>
+             <menu controller='admin_shop' action='updateCatInfo' permission='shop_catFee_update' display='false' order='40'>调整店铺类目费率佣金</menu>
+             <menu controller='admin_shop' action='saveCatInfo' permission='shop_catFee_update' display='false' order='40'>调整店铺类目费率佣金</menu>
+             <menu controller='admin_shop' action='updateShopInfo' permission='shop_info_update' display='false' order='40'>编辑店铺信息</menu>
+             <menu controller='admin_shop' action='saveApply' permission='shop_info_update' display='false' order='40'>编辑店铺信息</menu>
+
+             <menu controller='admin_subdomain' action='index' permission='shop_subdomain' display='true' order='41'>二级域名列表</menu>
+
+             <menu controller='admin_applycat' action='index' permission='applycat' display='true' order='42'>申请类目权限</menu>
+             <menu controller='admin_applycat' action='index' permission='applycat_delete' display='false' params="action:dodelete" order='42'>申请类目权限</menu>
+             <menu controller='admin_applycat' action='goExamine' permission='applycat_Examine' display='false' order='42'>申请类目权限审核</menu>
+             <menu controller='admin_applycat' action='doExamine' permission='applycat_Examine' display='false' order='42'>申请类目权限审核</menu>
+        </menugroup>
+        <menugroup name="商家通知">
+             <menu controller='admin_shopnotice' action='index' permission='shopNotice' display='true' order='41'>商家通知列表</menu>
+             <menu controller='admin_shopnotice' action='index' permission='stationNotice_delete' params="action:dodelete" display='false' order='41'>商家通知删除</menu>
+             <menu controller='admin_shopnotice' action='addNoticeType' permission='noticeType' display='false' order='41'>添加商家通知类型</menu>
+             <menu controller='admin_shopnotice' action='saveNoticeType' permission='noticeType' display='false' order='41'>添加商家通知类型保存</menu>
+             <menu controller='admin_shopnotice' action='addNotice' permission='stationNotice' display='false' order='41'>添加全站通知</menu>
+             <menu controller='admin_shopnotice' action='noticeEdit' permission='stationNotice' display='false' order='41'>编辑商家通知</menu>
+             <menu controller='admin_shopnotice' action='saveNotice' permission='stationNotice' display='false' order='41'>添加商家通知保存</menu>
+        </menugroup>
+
+    </workground>
+
+</desktop>
+

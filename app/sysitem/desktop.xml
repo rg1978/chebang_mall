@@ -1,0 +1,19 @@
+<desktop>
+
+    <permissions>
+        <permission id="itemlist" display='true' parent='0' workground='sysitem.workground.item'>商品列表</permission>
+        <permission id="item_delete" display='true' parent='itemlist' workground='sysitem.workground.item'>商品删除</permission>
+        <permission id="item_disable" display='true' parent='itemlist' workground='sysitem.workground.item'>商品下架</permission>
+        <permission id="item_review" display='true' parent='itemlist' workground='sysitem.workground.item'>商品审核</permission>
+    </permissions>
+
+    <workground name="商品" id="sysitem.workground.item" controller="admin_item" action="index" order='90'>
+        <menugroup name="商品列表">
+             <menu controller='admin_item' action='index' permission='itemlist' display='true' order='1'>商品列表</menu>
+             <menu controller='admin_item' action='doDelete' permission='item_delete' display='false' order='1'>商品删除</menu>
+             <menu controller='admin_item' action='disable' permission='item_disable' display='false' order='1'>商品下架</menu>
+             <menu controller='admin_item' action='approve' permission='item_review' display='false' order='1'>商品下架</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

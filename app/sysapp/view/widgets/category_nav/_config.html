@@ -1,0 +1,103 @@
+<div class="tabs-wrap">
+  <ul>
+    <li class="tab current"><span><{t}>App端分类导航展示<{/t}></span></li>
+  </ul>
+</div>
+<div class="tableform notice">
+  <{t}>分类名称和图片地址还有三级分类必须要填，否则导致前台不显示会很不协调<{/t}>
+</div>
+<div id="picAddress" class="tableform">
+  <div class="piccontent">
+    <{foreach from=$setting.pic item=data key=key}>
+    <table  width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <th><{t app="sysapp"}>分类名称:<{/t}></th>
+        <td>
+          <input name="pic[<{$key}>][categoryname]" required value="<{$data.categoryname}>">
+        </td>
+        <th><{t app="sysapp"}>描述:<{/t}></th>
+        <td>
+          <input name="pic[<{$key}>][linkinfo]" value="<{$data.linkinfo}>">
+        </td>
+      </tr>
+      <tr>
+        <th><{t app="sysapp"}>图片地址:<{/t}></th>
+        <td>
+          <input name='pic[<{$key}>][image]' required class="imgsrc" value="<{$data.image}>">
+          <input type=button value=上传图片 class="uploadbtn">
+        </td>
+        <th><{t app="sysapp"}>三级分类:<{/t}></th>
+        <td>
+          <input type="hidden" name="pic[<{$key}>][cat_id]" value="<{$data.cat_id}>">
+          <{input type="object" callback="_callback_cat" object="cat@syscategory" obj_filter="is_leaf=1" vtype="required" textcol="cat_name" emptytext="选择关联分类" value=$data.cat_id breakpoint=0}>
+          <input type="hidden" name="pic[<{$key}>][linktype]" value="cat">
+        </td>
+        <th><{t app="sysapp"}>删除该分类:<{/t}></th>
+        <td><span onclick="$(this).getParent('table').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___sysapp="删除"|t:'sysapp' title=$___sysapp="删除"|t:'sysapp' app="desktop"}></span></td>
+      </tr>
+      <tr>
+
+      </tr>
+    </table>
+    <{/foreach}>
+  </div>
+  <{button label=$___sysapp="添加图片"|t:'sysapp' class="addimage" app="desktop" icon="btn_add.gif"}>
+</div>
+
+<script>
+
+  function _callback_cat(rs, el){
+    el.getParent('td').getElement('input[type=hidden]').value=JSON.decode(rs).id;
+  }
+
+  (function(){
+    var tag_type='table',tag_class='pic_items';
+
+    document.getElement(".addimage").addEvent('click',function(){
+      var i=new Date().getTime();
+      var tpl='\
+      <tr><th><{t app="sysapp"}>分类名称:<{/t}></th>\
+        <td><input name="pic['+i+'][categoryname]" required value=""></td>\
+        <th><{t app="sysapp"}>描述:<{/t}></th>\
+      <td><input name="pic['+i+'][linkinfo]"></td>\
+      </tr>\
+      <tr><th><{t app="sysapp"}>图片地址:<{/t}></th>\
+      <td><input type=hidden name=pic['+i+'][id] required value="'+i+'"><input name="pic['+i+'][image]" class="imgsrc">\
+      <input type=button value=<{t app="sysapp"}>上传图片<{/t}> class="uploadbtn" id="pic['+i+']"></td>\
+      <th><{t app="sysapp"}>三级分类:<{/t}></th>\
+      <td><input type="hidden" name="pic['+i+'][cat_id]"><div id="objcat_'+i+'"></div><input type="hidden" name="pic['+i+'][linktype]" value="cat"></td>\
+      <th><{t app="sysapp"}>删除该分类:<{/t}></th>\
+      <td><span onclick="$(this).getParent(\'table\').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___sysapp="删除"|t:'sysapp' title=$___sysapp="删除"|t:'sysapp' app="desktop"}></span></td>\
+      </tr>';
+
+      $('picAddress').getElement('.piccontent').adopt(new Element(tag_type,{'html':tpl,'width':'100%','class':tag_class}));
+
+      $('pic['+i+']').addEvent('click',function(e){bindevent(this)});
+
+      new Request.HTML({
+        method:'get',
+        update:$('objcat_'+i),
+        url:'?app=sysapp&ctl=admin_utils&act=ajax_get_object',
+        data:'linktype=cat&callback=_callback_cat&filter[is_leaf]=1',
+        onRequest:function(){},
+        onComplete:function(nl){}
+      }).send();
+    });
+
+
+    $$(".piccontent .uploadbtn").addEvent('click',function(e){bindevent(this)});
+
+    function bindevent(el){
+      var target=$(el).getParent(tag_type).getElement('.imgsrc');
+      var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+      var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;
+      Ex_Loader('modedialog',function(){
+        return new imgDialog(url,{onCallback:function(image_id,image_src){
+          target.value=image_src;
+        }});
+      });
+    }
+
+  })();
+</script>
+

@@ -1,0 +1,45 @@
+<section class="article-box">
+	<div class="col-lg-3 box">
+	<!-- 
+		<div class="dropmenu-header"><i class="icon icon-shop"></i><span>店铺首页</span></div> -->
+	  	<ul class="dropmenu-list">
+	  	  <{foreach from=$list item=node key=nodeId}>
+	    	<li class="article-item">
+		      <div class="dropmenu"><{if $nodes.$nodeId.node_name}><{$nodes.$nodeId.node_name}><{else}>未分类<{/if}><span class="icon icon-arrow-right"></span><span class="icon icon-arrow-down"></span></div>
+		      <ul class="dropmenu-items">
+		      <{foreach from=$node item=info}>
+		      <li><a href="<{url action=topc_ctl_shopcenter@shopArticle shop_id=$shop_id aid=$info.article_id}>" title="<{$info.title}>" <{if $aid == $info.article_id}>class="active"<{/if}>><{$info.title}></a></li>
+		      <{/foreach}>
+		      </ul>
+		    </li>
+		   <{/foreach}>
+		</ul>
+	</div>
+	<div class="row">
+        <div class="col-lg-12 box">
+          <div class="membercenter-box">
+            <div class="membercenter-box-bd">
+              <div class="artical-detail">
+                <div class="artical-detail-hd">
+                 <h2><{$article.title}></h2>
+                 <div class="time">更新日期：<{$article.modified|cdate}></div>
+                </div>
+                <p><{$article.content}></p>
+             </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</section>
+
+<script>
+	$('.dropmenu-list').on('click', 'li', function() {
+		if($(this).hasClass('cur')) {
+			$(this).removeClass('cur');
+		} else {
+			$(this).addClass('cur');
+			$(this).siblings().removeClass('cur');
+		}
+	});
+	$('.active').parents('.article-item').addClass('cur');
+</script>

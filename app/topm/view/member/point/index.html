@@ -1,0 +1,83 @@
+<div class="member shop member-detail">
+  <{include file="topm/common/top.html"}>
+  <div class="main">
+    <div class="info-hd">
+      <div class="grow-grade integral">
+        <div class="left">
+          <h2>可用积分</h2>
+          <div class="grow-grade-current"><{if $userpoint.point_count}> <{$userpoint.point_count}><{else}>0 <{/if}></div>
+        </div>
+        <div class="right">
+          <h2>将要过期积分</h2>
+          <div class="number"><{if $userpoint.expired_point}><{$userpoint.expired_point}> <{else}>0 <{/if}></div>
+          <p>
+            有效期至<br>
+            <{$userpoint.expired_time|cdate}>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-bd2">
+      <div class="grow-table-hd">积分明细</div>
+      <ul class="grow-value-table integral-table">
+        <li>
+          <div class="box">
+            <div>来源/用途</div>
+            <div>积分变化</div>
+            <div>备注</div>
+          </div>
+        </li>
+        <div class="order-list main">
+          <div class="showarea ui-refresh">
+            <{if $pointdata}>
+            <div class="data-list" id="content">
+              <{include file="topm/member/point/points.html"}>
+            </div>
+            <div class="ui-refresh-handle">
+              <div class="ui-refresh-down"></div>
+            </div>
+
+            <{else}>
+            <li>
+
+              <div>
+                <div class="empty-area">
+                  <i class="icon icon-order"></i>
+                  <span class="empty-txt">你还没有积分明细~</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <{/if}>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+<script >
+  var pagers = <{$pagers|json_encode}>;
+  pagers.next = pagers.current + 1;
+  $('.ui-refresh').refresh({
+    init: function () {
+      if(pagers.current == pagers.total) {
+        this.disable();
+      }
+    },
+    load: function (dir, type) {
+      var self = this;
+      var $list = $('.data-list');
+      $.get('<{url action=topm_ctl_member_point@ajaxPointShow}>', location.search.slice(1) + '&pages=' + pagers.next, function (rs) {
+        console.log(rs);
+        if(rs.success) {
+          pagers.next = +rs.pagers.current + 1;
+          $list[dir == 'up' ? 'prepend' : 'append'](rs.html);
+        }
+        self.afterDataLoading();
+        if(rs.pagers.current == rs.pagers.total) {
+          self.disable();
+        }
+      });
+    }
+  });
+</script>

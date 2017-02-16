@@ -1,0 +1,99 @@
+{
+    "title": "logistics.shop.trade.delivery",
+    "slices": [
+        {
+            "input": "${var.params}",
+            "module": "encoding.json.decode"
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "msg_id",
+                "value": "${var.msg_id}"
+            }
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "shopex_permission",
+                "value": "${var.permission}"
+            }
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "shopex_adapter",
+                "value": "${global.shopex_adapter}"
+            }
+        },
+        {
+            "module": "control.map",
+            "mapping": {
+                "format": "json",
+                "v": "v1",
+                "delivery_id": "${global.shopex_adapter.delivery_id}",
+                "tid": "${global.shopex_adapter.tid}",
+                "items": "${global.shopex_adapter.item}"
+            }
+        },
+        {
+            "module": "net.prism.post",
+            "params": {
+                "key": "${global.shopex_permission.bbc_appkey}",
+                "secret": "${global.shopex_permission.bbc_secret}",
+                "host": "${global.shopex_permission.api_url}",
+                "token": "${global.shopex_permission.bbc_access_token}",
+                "api": "api/systrade?method=trade.shop.update.delivery.status",
+                "params": "${var}"
+            }
+        },
+        {
+            "module": "encoding.json.decode"
+        },
+        {
+            "mapping": {
+                "res": [
+                    {
+                        "mapping": {
+                            "data": "",
+                            "exception": "${var.error.exception}",
+                            "err_msg": "${var.error.message}",
+                            "msg_id": "${global.msg_id}",
+                            "res": "${var.error.code}",
+                            "rsp": "fail",
+                            "spider": "${var}"
+                        },
+                        "module": "control.map"
+                    },
+                    {
+                        "module": "control.assert",
+                        "params": {
+                            "assert": "is",
+                            "left": "${var.spider.error}",
+                            "right": ""
+                        }
+                    },
+                    {
+                        "mapping": {
+                            "data": "${var.spider}",
+                            "err_msg": "",
+                            "msg_id": "${global.msg_id}",
+                            "res": "${var.spider.error.message}",
+                            "rsp": "succ"
+                        },
+                        "module": "control.map"
+                    }
+                ]
+            },
+            "module": "control.map"
+        },
+        {
+            "input": "${var.res}",
+            "module": "encoding.json.encode"
+        },
+        {
+            "module": "control.return"
+        }
+    ],
+    "log_level": 5
+}

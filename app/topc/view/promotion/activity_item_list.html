@@ -1,0 +1,132 @@
+<div class="wrap-lg">
+  <div class="section purchase-list-banner col-lg-16">
+    <div class="dv-list-banner">
+      <a href="<{url action=topc_ctl_activity@activity_item_list id=$activity.activity_id}>" style="background:url(<{$activity.slide_images|storager}>) no-repeat center; background-size:cover;">
+      </a>
+    </div>
+    <div class="banner-info">
+      <!-- 加载开售提醒时加载ad-remind，否则不加载 -->
+      <{if $activity.release_time < $now_time  && $now_time < $activity.start_time}>
+      <div class="banner-info-content banner-info-remind">
+        <h3><{$activity.activity_name}></h3>
+        <p><strong class="price"><{$activity.discount_min/10}>折</strong>起</p>
+        <!--
+        <p><{$activity.sales_count|default:0}>人订阅</p>
+        -->
+        距活动开始：<p class="item-time" data-time="<{$activity.start_time}>"><i class="countdown-view icon icon-clock" data-icon="\2850"  > </i><span></span></p>
+        <{if $activity.remind_enabled}>
+        <button type="button" class="btn" id="begin-remind" >开售提醒</button>
+        <{/if}>
+      </div>
+      <{elseif $activity.start_time < $now_time  && $now_time < $activity.end_time}>
+      <div class="banner-info-content">
+        <h3><{$activity.activity_name}></h3>
+        <p><strong class="price"><{$activity.discount_min/10}>折</strong>起</p>
+        <p><{$activity.sales_count|default:0}>人购买</p>
+        距活动结束：<p class="item-time" data-time="<{$activity.end_time}>" ><i class="countdown-view icon icon-clock" data-icon="\2850" > </i> <span></span></p>
+      </div>
+      <{elseif $activity.end_time < $now_time }>
+      <div class="banner-info-content">
+        <h3><{$activity.activity_name}></h3>
+        <p><strong class="price"><{$activity.discount_min/10}>折</strong>起</p>
+        <p><{$activity.sales_count|default:0}>人购买</p>
+        <span class="activity-over">活动已结束</span>
+      </div>
+      <{/if}>
+    </div>
+  </div>
+  <!-- 团购商品列表 -->
+  <div class="section col-lg-16 search-content">
+    <div class="search-category" id="search-category">
+      <ul id="activity_id" data-id="<{$activity.activity_id}>">
+        <li class="active" data-key="item_id" data-order="asc"><a href="javascript:void(0);">默认</a></li>
+        <li class="contition" data-key="sales_count" data-order="desc"><a href="javascript:void(0);">销量<i class="icon icon-arrow-down-a"></i></a></li>
+        <li class="price" data-key="activity_price" data-order="asc"><a href="javascript:void(0);">价格<i class="icon icon-arrow-up-a"></i></a></li>
+      </ul>
+    </div>
+    <div class="search-list">
+      <{include file="topc/promotion/list.html"}>
+    </div>
+  </div>
+</div>
+
+
+<div id="remind_dialog" class="popup-container mini-cart-dialog col-lg-6 begin-remind-dialog" tabindex="0" style="display: none;">
+</div>
+<script>
+  $('.purchase-category-ul>li').mouseover(function(e) {
+    $(this).addClass('active').siblings('li').removeClass('active');
+    $(this).children('.purchase-category-sub-item').stop().fadeIn();
+  }).mouseout(function(e) {
+    $(this).children('.purchase-category-sub-item').stop().fadeOut();
+  });
+
+  $('#search-category li').mouseover(function(e) {
+    $(this).addClass('active').siblings().removeClass('active');
+  });
+  $('#search-category li').on('click', function() {
+    var iconArrow = $(this).find('i');
+    iconArrow.toggleClass('icon icon-arrow-down-a').toggleClass('icon icon-arrow-up-a');
+    if(iconArrow.hasClass('icon-arrow-down-a')) {
+      $(this).attr('data-order', 'desc');
+    }else if(iconArrow.hasClass('icon-arrow-up-a')) {
+      $(this).attr('data-order', 'asc');
+    }
+    var dataKey = $(this).attr('data-key');
+    var order = $(this).attr('data-order');
+    var orderBy = dataKey + ' ' + order;
+    var id = $('#activity_id').attr('data-id');
+    getList(orderBy,id);
+  });
+  function getList(orderBy,id) {
+    $.ajax({
+      url: '<{url action=topc_ctl_activity@itemlist}>', //请求地址
+      type: 'get',
+      dataType: 'html',
+      data: {
+        'orderBy': orderBy,
+        'id':id
+      },
+      success: function(rs) {
+        if(rs) {
+          $('.search-list').html(rs);
+          imgMaxWidth();
+        }
+      }
+    });
+  }
+  $('#search-list>li').mouseover(function() {
+    $(this).addClass('active').siblings('li').removeClass('active');
+  }).mouseout(function() {
+    $(this).removeClass('active');
+  });
+
+//倒计时
+  var now = "<{$now_time}>";
+  countdown('.item-time span',{
+    'start': $('.item-time').attr('data-time') - now,
+    'secondOnly': false,
+    'callback': function() {
+      window.location.href = window.location.href;
+    }
+  });
+imgMaxWidth();
+function imgMaxWidth() {
+  var itemLiWidth = parseInt($('.search-list li').css('width'));
+  $('.item-img img').each(function() {
+    if(parseInt($(this).css('width')) > itemLiWidth)
+      $(this).css('width', itemLiWidth);
+  });
+}
+
+$('#begin-remind').on('click', function() {
+    $.post('<{url action=topc_ctl_activity@toSaleRemind activity_id=$activity.activity_id}>',function(rs){
+      if(rs.error){
+        window.location.href = rs.redirect;
+      }else{
+        $('#remind_dialog').html(rs).show();
+      }
+    })
+  });
+</script>
+

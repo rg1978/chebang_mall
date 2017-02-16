@@ -1,0 +1,18 @@
+<div class="box box-solid">
+  <div class="box-body no-padding">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active">
+        <a href="#"> <{$activeGroupList.name}>相关API </a>
+      </li>
+      <{foreach from=$activeGroupList.list key=key item=item}>
+      <li>
+        <a href="<{url action=topdev_ctl_apis@info apitype=$apitype method=$key}>">
+            <{$key}>
+            <span class="col-md-8 pull-right"><{$item.apidesc}></span>
+        </a>
+      </li>
+      <{/foreach}>
+    </ul>
+  </div>
+  <!-- /.box-body -->
+</div>

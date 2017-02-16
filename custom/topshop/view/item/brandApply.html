@@ -1,0 +1,74 @@
+<form  action="<{url action=topshop_ctl_shop_brand@saveBrand}>" method="post" class="form-horizontal" data-validate-onsuccess="ajaxSubmit" role="form">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><{t}>品牌名称<{/t}>：</label>
+        <div class="col-sm-6">
+          <label class="control-label">
+	            <input type=text name='brand_name'>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><{t}>品牌LOGO<{/t}>：</label>
+        <div class="col-sm-5">
+          <a class="select-image" data-toggle="modal" href="<{url action=topshop_ctl_shop_image@loadImageModal}>" data-target="#gallery_modal">
+            <input type="hidden" name="brand_logo" value="">
+            <div class="img-put">
+              <img src="">
+              <i class="glyphicon glyphicon-picture"></i>
+            </div>
+          </a>
+          <span class="help-block">LOGO尺寸标准：290*84或者290*290 px。</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><{t}>品牌网址<{/t}>：</label>
+        <div class="col-sm-3">
+          <label class="control-label">
+            <input type=text name='brand_url' >
+          </label>
+        </div>
+      </div>
+	  <div class="form-group">
+        <label class="col-sm-2 control-label"><{t}>品牌别名<{/t}>：</label>
+        <div class="col-sm-3">
+          <label class="control-label">
+            <input type=text name='brand_alias' >
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-5 col-sm-2">
+      <button type="submit" class="btn btn-primary btn-lg btn-block">保存</button>
+    </div>
+  </div>
+</form>
+
+<script>
+  function ajaxSubmit (e) {
+    var form = e.target;
+    e.preventDefault();
+    $.post(form.action, $(form).serialize(), function(rs) {
+      if(rs.error) {
+        $('#messagebox').message(rs.message);
+        return;
+      }
+      if(rs.success) {
+        $('#messagebox').message(rs.message, 'success');
+      }
+      if(rs.redirect) {
+        setTimeout(function(){location.href=rs.redirect;}, 800);
+      }
+    });
+  }
+</script>
+<script>
+  $(document).ready(
+    function() {
+      $(".sidebar .sidebar-menu li a i.glyphicon").eq(1).removeClass("glyphicon-list-alt").addClass("glyphicon-cog");
+    }
+  );
+</script>

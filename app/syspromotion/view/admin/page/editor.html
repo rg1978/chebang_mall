@@ -1,0 +1,147 @@
+
+<div id="x-g-basic" class="goods-detail">
+<!-- 
+	<div class="tableform">
+		<table>
+			<thead><h4><em><font color="blue"><{t}>提示：如何添加专题模板 <{/t}></font></em></h4></thead>
+			<tbody>
+			<tr>
+				<th>第一步：</th>
+				<td>进入站点模板管理，选择当前使用的模板。</td>
+			</tr>
+			<tr>
+				<th>第二步：</th>
+				<td>点击页面管理按钮，在弹出的页面中选择左上角的添加新页面按钮</td>
+			</tr>
+			<tr>
+				<th>第三步：</th>
+				<td>在弹出的窗口中选择左侧栏的促销专题页，然后在右侧根据提示添加模板。</td>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+			<td colspan="2"><h4><em><font color="blue"><{t}>建议只对main区域中的代码修改，你可以删除main区域并自定义这个页面<{/t}></font></em></h4></td>
+			</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="tableform">
+		<table>
+			<thead><h4><em><font color="blue"><{t}>提示：如何编辑专题模板 <{/t}></font></em></h4></thead>
+			<tbody>
+			<tr>
+				<th>第一步：</th>
+				<td>进入站点模板管理，选择当前使用的模板。</td>
+			</tr>
+			<tr>
+				<th>第二步：</th>
+				<td>点击页面管理按钮，在弹出的页面中找到页面类型这一列的促销专题页。</td>
+			</tr>
+			<tr>
+				<th>第三步：</th>
+				<td>选择促销专题页这一行，选择要编辑的页面进行<b>源码编辑</b>,当然你也可以进行其他操作</td>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+			<td colspan="2"><h4><em><font color="blue"><{t}>建议只对main区域中的代码修改，你可以删除main区域并自定义这个页面<{/t}></font></em></h4></td>
+			</tr>
+		</table>
+	</div>
+	 -->
+    <div class="tableform">
+        <form action="?app=syspromotion&ctl=admin_page&act=save" method="post" name="aEditor" id="aEditor">
+        <{input type="hidden"  name="page[page_id]"  value=$page.page_id }>
+        <div class="division">
+            <table border="0" cellpadding="0" cellspacing="0">
+            	<thead><h4><em><font color="blue"><{t}>设置专题信息 <{/t}></font></em></h4></thead>
+            	<tbody>
+                <tr>
+                    <th><em><font color="red">*</font></em><{t}>促销专题名称：<{/t}></th>
+                    <td>
+                        <{input type="text" name="page[title]" required="true" vtype='required' value=$page.page_name }>
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t}>促销专题描述：<{/t}></th>
+                    <td>
+                        <{input type="textarea" name="page[desc]" value=$page.page_desc cols="60" rows="5" }>
+                    </td>
+                </tr>
+                <tr>
+                    <th><em><font color="red">*</font></em><{t}>客户端：<{/t}></th>
+                    <td>
+                        <{input id="client_select" type='select' name='page[platform]' value=$page.used_platform required='true' vtype='required' caution=$__content='客户端'|t:'content' options=$platform_options}>
+                    </td>
+                </tr>
+                <tr>
+					<th><em><font color="red">*</font></em><{t}>选择模板：<{/t}></th>
+					<td id="tmpl_select">
+					
+					</td>
+				</tr>
+				<tr>
+					<th><em><font color="red">*</font></em><{t}>专题发布时间：<{/t}></th>
+					<td>
+						<{input type="time" name="page[display_time]" value=$page.display_time vtype="required"}>
+					</td>
+				</tr>
+				<tr>
+					<th><em><font color="red">*</font></em><{t}>是否开启此专题：<{/t}></th>
+					<td>
+						<input type="radio" name ="page[is_display]" value="1" <{if $page.is_display==1}> checked<{/if}>>开启
+						<input type="radio" name ="page[is_display]" value="0" <{if $page.is_display==0}> checked<{/if}>>关闭
+					</td>
+				</tr>
+            </table>
+            </tbody>
+        </div>
+        <div class="table-action">
+            <{button type="submit" id='brand-form-submit' label="保存"|t:'syscontent'}>
+        </div>
+        </form>
+    </div>
+</div>
+<script>
+tmplSelect();
+$('client_select').addEvent('change',function(){
+    tmplSelect();
+});
+function tmplSelect(){
+    var val = $('client_select').getValue();
+    var str = '' ;
+    if(val == 'pc'){
+        str = '<{template_filter type="promotion" name="page[page_tmpl]" selected=$page.page_tmpl class="x-input" platform="pc" }>';
+    }else{
+        str = '<{template_filter type="promotion" name="page[page_tmpl]" selected=$page.page_tmpl class="x-input" platform="mobile" }>';
+    }
+    $('tmpl_select').setHTML(str);
+}
+(function(){
+    var _form = $('aEditor');
+    var btn =$('brand-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+  })();
+</script>

@@ -1,0 +1,94 @@
+ <div class="panel panel-default">
+    <div class="panel-heading">免邮名称</div>
+    <div class="panel-body">
+    <p>
+    		<span>
+    			免邮名称：
+    		</span>
+    		<span>
+    			<{$freepostage_name}>
+    		</span>
+    </p>
+    <p>
+    		<span>
+    			免邮描述：
+    		</span>
+    		<span>
+    			 <{$freepostage_desc}>
+    		</span>
+    </p>
+    </div>
+ </div>
+ <div class="panel panel-default select-goods-panel">
+    <div class="panel-heading">
+      已选择适用商品
+    </div>
+    <div class="panel-body">
+      <div class="selected-goods-list">
+      <table wdith="100%" class="table table-primary table-hover table-goods">
+          <{foreach from=$itemsList item=itemslist}>
+          <tr>
+            <td>
+              <div class="goods">
+                <a href="<{url action=topc_ctl_item@index item_id=$itemslist.item_id}>" target="_blank">
+                  <img src="<{$itemslist.image_default_id|default:$image_default_id.S.default_image|storager:t}>" alt="">
+                  <{$itemslist.title}>
+                </a>
+              </div>
+            </td>
+            <td>
+              商品金额:<{$itemslist.price|cur}>
+            </td>
+          </tr>
+          <{/foreach}>
+        </table>
+
+      </div>
+    </div>
+ </div>
+ <div class="panel panel-default">
+    <div class="panel-heading">设置规则</div>
+    <div class="panel-body">
+    <p>
+    <span>免邮规则：</span>
+    <span>
+       <{if $condition_type=='quantity'}>
+        按数量 &nbsp;&nbsp;&nbsp;消费满<{$limit_quantity}>件，免邮
+        <{else}>
+        按金额 &nbsp;&nbsp;&nbsp;消费满<{$limit_money}>元，免邮
+       <{/if}>
+    </span>
+    </p>
+    <p>
+        <span>使用平台： </span>
+        <span>
+           <{if $used_platform=='0' || !$used_platform}>
+             全平台(pc+wap)
+           <{elseif $used_platform=='1'}>
+             pc端
+           <{elseif $used_platform=='2'}>
+             wap端
+           <{/if}>
+    </span>
+    </p>
+    <p>
+        <span>适用会员： </span>
+        <span><{$grade_str}></span>
+    </p>
+    <p>
+        <span>起始时间：</span>
+        <span><{$valid_time}></span>
+    </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-2">
+      <a href="<{url action="topshop_ctl_promotion_freepostage@list_freepostage"}>"><button type="submit" class="btn btn-primary btn-lg btn-block action-save">返回</button></a>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<{if $ac=='show'}>
+<table wdith="100%" class="table table-primary table-hover table-goods">
+  <tr>
+    <td width="60%">商品名称</td>
+    <td width="20">商品价格</td>
+  </tr>
+  <{foreach from=$_input.itemsList item=item key=key}>
+  <tr date-itemid="<{$item.item_id}>">
+    <td>
+      <input type="hidden" name="item_id[]" value="<{$item.item_id}>" />
+      <div class="goods">
+        <a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>" target="_blank">
+          <{if $item.image_default_id}>
+          <img src="<{$item.image_default_id|storager:'s'}>">
+          <{else}>
+          <img src="<{$image_default_id.S.default_image}>">
+          <{/if}>
+
+          <{foreach from=$_input._textcol item=_key}>
+            <{if $_key=='price'}>
+            <{else}>
+            <span><{$item[$_key]|cut:120}></span>
+            <{/if}>
+          <{/foreach}>
+        </a>
+      </div>
+    </td>
+    <td>
+       <{foreach from=$_input._textcol item=_key}>
+          <{if $_key=='price'}>
+          <span><{$item[$_key]|cur}></span>
+          <{/if}>
+       <{/foreach}>
+    </td>
+  </tr>
+  <{/foreach}>
+</table>
+<{else}>
+<table wdith="100%" class="table table-primary table-hover table-goods">
+  <{foreach from=$_input.itemsList item=item key=key}>
+  <tr date-itemid="<{$item.item_id}>">
+    <td>
+      <input type="hidden" name="item_id[]" value="<{$item.item_id}>" />
+      <div class="goods">
+        <a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>" target="_blank">
+          <img src="<{$item.image_default_id|default:$image_default_id.S.default_image|storager:'s'}>" alt="">
+          <{foreach from=$_input._textcol item=_key}>
+          <{if $_key=='price'}>
+            <span><{$item[$_key]|cur}></span>
+            <{else}>
+            <span><{$item[$_key]|cut:120}></span>
+            <{/if}>
+          <{/foreach}>
+        </a>
+      </div>
+    </td>
+    <{if $_input.view}>
+    <td>
+      <{include file=$_input.view}>
+    </td>
+    <{/if}>
+    <{if $_input.extends}>
+    <input type="hidden" name="<{$_input.extends.0.item_name}>[<{$item.item_id}>][item_id]" value="<{$item.item_id}>" />
+    <{foreach from=$_input.extends item=extends_row}>
+    <td>
+      <{include file='topshop/selector/item/input-row-extends.html'}>
+    </td>
+    <{/foreach}>
+    <{/if}>
+        <td><a class="item-del" href="#">删除</a></td>
+  </tr>
+  <{/foreach}>
+</table>
+<{/if}>
+<script>
+  $('.item-del').click(function(e) {
+    e.preventDefault();
+    $(this).parents('tr').remove();
+  });
+</script>

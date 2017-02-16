@@ -1,0 +1,102 @@
+<div class="section">
+  <div class="row prechase-goods-img">
+    <div class="col-lg-6 box">
+      <div class="thumbnail-slider" data-toggle="switchable">
+        <ol class="switchable-content" id="switchable-content-img">
+          <li><img src="<{$group_item.item_default_image|storager}>" /></li>
+        </ol>
+        <div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-10 box prechase-goods-info">
+      <div class="detail-panel prechase-detail-panel">
+        <div class="detail-panel-bd">
+          <{if $now_time < $activity.start_time}>
+          <{include file="topc/promotion/activity/not_beginning.html"}>
+          <{elseif $activity.end_time < $now_time}>
+          <{include file="topc/promotion/activity/end.html"}>
+          <{else}>
+          <{include file="topc/promotion/activity/in.html"}>
+          <{/if}>
+          <{include file="topc/promotion/activity/collection.html"}>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="row">
+    <div class="col-lg-3 buyer-box">
+      <{include file="topc/promotion/activity/shop.html"}>
+      <{if $history}>
+      <{include file="topc/promotion/activity/history.html"}>
+      <{/if}>
+    </div>
+    <div class="col-lg-13 box">
+      <div class="tab1 purchase-tab1" data-toggle="switchable" data-config="{&quot;events&quot;:&quot;click&quot;}">
+        <ul class="switchable-nav">
+          <li class="active">产品介绍</li>
+          <{if $item.params}>
+          <li>规格参数</li>
+          <{/if}>
+          <li id="eval_tab">产品评论(<span><{$item.rate_count|default:"0"}></span>)</li>
+        </ul>
+        <div class="switchable-content">
+          <div class="switchable-panel" style="display: block;">
+            <div class="goods-info">
+              <div class="bd">
+                <{$item.pc_desc}>
+              </div>
+            </div>
+          </div>
+          <div id="eval_con" class="switchable-panel" style="display: none;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function tabEval(url) {
+    var cur = 0;
+    var condition = $('#condition_form');
+
+    $('.evaluation-nav li').click(function(){
+      var that = $(this);
+      var data = that.attr('data-type');
+      var dataObj = {
+        'result': data
+      }
+      condition.find('input[name="result"]').val(data);
+
+      cur = that.index();
+      $(this).addClass('active').siblings().removeClass('active');
+      $('.evaluation-content>div').eq(cur).css('display','block').siblings().css('display','none');
+
+      if(!$('.evaluation-content>div').eq(cur).html()){
+        $.get(url,dataObj,function(data){
+          $('.evaluation-content>div').eq(cur).html(data);
+        })
+      }
+    });
+
+    $('.condition').change(function() {
+      if($(this).attr('type')=='checkbox'){
+        $(this).val($(this).prop('checked'));
+      }
+      $('.evaluation-content>div').eq(cur).load(condition.attr('action'),condition.serialize());
+    });
+  }
+
+  $('#eval_tab').mouseover(function() {
+    if(!$('#eval_con').html()){
+
+    }else{
+      $('#eval_con').load('<{url action=topc_ctl_item@getItemRate item_id=$item.item_id}>',function(){
+        tabEval('<{url action=topc_ctl_item@getItemRateList item_id=$item.item_id}>');
+      })
+    }
+  });
+</script>
+

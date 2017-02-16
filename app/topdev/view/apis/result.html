@@ -1,0 +1,43 @@
+<div class="panel panel-success api-result">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+    <b><h4>执行结果&nbsp;<span class="label label-warning"><{$apiRunTime}>&nbsp;s</span>&nbsp;<span class="label label-info"><{$filesize}></span></h4></b>
+  </div>
+  <div class="panel-body">
+    <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+      <ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">格式化JSON</a></li>
+        <li role="presentation" class=""><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">原始数据</a></li>
+        <li role="presentation" class=""><a href="#geturl" role="tab" id="profile-tab" data-toggle="tab" aria-controls="geturl" aria-expanded="false">请求链接</a></li>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
+          <br>
+          <pre><code class="json" id="json-output"></code></pre>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+          <br>
+          <pre><code id="json-output-old"><{$result}></code></pre>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="geturl" aria-labelledby="profile-tab">
+          <br>
+          <pre><code id="json-output-old"><{$getUrl}></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var obj = <{$result}>;
+  var str = JSON.stringify(obj, undefined, 2);
+  var str1 = JSON.stringify(obj, undefined);
+  document.getElementById('json-output').innerHTML = str;
+  document.getElementById('json-output-old').innerHTML = str1;
+
+  $(document).ready(function() {
+    $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+    });
+  });
+
+</script>

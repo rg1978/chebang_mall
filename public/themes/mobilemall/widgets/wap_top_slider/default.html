@@ -1,0 +1,36 @@
+<div id="slider" class="shopex-slider bbc-slider" >
+  <div class="shopex-slider-group shopex-slider-loop">
+  <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+  <div class="shopex-slider-item shopex-slider-item-duplicate">
+    <a href="<{$setting.lastPic.linktarget}>" title='<{$setting.lastPic.linkinfo}>' alt='<{$setting.lastPic.linkinfo}>'>
+      <img src="<{$setting.lastPic.link|storager}>">
+    </a>
+  </div>
+  <{foreach from=$setting.pic item=pic key=key}>
+  <div class="shopex-slider-item">
+    <a href="<{$pic.linktarget}>" title='<{$pic.linkinfo}>' alt='<{$pic.linkinfo}>'>
+      <img src="<{$pic.link|storager}>">
+    </a>
+  </div>
+  <{/foreach}>
+  <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+  <div class="shopex-slider-item shopex-slider-item-duplicate">
+    <a href="<{$setting.firstPic.linktarget}>" title='<{$setting.firstPic.linkinfo}>' alt='<{$setting.firstPic.linkinfo}>'>
+      <img src="<{$setting.firstPic.link|storager}>">
+    </a>
+  </div>
+  </div>
+  <div class="shopex-slider-indicator">
+  <{foreach from=$setting.pic item=pic key=key}>
+  <div class="shopex-indicator <{if $key == $setting.firstPic.id}>shopex-active<{/if}>"></div>
+  <{/foreach}>
+  </div>
+</div>
+
+<script>
+  var gallery = shopex("#slider");
+  gallery.slider({
+    interval:5000//自动轮播周期，若为0则不自动播放，默认为0；
+  });
+</script>
+

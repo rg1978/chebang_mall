@@ -1,0 +1,18 @@
+<section class="container no-header">
+  <section class="user-header">
+    <div class="user-register-success">
+      <div class="user-register-logo"><img src="<{$site_logo}>" alt="<{$site_name}>"></div>
+      <h1>恭喜您注册成为<{$site_name}></h1>
+      <h2>您已成为商城会员，享受会员特权</h2>
+    </div>
+  </section>
+  <section class="shopex-content-padded form-op-section">
+    <{if $open_sendpoint==1}>
+    <div class="content-center content-bottom-padded font-gray-20">
+      您已获得<{$sendPointNum}>积分，积分已汇入您账户
+    </div>
+    <{/if}>
+    <a class="shopex-btn shopex-btn-warning shopex-btn-block bbc-btn-warning" href="<{url action=topwap_ctl_default@index}>">继续购物</a>
+  </section>
+</section>
+

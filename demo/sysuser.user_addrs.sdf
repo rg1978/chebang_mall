@@ -1,0 +1,3 @@
+a:9:{s:7:"addr_id";i:1;s:7:"user_id";i:2;s:4:"name";s:7:"buyer01";s:4:"area";s:33:"上海市/徐汇区:310100/310104";s:4:"addr";s:15:"桂林路396号";s:3:"zip";s:1:"0";s:3:"tel";N;s:6:"mobile";s:11:"13600980921";s:8:"def_addr";i:1;}
+a:9:{s:7:"addr_id";i:2;s:7:"user_id";i:2;s:4:"name";s:5:"buyer";s:4:"area";s:33:"北京市/海淀区:110100/110108";s:4:"addr";s:23:"万寿路长宁苑56号";s:3:"zip";s:1:"0";s:3:"tel";N;s:6:"mobile";s:11:"15800893873";s:8:"def_addr";i:0;}
+a:9:{s:7:"addr_id";i:3;s:7:"user_id";i:1;s:4:"name";s:6:"test01";s:4:"area";s:33:"上海市/徐汇区:310100/310104";s:4:"addr";s:9:"桂林路";s:3:"zip";s:6:"200999";s:3:"tel";N;s:6:"mobile";s:11:"13687299999";s:8:"def_addr";i:1;}

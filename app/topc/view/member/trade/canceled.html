@@ -1,0 +1,92 @@
+<div class="col-lg-13 box">
+  <div class="membercenter-box">
+    <div class="membercenter-box-hd">
+      取消订单记录
+    </div>
+    <div class="membercenter-box-bd">
+      <{if !$list}>
+      <div class="no-content">
+        <span class="symbol"><i class="icon icon-doc-flash"></i><span class="txt">暂无取消订单记录</span></span>
+      </div>
+      <{else}>
+        <{foreach from=$list item=row}>
+        <table class="item-table table-goods">
+          <colgroup>
+            <col>
+            <col class="table-col-5" style="width: auto">
+            <col>
+            <col>
+            <col>
+          </colgroup>
+          <thead class="">
+            <tr>
+              <td colspan="5">
+                <span>取消时间:<{$row.created_time|cdate}></span>
+                <span>订单编号:<{$row.tid}></span>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+          <{assign var=orderItemCount value=$row.order|count}>
+            <{foreach from=$row.order item=item name=name}>
+            <tr>
+              <td width="70">
+                <div class="table-goods-pic">
+                  <{if $item.pic_path}>
+                  <img width="64" height="64" src="<{$item.pic_path|storager:'T'}>">
+                  <{else}>
+                  <img width="64" height="64" src="<{$defaultImageId.T.default_image}>">
+                  <{/if}>
+                </div>
+              </td>
+              <td>
+                <a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>" target="_blank"><{$item.title}></a>
+              </td>
+              <{if $env.foreach.name.iteration==1}>
+              <td width="210" rowspan="<{$row.gift_count+$orderItemCount}>" class="text-center">
+                订单支付金额：<span class="price"><{$row.payed_fee|cur}></span><br>
+                <{if $row.pay_type == 'online'}>线上支付<{else}>货到付款<{/if}>
+              </td>
+              <td width="110" rowspan="<{$row.gift_count+$orderItemCount}>" class="text-center">
+                <{if $row.refunds_status == 'WAIT_CHECK'}>
+                正在审核
+                <{elseif $row.refunds_status == 'WAIT_REFUND'}>
+                退款处理
+                <{elseif $row.refunds_status == 'SHOP_CHECK_FAILS' || $row.refunds_status == 'FAILS'}>
+                取消失败
+                <{else}>
+                已完成
+                <{/if}>
+              </td>
+              <td width="60" rowspan="<{$row.gift_count+$orderItemCount}>" class="col-operate">
+                <a href="<{url action=topc_ctl_member_trade@canceledTradeDetail cancel_id=$row.cancel_id}>" target="_blank">查看 &gt;</a>
+              </td>
+              <{/if}>
+            </tr>
+            <{if $item.gift_data}>
+            <{foreach from=$item.gift_data item=giftdata}>
+            <tr>
+              <td width="70">
+                <div class="table-goods-pic">
+                  <{if $giftdata.image_default_id}>
+                  <img width="64" height="64" src="<{$giftdata.image_default_id|storager:'T'}>">
+                  <{else}>
+                  <img width="64" height="64" src="<{$defaultImageId.T.default_image}>">
+                  <{/if}>
+                </div>
+              </td>
+              <td>
+                <a href="<{url action=topc_ctl_item@index item_id=$giftdata.item_id}>" target="_blank"><span class="item-describe-tag">赠品</span><{$giftdata.title}></a>
+              </td>
+            </tr>
+            <{/foreach}>
+            <{/if}>
+            <{/foreach}>
+          </tbody>
+        </table>
+        <{/foreach}>
+        <{pagers data=$pagers}>
+      <{/if}>
+    </div>
+  </div>
+</div>

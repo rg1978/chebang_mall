@@ -1,0 +1,35 @@
+<meta charset="utf-8" />
+<!--↑↑模板中请务必使用HTML5的标准head结构↑↑-->
+<meta name="author" content="shopex UED Team" />
+<{if $seo.keywords}><meta name="keywords" content="<{$seo.keywords}>" /><{/if}>
+<{if $seo.description}><meta name="description" content="<{$seo.description}>" /><{/if}>
+<{if $seo.nofollow}>
+<meta name="nofollow" content="nofollow" />
+<{/if}>
+<{if $seo.noindex}>
+<meta name="noindex" content="noindex" />
+<{/if}>
+<{if $seo.noarchive}>
+<meta name="noarchive" content="noarchive" />
+<{/if}>
+<link rel="icon" href="<{$seo.icon}>" type="image/x-icon" />
+<link rel="shortcut icon" href="<{$seo.icon}>" type="image/x-icon" />
+
+<title><{$wapTitle}></title>
+<link type='image/x-icon' href='<{$appleDesktop}>' rel='apple-touch-icon-precomposed'>
+
+<{if config::get('app.debug', false)}>
+<{css src="base.css" app="topm"}>
+<{script src="zepto.js" app="topm"}>
+<{script src="fastclick.js" app="topm"}>
+<{script src="gmu.js" app="topm"}>
+<{script src="common.js" app="topm"}>
+<{script src="message.js" app="topm"}>
+<{script src="validate.js" app="topm"}>
+<{script src="echo.js" app="topm"}>
+<{else}>
+<{css src="base.min.css" app="topm"}>
+<{script src="framework.min.js" app="topm"}>
+<{script src="mobile.min.js" app="topm"}>
+<{script src="echo.min.js" app="topm"}>
+<{/if}>

@@ -1,0 +1,34 @@
+<div id="hint-dialog" class="hint-dialog">
+  <p>温馨提示：
+  您的订单状态为 “<span class="order-wait">等待收货</span>” ，请确认是否已收到订单商品。
+  </p>
+ <div class="type-choose">
+    <span><input type="radio" name="order_type" id="rdo_notreceived" data-value="notreceived" checked><label for="rdo_notreceived">未收到货物</label></span>
+    <span>
+      <input type="radio" name="order_type" id="rdo_received" data-value="received"><label for="rdo_received">已收到货物</label>
+    </span>
+ </div>
+  <div class="hint-content" data-value="notreceived">
+    <p>如果您还没有收到商品，请您在快递人员送货上门时拒收商品或者在收到商品后 “申请退换货”。</p>
+    <div class="operation">
+      <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tid}>" class="btn btn-import"><span><span>订单详情</span></span></a> <button class="btn btn-caution btn-sure"><span><span>确认</span></span></button>
+    </div>
+  </div>
+  <div class="hint-content" data-value="received" style="display:none;">
+    <form action="<{url action=topc_ctl_member_trade@confirmReceipt}>" id="hint" method="post" class="hint-form">
+      <input type="hidden" name="tid" value="<{$tid}>" class="confirm-tid">
+      <input type="hidden" name="oid" value="<{$oid}>" class="confirm-oid">
+      <!--
+       <p>若您对已收到货的商品不满意，您可选择相应商品提交 “申请退换货”，订单状态将自动置为 “已完成”<br><a href="#">查看售后服务政策</a></p>
+       -->
+       <div class="operation">
+          <button type="submit" class="btn btn-import act-hint"><span><span>申请退换货</span></span></button>
+       </div>
+    </form>
+  </div>
+</div>
+<script>
+  $('input[type="radio"]').on('click', function() {
+    $('.hint-content[data-value="'+$(this).attr('data-value')+'"]').show().siblings('.hint-content').hide();
+  });
+</script>

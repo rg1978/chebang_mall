@@ -1,0 +1,82 @@
+<form id="valueExameForm" action="?app=syscategory&ctl=admin_props&act=saveExamineValues"  method="POST" >
+  <input type="hidden" name="prop_id" value="<{$prop_value.prop_id}>">
+  <div class="tableform">
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>属性名称：<{/t}></th>
+          <td><{$prop.prop_name}></td>
+        </tr>
+        <tr>
+          <th><{t}>属性值名称：<{/t}></th>
+          <td><{$prop_value.prop_value}></td>
+        </tr>
+        <tr>
+          <th><{t}>店铺名称：<{/t}></th>
+          <td><{$prop_value.shop_name}></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+   <div class="division">
+    <div class="item">
+      <div class="dashbd-bd">
+        <h5>审核结果</h5>
+          <div class="list-content">
+            <div class="clearfix">
+              <span class="dt">审核结果：</span>
+              <span class="dd">
+                <input type="radio" name ="status" value="successful" class="act-status">通过
+                <input type="radio" name ="status" value="failing" class="act-status" checked>不通过
+                <div class="apply-result">
+                  <{input class="reason" type="textarea" value=$prop_value.reason name="reason" cols="50" rows="5" maxlength="200" vtype="required"}>
+                </div>
+              </span>
+            </div>
+          </div>
+      </div>
+    </div>
+  <div class="table-action">
+    <{button type="submit" id='exame-form-submit' label="确认"|t:'syscategory'}>
+  </div>
+
+</form>
+
+<script>
+  (function(){
+    var _form = $('valueExameForm');
+    var btn =$('exame-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+  })();
+
+   $$('.act-status').addEvent('click', function(e){
+    if(this.value == 'failing') {
+      $$('.apply-result').show();
+    }
+    else {
+      $$('.apply-result').hide();
+    }
+  });
+</script>

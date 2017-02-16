@@ -1,0 +1,27 @@
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="nodesModalLabel">设置分类</h4>
+      </div>
+      <div class="modal-body">
+      <input type="hidden" name="node_id" value="<{$node_id}>">
+       <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-3 control-label">分类名称：</label>
+	    <div class="col-sm-6">
+	      <input type="text" class="form-control" placeholder="分类名称" name="node_name" required value="<{$node_name}>">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-3 control-label">分类排序：</label>
+	    <div class="col-sm-6">
+	      <input type="number" class="form-control" placeholder="排序数字，越小越靠前" name="order_sort" value="<{$order_sort}>">
+	    </div>
+	  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </div>
+

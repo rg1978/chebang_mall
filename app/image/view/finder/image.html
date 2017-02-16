@@ -1,0 +1,21 @@
+<div class="clearfix">
+<div class="span-auto" style="width:60%">
+<div class="tableform">
+    <h3><{t}>图片地址<{/t}></h3>
+	  <table>
+		<tr>
+			<th></th><td class="font-green"><{$image.url|storager}></td>
+		</tr>
+		</table>
+    <h3><{t}>图片信息<{/t}></h3>
+    <table>
+      <tr><th><{t}>原始尺寸<{/t}></th>
+        <td><{$image.width}> x <{$image.height}></td></tr>
+      <tr><th><{t}>更新时间<{/t}></th>
+        <td><{$image.last_modified|cdate}></td></tr>
+      <tr><th><{t}>存储引擎<{/t}></th>
+        <td><{$image.storage}></td></tr>
+    </table>
+  </div>
+</div>
+</div>

@@ -1,0 +1,130 @@
+<div class="order-msg">
+  <header>
+    <div class="list-hd">
+      <div class="backto icon-back">
+        <input type="button" name="returnBcak" onclick="history.back()">
+      </div>
+      <div class="tit">订单支付</div>
+    </div>
+  </header>
+  <div class="main" id="main">
+    <form id="dopay_form" target="_blank" action="<{url action=topm_ctl_paycenter@dopayment}>" method="post" data-async="false">
+      <input type="hidden" name="payment[payment_id]" value="<{$trades.payment_id}>">
+      <input type="hidden" name="openid" value="<{$openid}>">
+      <input type="hidden" name="payment[money]" value="<{$trades.cur_money}>">
+      <input type="hidden" name="payment[tids]" value="<{$tids}>">
+      <div class="order-fin">
+        <{if $newtrade}>
+        <div class="center">
+          <div class="fin-icon ok">
+            <span class="icon-ok"></span>
+          </div>
+          <div class="success-info">
+            <span class="info-su">订单提交成功，请您尽快付款！</span>
+            <span class="thanks">请您在提交订单后尽快完成支付，<br>以免订单被取消。</span>
+          </div>
+        </div>
+        <{/if}>
+      </div>
+      <div class="pay-amount">
+        <div class="tit">应付金额</div>
+        <div class="total"><{$trades.cur_money|cur}></div>
+      </div>
+      <{if $payments}>
+      <div class="ui-btn-group cur">
+        <div class="btn-group-hd">
+          <div class="tit">选择支付方式</div>
+          <div class="way">
+            <span></span>
+            <i class="icon-up"></i>
+          </div>
+        </div>
+        <ul>
+          <{foreach from=$payments item=item name="payments"}>
+          <li class="<{$item.app_id}> payment_item">
+            <span class="choose"></span>
+            <label for="<{$item.app_id}>">
+              <{$item.app_display_name}>
+            </label>
+            <input id="<{$item.app_id}>" class="button" type="radio" name="payment[pay_app_id]" value="<{$item.app_id}>" />
+          </li>
+          <{/foreach}>
+        </ul>
+      </div>
+      <div class="pay-amount" style='display:none' id='deposit-password-input'>
+        <input type='password' name='deposit_password' placeholder="点我输入预存款密码">
+      </div>
+      <{else}>
+      <div class="ui-btn-group cur">
+        <div class="btn-group-hd">
+        还没有可用的支付方式，请联系商家！
+      </div>
+      </div>
+      <{/if}>
+      <div class="confirm-btn">
+        <button type="button" class="ui-btn-warning form-submit">确认支付</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="password_dialog" style="display:none;">
+  <div class="password-dialog">
+    <p>您还未设置支付密码！请到PC端安全中心设置。</p>
+  </div>
+</div>
+
+<script>
+  var Message = new gmu.Message();
+
+  $('.button').button();
+
+  $('.ui-btn-group li').tap(function(){
+    $('.choose').removeClass('chosen')
+    $('.ui-btn').removeClass('ui-state-active')
+    $(this).find('.ui-btn').addClass('ui-state-active');
+    $(this).find('.choose').addClass('chosen')
+    $(this).find('input[type="radio"]').trigger('click');
+    var payment = $(this).find('label').text();
+    $('.way').find('span').text(payment);
+  });
+
+  $('#password_dialog').dialog({
+      autoOpen: false,
+      closeBtn: false,
+      buttons: {
+        //'更换支付方式': function(){
+        //    this.close();
+        //},
+          '我知道了': function(){
+          //location.href="<{url action='topm_ctl_member@security'}>";
+            this.close();
+          }
+      }
+  });
+  $('.form-submit').tap(function(e){
+    e.preventDefault();
+    if($('input[name="payment[pay_app_id]"]:checked').length>0){
+      if($('input[name="payment[pay_app_id]"]:checked').val() == 'deposit'){
+        <{if !$hasDepositPassword.result}>
+        $('#password_dialog').dialog('open');
+        return;
+        <{/if}>
+    	  $('#dopay_form').attr('target','_self');
+      }
+      $('#dopay_form').submit();
+    }else{
+      Message.error('请选择支付方式！')
+      return;
+    }
+  })
+
+  $('.ui-btn-group').tap(function(){
+    $(this).toggleClass('cur');
+  });
+
+$('.payment_item').click(function(){
+  $(this).children('input').val() == 'deposit' ? $('#deposit-password-input').show() : $('#deposit-password-input').hide();
+});
+$(this).children('input').val() == 'deposit' ? $('#deposit-password-input').show() : $('#deposit-password-input').hide();
+
+</script>

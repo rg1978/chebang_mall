@@ -1,0 +1,50 @@
+<{foreach from=$list item=row}>
+<div class="inner-wrap">
+  <div class="select-store">
+    <div class="store-n">
+      <label for="name">
+        <a href="<{url action=topm_ctl_shopcenter@index shop_id=$row.shop_id}>">
+          <{$row.shop_id|shopname}>
+        </a>
+      </label>
+    </div>
+    <div class="store-g">
+      <ul>
+        <li>
+          <div class="g-info">
+            <div class="info-l">
+              <a href="<{url action=topm_ctl_member_trade@canceledTradeDetail cancel_id=$row.cancel_id}>" class="g-pic">
+                <img src="<{$row.order.0.pic_path|storager:t}>" alt="">
+              </a>
+            </div>
+            <div class="info-m">
+              <div class="code">订单号:<{$row.tid}></div>
+              <a class="g-name" href="<{url action=topm_ctl_member_trade@canceledTradeDetail cancel_id=$row.cancel_id}>">
+                <{if $orderitem.0.promotion_tag}><span class="activity-tag"><{$orderitem.0.promotion_tag}></span><{/if}><{$orderitem.0.title}>
+              </a>
+              <span class="real"> 实付款: <i><{$row.payed_fee|cur}></i> </span>
+              <span class="num">共<i><{$row.order|array_column:'num'|array_sum}></i>件</span>
+              <div class="action">
+                <a class="ui-btn ui-btn-danger pay" href="<{url action=topm_ctl_member_trade@canceledTradeDetail cancel_id=$row.cancel_id}>" rel="_request">查看取消状态</a>
+              </div>
+            </div>
+            <div class="info-r">
+              <div class="g-price">
+                <{if $row.refunds_status == 'WAIT_CHECK'}>
+                <span class="label label-primary">等待审核</span>
+                <{elseif $row.refunds_status == 'WAIT_REFUND'}>
+                <span class="label label-primary">等待退款</span>
+                <{elseif $row.refunds_status == 'SHOP_CHECK_FAILS'}>
+                <span class="label label-danger">取消失败</span>
+                <{elseif $row.refunds_status == 'SUCCESS'}>
+                <span class="label label-success">取消成功</span>
+                <{/if}>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<{/foreach}>

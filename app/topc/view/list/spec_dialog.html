@@ -1,0 +1,205 @@
+<form action="<{url action=topc_ctl_cart@add mode=fastbuy}>" method="post" id="items_action_form">
+<div class="choose">
+  <div>
+    <div class="dt del">价格：</div>
+    <div class="dd"><span class="price action-update-price"><{$item.price|cur}></span></div>
+  </div>
+  <{if $item.valid == true}>
+  <{if $item.spec_desc}>
+  <div class="choose-spec" id="spec_select">
+    <{foreach from=$item.spec_desc item=spec key=spec_id}>
+    <div class="dt"><{$item.spec.specName.$spec_id}>：</div>
+    <div class="dd choose-item-wrap">
+      <{foreach from=$spec item=spec_value key=spec_value_id }>
+      <div class="choose-item" data-id='<{$spec_value_id}>' title="<{$spec_value.spec_value}>">
+        <{if $spec_value.spec_image_url}>
+        <img src="<{$spec_value.spec_image_url|storager:"t"}>"></a>
+        <{else}>
+        <{$spec_value.spec_value}>
+        <{/if}>
+      </div>
+      <{/foreach}>
+    </div>
+    <{/foreach}>
+  </div>
+  <{/if}>
+  <{if  $item.realStore > 0}>
+  <div class="choose-quantity">
+    <div class="dt">购买数量：</div>
+    <div class="dd">
+      <!-- <div class="number">
+        <a href="javascript:void(0);" class="btn btn-flat btn-decrease"><span><span>-</span></span></a>
+        <input type="number" name="item[quantity]" min="1" max="<{if $activityDetail.activity_info.buy_limit}><{$activityDetail.activity_info.buy_limit}><{else}><{$item.realStore}><{/if}>" value="1" class="action-quantity-input">
+        <a href="javascript:void(0);" class="btn btn-flat btn-increase"><span><span>+</span></span></a>
+      </div> -->
+
+       <div class="buy-number">
+          <a href="javascript:void(0);" class="btn btn-add"><i class="icon icon-chevron-up"></i></a>
+          <a href="javascript:void(0);" class="btn btn-reduct"><i class="icon icon-chevron-down"></i></a>
+          <input type="text"  name="item[quantity]" min="1" max="<{if $activityDetail.activity_info.buy_limit}><{$activityDetail.activity_info.buy_limit}><{else}><{$item.realStore}><{/if}>" value="1" class="action-quantity-input">
+        </div>
+        <div class="buy-info">件 <span>库存<em class="repertory action-update-quantity"><{$item.realStore}></em>件</span></div>
+    </div>
+  </div>
+  <{/if}>
+  <{/if}>
+  <div class="btn-wrap text-center">
+    <input type="hidden" name="item[sku_id]" value="<{$item.default_sku_id}>">
+    <button type="button" class="btn btn-simple btn-xl action-notify<{if $item.valid}> hide<{/if}>">
+      <span><span>暂不销售</span></span>
+    </button>
+    <{if $item.realStore > 0}>
+        <a href="<{url action=topc_ctl_cart@add}>" class="btn btn-caution btn-xl btn-addcart action-addcart<{if !$item.valid}> hide<{/if}>"><span><span>加入购物车</span></span></a>
+    <{/if}>
+
+    <{*if $item.valid && $item.realStore == 0*}>
+    <a href="javascript:void(0);" class="btn btn-caution btn-xl btn-addcart action-open-dialog  <{if !$item.valid || $item.realStore > 0}> hide <{/if}>">
+      <span><span>到货通知</span></span>
+    </a>
+    <!--注册协议弹框-->
+  </div>
+
+</div>
+</form>
+<script>
+  var spec_select = $('#spec_select');
+  var specSkuJson = '<{$item.spec.specSku|json_encode}>';
+  var specSku = $.parseJSON(specSkuJson);
+  var spec_size = spec_select.find('.choose-item-wrap').length;
+  spec_select.on('click', '.choose-item', function (e) {
+    e.preventDefault();
+    var parent = $(this).parent('.choose-item-wrap');
+    $(this).addClass('on').siblings('.on').removeClass('on');
+    var selected = spec_select.find('.on');
+    if(selected.length == spec_size) {
+      var key = [];
+      selected.each(function (i, spec) {
+        key.push(spec.getAttribute('data-id'));
+      });
+      key = key.join('_');
+
+      var specinfo = specSku[key];
+      processSpec(specinfo);
+      console.log(specSku);
+    }
+
+  });
+
+function processSpec(rs) {
+  $('input[name="item[sku_id]"]').val(rs['sku_id']);
+  priceControl.spec.sign = '<{$cur_symbol}>';
+  $('.action-update-price').text('¥' + priceControl.format(rs['price']));
+  $('.action-update-quantity').text(rs['store']);
+  var quantity = $('.action-quantity-input').attr('max', rs['store']);
+  if(quantity.val() > rs['store']) {
+    quantity.val(rs['store']);
+  }
+  if(rs.valid && rs.store >>> 0) {
+    $('.btn-fastbuy, .btn-addcart').removeClass('hide');
+    $('.action-notify').addClass('hide');
+    $('.action-open-dialog').addClass('hide');
+    quantity.val(quantity.attr('min'));
+  }
+  else if(rs.valid && rs.store == 0) {
+    $('.btn-fastbuy, .btn-addcart').addClass('hide');
+    $('.action-notify').addClass('hide');
+    $('.action-open-dialog').removeClass('hide');
+  }
+  else{
+    $('.btn-fastbuy, .btn-addcart').addClass('hide');
+    $('.action-open-dialog').addClass('hide');
+    $('.action-notify').removeClass('hide');
+  }
+}
+
+bindQuantityEvent('#items_action_form', setQuantity);
+
+//== 为数量选择框绑定事件
+function bindQuantityEvent(elements, callback) {
+  elements = $(elements);
+  if(!elements && !elements.length) return;
+  var value = '';
+  //= 数量按钮
+  elements.on('click', '.btn-reduct,.btn-add', function (e) {
+    var input = $(this).parent().find('.action-quantity-input');
+    value = + input.val();
+    input.val($(this).hasClass('btn-reduct') ? value <= 0 ? 0: value - 1 : value + 1);
+    callback && callback(input, value);
+  })
+  //= 数量输入框
+  .on('focus', '.action-quantity-input', function(e){
+    value = +this.value;
+  })
+  .on('change', '.action-quantity-input', function(e) {
+    callback && callback($(this), value);
+  });
+}
+//== 获取商品数量值
+function getQuantity(el, type) {
+  return el.find('input[name=' + type + ']').val();
+}
+//== 设置商品数量
+function setQuantity(input, value) {
+  var type = 'product';
+  var p = input.parent('li');
+  inputCheck(input, {min: input.attr('min'), max: input.attr('max'), 'default': value, store: getQuantity(p, 'stock'), callback: window.quantityCallback});
+}
+//== 商品数量输入框正确性检测
+function inputCheck(input, options) {
+  if(!input && !input.length) return false;
+
+  if(spec_select.find('.on').size() < spec_size) {
+    return Message.error('请先选择完整规格。');
+  }
+
+  options = options || {};
+  if(isNaN(options.min)) options.min = 1;
+  if(isNaN(options.max)) options.max = 999999;
+  options['default'] = options['default'] || options.min;
+  var value = +input.val();
+  // var tips = new Tips(input);
+  var pre = '';
+  var msg = '';
+  if(options.store && options.store - value <= 0) {
+    pre = '库存有限，';
+  }
+  if(value < options.min) {
+    input.val(options.min);
+    msg = '此商品的最小购买数量为' + options.min + '件';
+  }
+  else if(value > options.max){
+    input.val(options.max);
+    msg = pre + '此商品最多只能购买' + options.max + '件';
+  }
+  else if(isNaN(value)) {
+    input.val(options['default']);
+    msg = '只允许输入数字';
+  }
+  if (msg) {
+    // tips.show(msg);
+    Message.error(msg);
+    return false;
+  }
+  // tips.hide();
+  if(options.callback) options.callback(input, options['default']);
+  return true;
+}
+
+$('#items_action_form').on('click', '.action-addcart', function (e) {
+  e.preventDefault();
+  var form = $('#items_action_form');
+  var $this = $(this);
+  if(spec_select.find('.on').size() < spec_size) {
+    return Message.error('请先选择完整规格。');
+  }
+  $.post(this.href, form.serialize(), function (rs) {
+      if(rs.error) {
+        return Message.error(rs.message);
+      }else{
+        form.parents('.dialog').data('instance').hide();
+        updateCartNumber();
+        return Message.success('加入购物车成功');
+      }
+    });
+});
+</script>

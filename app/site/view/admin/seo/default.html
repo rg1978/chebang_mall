@@ -1,0 +1,61 @@
+
+<form action='?app=site&ctl=admin_seo&act=saveseo&p[0]=default' method='post' class="settingform" id="site_basic" target="{update:'messagebox'}">
+    <div class="tableform">
+        <div class="division" style="position:static;">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shop-setting">
+                <tr>
+                    <th><{t}>TITLE(页面标题)：<{/t}></th>
+                    <td>
+                        <input type="text" name="seo_title" value="<{$param.seo_title}>" vtype="required" class="_x_ipt inputstyle" size="40%" >
+                    </td>
+                </tr>
+                <tr>
+                    <th>META_KEYWORDS<br /><{t}>(关键词)：<{/t}></th>
+                    <td>
+                        <input type="text" name="seo_keywords" value="<{$param.seo_keywords}>" vtype="required" class="_x_ipt inputstyle"  size="40%" >
+                    </td>
+                </tr>
+                <tr>
+                    <th>META_DESCRIPTION<br /><{t}>(页面描述)：<{/t}></th>
+                    <td>
+                        <textarea style="width:90%" name="seo_content" class="inputstyle" rows="6"><{$param.seo_content}></textarea>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="table-action">
+        <{button type="submit" label="保存"|t:'site' id="btn_seo_default_submit" }>
+    </div>
+</form>
+
+<script>
+  (function(){
+    var _form = $('site_basic');
+    var btn =$('btn_seo_default_submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+  })();
+</script>

@@ -1,0 +1,34 @@
+<div class="folder-box">
+  <div class="folder-info-item" data-img-catid="0" data-open-state="<{if $activeImageCatId == 0}>1<{else}>0<{/if}>">
+    <div class="item-img">
+      <i class="glyphicon <{if $activeImageCatId == 0}>glyphicon-folder-open<{else}>glyphicon-folder-close<{/if}>"></i>
+    </div>
+    <div class="item-txt">
+      <p>默认</p>
+    </div>
+  </div>
+  <{if $imageShopCatList}>
+  <{foreach from=$imageShopCatList item=row}>
+  <div class="folder-info-item" data-img-catid="<{$row.image_cat_id}>" data-open-state="<{if $activeImageCatId == $row.image_cat_id}>1<{else}>0<{/if}>">
+    <div class="item-img">
+      <i class="glyphicon <{if $activeImageCatId == $row.image_cat_id}>glyphicon-folder-open<{else}>glyphicon-folder-close<{/if}>"></i>
+    </div>
+    <div class="item-txt">
+      <p title="<{$row.image_cat_name}>"><{$row.image_cat_name}></p>
+    </div>
+  </div>
+  <{/foreach}>
+  <{/if}>
+</div>
+<script>
+//文件夹请求
+$('.folder-info-item').on('click', function() {
+  var folderIcon = $(this).find('.glyphicon');
+  folderIcon.addClass('glyphicon-folder-open');
+  $(this).siblings('.folder-info-item').find('.glyphicon').removeClass('glyphicon-folder-open').addClass('glyphicon-folder-close');
+  $(this).attr('data-open-state', '1').siblings('.folder-info-item').attr('data-open-state', '0');
+  var imgCatId = $(this).attr('data-img-catid');
+  getList2(imgCatId);
+  
+});
+</script>

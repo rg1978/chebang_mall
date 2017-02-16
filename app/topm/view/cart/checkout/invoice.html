@@ -1,0 +1,46 @@
+<div class="delivery fold">
+  <div class="l">需要发票？</div>
+  <div class="r">
+    <span id="invoice-check">
+            <input id="for_invoiceneed" type="radio" name="invoice[need_invoice]" value="1">
+            <label for="for_invoiceneed">是</label>
+            <input id="for_noinvoice" type="radio" name="invoice[need_invoice]" value="0" checked="">
+            <label for="for_noinvoice">否</label>
+    </span>
+  </div>
+</div>
+<div class="invoice-info" style="display:none">
+	<div class="delivery fold">
+		<div class="l">发票类型：</div>
+		<div class="r select">
+			<label><input type="radio" name="invoice[invoice_type]" value="normal" checked class="invoice-type"><span>普通发票</span></label>
+		</div>
+	</div>
+	<div class="delivery fold">
+		<div class="l">抬头类型：</div>
+		<div class="r select">
+			<select name="invoice[invoice_title]" id="" class="action-select-shipping">
+              <option value="individual" <{if $invoice.invoice_title=='individual'}>selected="selected"<{/if}>>个人</option>
+              <option value="unit" <{if $invoice.invoice_title=='unit'}>selected="selected"<{/if}>>单位</option>
+            </select>
+		</div>
+	</div>
+	<div class="delivery fold">
+	<div class="l">抬头名称：</div>
+	</div>
+	<div class="words">
+	<input class="x-input" type="text" maxlength="100" name="invoice[invoice_content]" value="<{$invoice.invoice_content}>" placeholder="请填写发票抬头" >
+	</div>
+	<div class="delivery fold">
+		<div class="l">发票内容：</div>
+		<div class="r">
+			<span>由商家直接开具</span>
+		</div>
+	</div>
+	<div class="delivery fold">
+		<div class="r">
+			<span>备注：订单中的商品由入驻商家销售，发票内容由商家决定（如需修改，请联系商家），发票由商家开具寄出。</span>
+		</div>
+	</div>
+	<div class="delivery fold"></div>
+</div>

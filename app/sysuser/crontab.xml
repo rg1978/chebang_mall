@@ -1,0 +1,7 @@
+<cronentries>
+    <cron id="sysuser_tasks_hognbaoExpired">
+        <description>定时修改用户领取的已过期红包</description>
+        <schedule>* 1-7/1 * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

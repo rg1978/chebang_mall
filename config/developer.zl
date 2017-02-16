@@ -1,0 +1,9 @@
+Product-Name = b2b2c-common-cluster-source_php5.6
+Registered-To = developer default
+Max-Concurrent = 10
+Lease-Expiration = 60
+Wait-For-Lease = no
+Expires = Never
+Hardware-Locked = No
+Produced-By = ShopEx
+Verification-Code = wGFQlZcqX1mWZIgm7qi0BshOT0EjAhQPlHSG6hVYUZavHilkwO75oKsX7Q==

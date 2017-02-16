@@ -1,0 +1,72 @@
+<?php
+return  array(
+    'columns'=>array(
+        'statu_oid'=>array(
+            'type' => 'bigint',
+            'unsigned' => true,
+            'autoincrement' => true,
+            'required' => true,
+            'label' => 'id',
+            'comment' => app::get('sysstat')->_('会员订单完成量id 自赠'),
+            'order' => 1,
+        ),
+        'user_id' => array(
+            'type' => 'table:account@sysuser',
+            'required' => true,
+            'comment' => app::get('sysstat')->_('用户'),
+        ),
+        'user_name' => array(
+            'type' => 'string',
+            'default' => 'customer',
+            'comment' => app::get('sysstat')->_('用户名'),
+            'label' => app::get('sysshop')->_('用户名'),
+            'in_list'=>true,
+            'default_in_list'=>true,
+            'is_title' => true,
+        ),
+        'userfee'=>array(
+            'type' => 'number',
+            'default' => 0,
+            'label' => app::get('sysstat')->_('下单额'),
+            'comment' => app::get('sysstat')->_('下单额'),
+            'in_list'=>true,
+            'default_in_list'=>true,
+            'is_title' => true,
+            'order' => 5,
+        ),
+        'userordernum'=>array(
+            'type' => 'number',
+            'default' => 0,
+            'label' => app::get('sysstat')->_('下单量'),
+            'comment' => app::get('sysstat')->_('下单量'),
+            'in_list'=>true,
+            'default_in_list'=>true,
+            'is_title' => true,
+            'order' => 3,
+        ),
+        'experience' =>array(
+            'type' => 'number',
+            'label' => app::get('sysuser')->_('经验值'),
+            'comment' => app::get('sysstat')->_('经验值'),
+            'in_list'=>true,
+            'default_in_list'=>true,
+            'is_title' => true,
+            'default' => 0,
+        ),
+        'createtime'=>array(
+            'type'=>'time',
+            'comment' => app::get('sysstat')->_('统计时间'),
+            'label' => app::get('sysstat')->_('统计时间'),
+           /* 'in_list'=>true,
+            'default_in_list'=>true,
+            'is_title' => true,*/
+            'filtertype' => true,
+            'filterdefault' => 'true',
+        ),
+    ),
+    'primary' => 'statu_oid',
+    'index' => array(
+        'ind_createtime' => ['columns' => ['createtime']],
+    ),
+    'comment' => app::get('sysstat')->_('会员统计表'),
+);

@@ -1,0 +1,24 @@
+<header class="home-header">
+  <div class="header-logo"><{widgets id="wap_logo"}></div>
+  <div class="main">
+    <form action="<{url action=topwap_ctl_item_list@index}>" method="post" id="goods_search">
+    <div class="shopex-input-row header-search-form"><input type="search" name="search_keywords" class="header-search shopex-input-clear" placeholder="寻找感兴趣的商品"></div>
+    </form>
+  </div>
+  <a id="login_btn" href="<{url action=topwap_ctl_passport@goLogin}>" class="txt-func">登录</a>
+  <a id="member_btn" href="<{url action=topwap_ctl_member@index}>" class="icon-func bbc-icon bbc-icon-user-empty" style="display:none"></a>
+
+</header>
+
+<script>
+$(function(){
+	var name = decodeURIComponent($.cookie('UNAME') || '');
+	if(name){
+		$("#login_btn").hide();
+		$("#member_btn").show();
+	}else{
+		$("#login_btn").show();
+		$("#member_btn").hide();
+	}
+});
+</script>

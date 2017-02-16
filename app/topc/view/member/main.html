@@ -1,0 +1,21 @@
+<!-- main container -->
+<div class="row member-container">
+  <div class="col-lg-3 box member-container-left">
+    <div ><a href="<{url action=topc_ctl_member@index}>"  class="member-home-btn">会员中心</a> </div>
+    <div class="side-nav">
+      <{foreach from=$cpmenu item=menus}>
+      <div class="side-nav-item">
+        <div class="side-nav-title"><{$menus.label}></div>
+        <ul class="side-nav-list">
+          <{foreach from=$menus.items item=items}>
+          <li <{if $action == $items.action}> class="on"<{/if}>><a href="<{url action=$items.action}>"><{$items.label}></a></li>
+          <{/foreach}>
+        </ul>
+      </div>
+      <{/foreach}>
+    </div>
+  </div>
+  <div class="col-lg-13 box">
+    <{include file=$_PAGE_}>
+  </div>
+</div>

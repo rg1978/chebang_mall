@@ -1,0 +1,10 @@
+   <{foreach from=$pointdata item=point}>
+        <li>
+          <div class="box">
+          <div><{$point.remark}><br /><span class="time"><{$point.modified_time|cdate}></span></div>
+          <div class="<{if $point.behavior_type == 'obtain'}>up<{elseif $point.behavior_type == 'consume'}>down<{/if}>"><span><{if $point.behavior_type == "obtain"}>+<{elseif $point.behavior_type == "consume"}>-<{/if}><{$point.point}></span>
+          </div>   
+          <div><span><{$point.behavior}></span></div>
+          </div>          
+        </li>
+        <{/foreach}>

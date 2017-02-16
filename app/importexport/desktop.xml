@@ -1,0 +1,27 @@
+<desktop>
+  <permissions>
+    <permission id="import" display='true' parent='0' workground='system'>导入队列列表</permission>
+    <permission id="import_view" display='true' parent='import' workground='system'>导入操作</permission>
+    <permission id="import_delete" display='true' parent='import' workground='system'>导入队列删除</permission>
+
+    <permission id="export" display='true' parent='0' workground='system'>导出队列列表</permission>
+    <permission id="export_view" display='true' parent='export' workground='system'>导出操作</permission>
+    <permission id="export_delete" display='true' parent='export' workground='system'>导出队列删除</permission>
+    
+    <permission id="importexport_set" display='true' parent='0' workground='system'>导入导出队列存储方式配置</permission>
+  </permissions>
+    <workground name="系统" id="system" controller="admin_export" action="queue_export" order='100'>
+        <menugroup name="队列导入导出">
+            <menu controller='admin_system' action='setting' permission='importexport_set' display='true' order='10'>存储方式配置</menu>
+            <menu controller='admin_export' action='queue_export' permission='export' display='true' order='10'>导出队列</menu>
+            <menu controller='admin_export' action='queue_export' permission='export_delete' params="action:dodelete" display='false' order='10'>导出队列删除</menu>
+            <menu controller='admin_export' action='export_view' permission='export_view' display='false' order='10'>导出页面</menu>
+            <menu controller='admin_export' action='create_export' permission='export_view' display='false' order='10'>导出操作</menu>
+            <menu controller='admin_import' action='queue_import' permission='import' display='true' order='10'>导入队列</menu>
+            <menu controller='admin_import' action='queue_import' permission='import_delete' params="action:dodelete" display='false' order='10'>导入队列删除</menu>
+            <menu controller='admin_import' action='import_view' permission='import_view' display='false' order='10'>导入页面</menu>
+            <menu controller='admin_import' action='create_import' permission='import_view' display='false' order='10'>导入操作</menu>
+        </menugroup>
+    </workground>
+</desktop>
+

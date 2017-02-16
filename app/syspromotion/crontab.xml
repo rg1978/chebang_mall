@@ -1,0 +1,23 @@
+<cronentries>
+    <cron id="syspromotion_tasks_coupon">
+        <description>定时修改已过期优惠券状态</description>
+        <schedule>* 1-7/1 * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+    <cron id="syspromotion_tasks_overdue">
+        <description>清理过期活动</description>
+        <schedule>59 0 * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+    <cron id="syspromotion_tasks_hongbao">
+        <description>定期修改已过期红包</description>
+        <schedule>* * * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+    <cron id="syspromotion_tasks_remind">
+        <description>定时处理活动提醒</description>
+        <schedule>10 * * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+
+</cronentries>

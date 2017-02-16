@@ -1,0 +1,122 @@
+<?php
+//异常订单表
+return  array (
+    'columns' => array(
+        'cancel_id' => array(
+            'type' => 'bigint',
+            'unsigned' => true,
+            'autoincrement' => true,
+            'required' => true,
+            'comment' => app::get('systrade')->_('自增ID'),
+        ),
+        'user_id' => array(
+            'type' => 'number',
+            'comment' => '会员id',
+        ),
+        'shop_id' => array(
+            'type' => 'number',
+            'comment' => '店铺id',
+        ),
+        'tid' => array(
+            'type' => 'bigint',
+            'required' => true,
+            'label' => app::get('systrade')->_('订单编号'),
+            'searchtype' => 'has',
+            'filtertype' => 'custom',
+            'filterdefault' => true,
+            'in_list' => true,
+            'default_in_list' => true,
+            'width' => 100,
+            'order' => 11,
+        ),
+        'pay_type' => array(
+            'type' => array(
+                'online' => '线上付款',
+                'offline' => '货到付款',
+            ),
+            'default'=>'online',
+            'required' => true,
+            'width' => '50',
+            'label' => app::get('systrade')->_('支付类型'),
+            'comment' => app::get('systrade')->_('支付类型'),
+        ),
+        'payed_fee' => array (
+            'type' => 'money',
+            'default' => '0',
+            'editable' => false,
+            'comment' => app::get('systrade')->_('取消订单已支付金额'),
+        ),
+        'reason' => array(
+            'type' => 'string',
+            'in_list' => true,
+            'default_in_list' => true,
+            'label' => app::get('systrade')->_('取消原因'),
+        ),
+        'shop_reject_reason' => array(
+            'type' => 'string',
+            'in_list' => true,
+            'default_in_list' => true,
+            'label' => app::get('systrade')->_('商家拒绝理由'),
+        ),
+        'cancel_from' => array(
+            'type' => array(
+                'buyer' => '用户取消订单',
+                'shop' => '商家取消订单',
+                'shopadmin' => '平台取消订单',
+            ),
+            'default' => 'buyer',
+            'in_list' => true,
+            'default_in_list' => true,
+            'label' => app::get('systrade')->_('类型'),
+        ),
+        'process' => array(
+            'type' => array(
+                '0' => '提交申请',
+                '1' => '取消处理',
+                '2' => '退款处理',
+                '3' => '完成',
+            ),
+            'default' => '0',
+            'required' => true,
+            'in_list' => true,
+            'default_in_list' => true,
+            'label' => app::get('systrade')->_('处理进度'),
+        ),
+        'refunds_status' => array(
+            'type' => array(
+                'WAIT_CHECK' => '等待审核',
+                'WAIT_REFUND' => '等待退款',
+                'SHOP_CHECK_FAILS' => '商家审核不通过',
+                'FAILS' => '退款失败',
+                'SUCCESS' => '退款成功',
+            ),
+            'default' => 'WAIT_CHECK',
+            'required' => true,
+            'in_list' => true,
+            'default_in_list' => true,
+            'label' => app::get('systrade')->_('退款状态'),
+        ),
+        'created_time' => array(
+            'type' => 'time',
+            'in_list' => true,
+            'default_in_list' => true,
+            'width' => '100',
+            'order' => 18,
+            'label' => app::get('systrade')->_('创建时间'),
+        ),
+        'modified_time' => array(
+            'type' => 'last_modify',
+            'in_list' => true,
+            'default_in_list' => true,
+            'label' => app::get('systrade')->_('最后更新时间'),
+        ),
+    ),
+    'primary' => 'cancel_id',
+    'index' => array(
+        'ind_tid' => ['columns' => ['tid']],
+        'ind_shop_id' => ['columns' => ['shop_id']],
+        'ind_created_time' => ['columns' => ['created_time']],
+        'ind_status' => ['columns' => ['process']],
+    ),
+    'comment' => app::get('systrade')->_('取消订单表'),
+);

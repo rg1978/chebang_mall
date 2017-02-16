@@ -1,0 +1,11 @@
+<{include file="topwap/content/content_header.html"}>
+<section class="container section-white">
+	<div class="shoex-content">
+		<ul class="shopex-table-view">
+			<{foreach from=$nodeList item=nodelist}>
+			<li class="shopex-table-view-cell"><a
+				class="shopex-navigate-right" href="<{url action=topwap_ctl_content@childNodeList node_id=$nodelist.node_id}>"><{$nodelist.node_name}></a></li>
+			<{/foreach}>
+		</ul>
+	</div>
+</section>

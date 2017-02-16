@@ -1,0 +1,162 @@
+<div class="tabs-wrap">
+  <ul>
+    <li class="tab current"><span><{t}>App端楼层展示<{/t}></span></li>
+  </ul>
+</div>
+<div class="tableform clearfix">
+  <div class=" fl item" style="margin-left: 30px;">
+    <h5 style="margin-bottom:10px; margin-top: 20px;">第一步：选择页面布局</h5>
+    <div class="clearfix" id="panel">
+      <div class="fl" style="width: 100px; text-align: center;">
+        <table class="gridlist" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 10px;">
+          <tbody>
+            <tr>
+              <td width="50%" style="height: 80px;">1</td>
+              <td width="50%">2</td>
+            </tr>
+          </tbody>
+        </table>
+        <input  id="panel-01" name="styletag" type="radio" checked value="one" <{if $setting.styletag=='one' || $setting.styletag==''}>checked<{/if}>>
+        <label for="panel-01">风格一</label>
+      </div>
+      <div class="fl" style="width: 100px; margin-left: 30px; text-align: center;">
+        <table class="gridlist" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 10px;">
+          <tbody>
+            <tr>
+              <td width="50%" colspan="2" style="height: 40px;">1</td>
+              <td width="50%" rowspan="2">4</td>
+            </tr>
+            <tr>
+              <td style="height: 40px;">2</td>
+              <td>3</td>
+            </tr>
+          </tbody>
+        </table>
+        <input id="panel-02" type="radio" name="styletag" value="two" <{if $setting.styletag=='two'}>checked<{/if}>>
+        <label for="panel-02">风格二</label>
+      </div>
+      <div class="fl" style="width: 100px; margin-left: 30px; text-align: center;">
+        <table class="gridlist" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 10px;">
+          <tbody>
+            <tr>
+              <td width="50%" rowspan="2" style="height: 80px;">1</td>
+              <td width="50%" style="height: 40px;" colspan="2">2</td>
+            </tr>
+            <tr>
+              <td style="height: 40px;">3</td>
+              <td>4</td>
+            </tr>
+          </tbody>
+        </table>
+        <input id="panel-03" type="radio" name="styletag" value="three" <{if $setting.styletag=='three'}>checked<{/if}>>
+        <label for="panel-03">风格三</label>
+      </div>
+    </div>
+    <h5 style="margin-bottom:10px; margin-top: 20px;">第二步：设置导购栏目</h5>
+    <div class="piccontent">
+      <div class="thirdtag">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <th>设置栏目名称: </th>
+              <td>
+                <input type='text' name="title" value="<{$setting.title}>">
+              </td>
+              <th>更多链接: </th>
+              <td>
+                <{input type="applink" name="morelink" value=$setting.morelink linktypename="linktype" linktypevalue=$setting.linktype}>
+
+              </td>
+            </tr>
+            <tr><td></td><td></td></tr>
+            <tr id="pic0">
+              <th>上传图片1: </th>
+              <td>
+                <input type='text' name="pic[0][image]" class="imgsrc" value="<{$setting.pic.0.image}>">
+                <input type="button" value="上传图片" class="uploadbtn">
+              </td>
+              <th>设置图片链接: </th>
+              <td>
+                <{input type="applink" name="pic[0][link]" value=$setting.pic.0.link linktypename="pic[0][linktype]" linktypevalue=$setting.pic.0.linktype}>
+              </td>
+            </tr>
+            <tr id="pic1">
+              <th>上传图片2: </th>
+              <td>
+                <input type='text' name="pic[1][image]" class="imgsrc" value="<{$setting.pic.1.image}>">
+                <input type="button" value="上传图片" class="uploadbtn">
+              </td>
+              <th>设置图片链接: </th>
+              <td>
+                <{input type="applink" name="pic[1][link]" value=$setting.pic.1.link linktypename="pic[1][linktype]" linktypevalue=$setting.pic.1.linktype}>
+              </td>
+            </tr>
+            <tr id="pic2">
+              <th>上传图片3: </th>
+              <td>
+                <input type='text' name="pic[2][image]" class="imgsrc" value="<{$setting.pic.2.image}>">
+                <input type="button" value="上传图片" class="uploadbtn">
+              </td>
+              <th>设置图片链接: </th>
+              <td>
+                <{input type="applink" name="pic[2][link]" value=$setting.pic.2.link linktypename="pic[2][linktype]" linktypevalue=$setting.pic.2.linktype}>
+              </td>
+            </tr>
+            <tr id="pic3">
+              <th>上传图片4: </th>
+              <td>
+                <input type='text' name="pic[3][image]" class="imgsrc" value="<{$setting.pic.3.image}>">
+                <input type="button" value="上传图片" class="uploadbtn">
+              </td>
+              <th>设置图片链接: </th>
+              <td>
+                <{input type="applink" name="pic[3][link]" value=$setting.pic.3.link linktypename="pic[3][linktype]" linktypevalue=$setting.pic.3.linktype}>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  (function(){
+    var styleTagName = '<{$setting.styletag|default:"one"}>';
+    cleanInput(styleTagName);
+
+    $$("input[name=styletag]").addEvent('click',function(e){
+      var styleTagName = this.value;
+      cleanInput(styleTagName);
+    });
+
+    function cleanInput(styleTagName)
+    {
+        if(styleTagName == 'one'){
+            $("pic2").set('value', '').hide();
+            $("pic3").set('value', '').hide();
+        }
+        if(styleTagName == 'three'){
+          $("pic2").set('value', '').show();
+          $("pic3").set('value', '').show();
+        }
+        if(styleTagName == 'two'){
+          $("pic2").set('value', '').show();
+          $("pic3").set('value', '').show();
+        }
+    }
+    var tag_type='tr';
+    $$(".piccontent .uploadbtn").addEvent('click',function(e){bindevent(this)});
+    function bindevent(el){
+      var target=$(el).getParent(tag_type).getElement('.imgsrc');
+      var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+      var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;  
+      Ex_Loader('modedialog',function(){
+        return new imgDialog(url,{onCallback:function(image_id,image_src){
+          target.value=image_src;
+        }});
+      });
+    }
+  })();
+</script>

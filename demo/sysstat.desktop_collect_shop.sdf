@@ -1,0 +1,3 @@
+a:6:{s:15:"collect_shop_id";i:1;s:7:"shop_id";i:3;s:8:"shopname";s:34:"onexbbc自营店（自营店铺）";s:10:"collectnum";i:1;s:7:"shopurl";s:72:"http://192.168.65.145/bbcdemo/public/index.php/shopcenter.html?shop_id=3";s:10:"createtime";i:1453737600;}
+a:6:{s:15:"collect_shop_id";i:2;s:7:"shop_id";i:2;s:8:"shopname";s:21:"Lenovo品牌专卖店";s:10:"collectnum";i:1;s:7:"shopurl";s:72:"http://192.168.65.145/bbcdemo/public/index.php/shopcenter.html?shop_id=2";s:10:"createtime";i:1453737600;}
+a:6:{s:15:"collect_shop_id";i:3;s:7:"shop_id";i:1;s:8:"shopname";s:9:"GAP官方";s:10:"collectnum";i:1;s:7:"shopurl";s:72:"http://192.168.65.145/bbcdemo/public/index.php/shopcenter.html?shop_id=1";s:10:"createtime";i:1453737600;}

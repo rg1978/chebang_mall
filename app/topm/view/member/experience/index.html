@@ -1,0 +1,124 @@
+<div class="member shop member-detail">
+  <{include file="topm/common/top.html"}>
+  <div class="main">
+    <div class="info-hd">
+      <!-- <div class="grow-grade">
+        <div class="left">
+          <h2>会员等级：</h2>
+          <div class="grow-grade-current member-level"><i class="icon icon-grade"></i><{$grade.userlist.gradename}></div>
+          <div><a href="<{url action=topm_ctl_member_experience@grade }>">成长值详情></a></div>
+        </div>
+        <div class="right">
+          <div class="grow-grade-number">
+            <p>
+              <span class="l1">当前成长值：<{$grade.userlist.experience}></span>
+              <span class="l2">到下一等级：<{$grade.userlist.lackExp}></span>
+            </p>
+            <i class="icon-location"></i>
+          </div>
+        </div>
+      </div> -->
+
+      <p class="txt">当前等级：<span class="memver-level"><{$grade.userlist.gradename}></span></p>
+      <div class="grow-grade-top" id="grow_grade_top">
+        <div class="chart">
+          <div class="line">
+            <{foreach from=$grade.gradeList item=grades key=gkey name=name}>
+            <div class="line-fragment">
+              <a href="<{url action=topm_ctl_member_experience@grade }>" class="grade <{if $grades.current == 'true'}>on big<{/if}> <{if $grades.past}>on<{/if}><{if $env.foreach.name.first }> first <{elseif $env.foreach.name.last}>last<{/if}>">V<{$gkey+1}></a>
+              <div class="pop-wrap">
+              <{if !$env.foreach.name.last}>
+              <b class="<{if $grades.past}>on full<{else}>on<{/if}> "><em style="<{if $grades.current == 'true'}> width:<{$grade.userlist.percentage}>%<{/if}>"></em></b>
+              <{/if}>
+              <div class="grow-pop" style="left: <{$grade.userlist.percentage}>%; <{if $grades.current == 'true'}>display:block<{/if}>">
+                <p>
+                  <span class="l1">当前成长值：<{$grade.userlist.experience}></span>
+                  <span class="l2">到下一等级：<{$grade.userlist.lackExp}></span>
+                  <span class="icon-arrow-down"></span>
+                </p>
+                <i class="icon-place"></i>
+              </div>
+            </div>
+            </div>
+            <{/foreach}>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="info-bd2">
+      <div class="grow-table-hd">成长记录</div>
+      <ul class="grow-value-table">
+        <li>
+          <div class="box">
+            <div>记录时间</div>
+            <div>行为</div>
+            <div>成长值</div>
+            <div>备注</div>
+          </div>
+        </li>
+        <div class="order-list main">
+          <div class="showarea ui-refresh">
+            <{if $experiencedata}>
+            <div class="data-list" id="content">
+              <{include file="topm/member/experience/experience.html"}>
+            </div>
+            <div class="ui-refresh-handle">
+              <div class="ui-refresh-down"></div>
+            </div>
+            <{else}>
+            <li>
+              <div>
+                <div class="empty-area">
+                  <i class="icon icon-order"></i>
+                  <span class="empty-txt">你还没有成长值明细~</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <{/if}>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+<script >
+  var pagers = <{$pagers|json_encode}>;
+  pagers.next = pagers.current + 1;
+  $('.ui-refresh').refresh({
+    init: function () {
+      if(pagers.current == pagers.total) {
+        this.disable();
+      }
+    },
+    load: function (dir, type) {
+      var self = this;
+      var $list = $('.data-list');
+      $.get('<{url action=topm_ctl_member_experience@ajaxExperienceShow}>', location.search.slice(1) + '&pages=' + pagers.next, function (rs) {
+        console.log(rs);
+        if(rs.success) {
+          pagers.next = +rs.pagers.current + 1;
+          $list[dir == 'up' ? 'prepend' : 'append'](rs.html);
+        }
+        self.afterDataLoading();
+        if(rs.pagers.current == rs.pagers.total) {
+          self.disable();
+        }
+      });
+    }
+  });
+  var dvWidth = parseInt($('.grow-grade-top').css('width'));
+  $('#grow_grade_top').swipeRight(function() {
+    if($(window).width() < dvWidth){
+      if(parseInt($('.grow-grade-top').css('left')) <= (-320)) {
+        $('.grow-grade-top').css('left','0');
+      }
+    }
+  });
+  $('#grow_grade_top').swipeLeft(function() {
+     if($(window).width() < dvWidth){
+      if(parseInt($('.grow-grade-top').css('left')) > (-320)) {
+        $('.grow-grade-top').css('left','-320px');
+      }
+    }
+  });
+</script>

@@ -1,0 +1,12 @@
+<desktop>
+
+<adminpanel group="desktop_setting" controller="admin_setting" action="index" permission="shopsetting" display="true" order='10'>商店设置</adminpanel>
+
+
+    <workground name="站点" id="site.wrokground.theme">
+        <menugroup name="站点管理">
+            <menu app='sysconf' controller='admin_setting' action='wapSet' permission='site' display='true' order="50">站点设置(移动端)</menu>
+        </menugroup>
+    </workground>
+</desktop>
+

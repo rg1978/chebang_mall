@@ -1,0 +1,62 @@
+<desktop>
+    <!--<panelgroup id="network" icon="panel-network.png" order="80">联网</panelgroup>-->
+    <panelgroup id="setting" icon="panel-setting.png" order="10">商店配置</panelgroup>
+    <panelgroup id="user" icon="panel-user.png" order="50">管理员和权限</panelgroup>
+    <panelgroup id="other" icon="panel-other.png" order="70">其他</panelgroup>
+
+    <!--<adminpanel group="desktop_setting" controller="system" permission="performance" action="service" display='true' order="70">系统配置</adminpanel> -->
+    <!--<adminpanel group="desktop_network" controller="network">网店邻居</adminpanel> -->
+    <adminpanel group="desktop_setting" controller="email" permission="performance" action="setting" display='false'>系统配置</adminpanel>
+    <adminpanel group="desktop_user" permission="users" controller="users" display='true'>操作员管理</adminpanel>
+    <adminpanel group="desktop_user" permission="users" controller="users" action="addnew" display='false'>添加操作员</adminpanel>
+    <!-- <adminpanel group="desktop_user" permission="users" controller="users" action="chkpassword" display='false'>修改操作员密码</adminpanel> -->
+    <adminpanel group="desktop_user" permission="users" controller="users" action="saveUser" display='false'>保存操作员信息</adminpanel>
+    <adminpanel group="desktop_user" permission="users" controller="users" action="edit" display='false'>编辑操作员</adminpanel>
+    <adminpanel group="desktop_user" permission="users" controller="roles" display='true'>角色管理</adminpanel>
+    <adminpanel group="desktop_user" permission="users" controller="addnew" display='false'>添加角色</adminpanel>
+    <adminpanel group="desktop_user" permission="users" controller="save" display='false'>保存角色</adminpanel>
+    <adminpanel group="desktop_user" permission="users" controller="edit" display='false'>编辑角色</adminpanel>
+
+    <adminpanel group="desktop_setting" controller="certificate" action="index" permission="certificate" display="true" order='51'>授权证书</adminpanel>
+    <adminpanel group="desktop_setting" controller="certificate" action="upLicense" permission="certificate" display="false" order='51'>授权证书</adminpanel>
+    <adminpanel group="desktop_setting" controller="certificate" action="upLicense" permission="certificate" display="false" order='51'>上传授权证书</adminpanel>
+    <adminpanel group="desktop_setting" controller="certificate" action="download" permission="certificate" display="false" order='51'>下载授权证书</adminpanel>
+    <adminpanel group="desktop_setting" controller="certificate" action="delete" permission="certificate" display="false" order='51'>删除授权证书</adminpanel>
+    <adminpanel group="desktop_setting" controller="adminpanel" action="index" permission="setting" display="false" order='20'>配送方式</adminpanel>
+    <adminpanel group="desktop_other" permission="datamgr" controller="data" display='true'>数据备份与还原</adminpanel>
+    <adminpanel group="desktop_other" permission="datamgr" controller="backup" display='false'>数据备份</adminpanel>
+    <adminpanel group="desktop_other" permission="datamgr" controller="comeback" display='false'>数据还原</adminpanel>
+    <adminpanel group="desktop_other" permission="datamgr" controller="debug" display='false'>清除体验数据</adminpanel>
+    <adminpanel group="desktop_other" permission="cleanmembercenterrelation" controller="cleanexpired" display='true'>清除中心关系数据</adminpanel>
+    <adminpanel group="desktop_other" permission="performance" controller="cachemgr" display='false'>缓存管理</adminpanel>
+    <adminpanel group="desktop_other" permission="performance" controller="cachemgr" action="status" display='true' order="50">缓存管理</adminpanel>
+    <adminpanel group="desktop_other" permission="performance" controller="cachemgr" action="optimize" display='false'>优化缓存</adminpanel>
+    <adminpanel group="desktop_other" permission="performance" controller="cachemgr" action="clean" display='false'>清空缓存</adminpanel>
+    <adminpanel group="desktop_setting" permission="shopsetting" controller="appmgr" action="index" display='true' order="20">应用中心</adminpanel>
+    <adminpanel group="desktop_other" permission="shortcut" controller="system" action="set_title" display='true'>后台快捷链接设置</adminpanel>
+    <widgets id="sysstat_desktop_widgets_applyData" order="30">店铺</widgets>
+    <widgets id="sysstat_desktop_widgets_promotionData" order="30">营销</widgets>
+    <widgets id="sysstat_desktop_widgets_siteData" order="30">站点</widgets>
+    <widgets id="sysstat_desktop_widgets_statData" order="30">报表</widgets>
+    <widgets id="sysstat_desktop_widgets_tradeData" order="30">交易</widgets>
+    <widgets id="sysstat_desktop_widgets_userData" order="30">会员</widgets>
+    <permissions>
+        <permission id="shopsetting" display='true'>商店设置</permission>
+        <!-- <permission id="appmgr" display='true'>应用中心</permission> -->
+        <permission id="certificate" display='true'>授权证书</permission>
+        <permission id="enterprise" display='true'>企业账号</permission>
+        <permission id="datamgr" display='true'>数据备份与还原</permission>
+        <permission id="cleanmembercenterrelation" display='true'>清除中心关系</permission>
+        <permission id="shortcut" display='true'>后台快捷链接设置</permission>
+        <permission id="performance" display='true'>缓存,队列,计划任务管理</permission>
+        <permission id="system_messenger_set_email" parent="system_messenger" display='true'>邮件账号设置</permission>
+        <permission id="users" display='true'>权限管理</permission>
+        <permission id="other" display='true'>其他</permission>
+    </permissions>
+
+    <workground name="系统" id="system" controller="admin_crontab" action="index" order="205">
+        <menugroup name="邮件短信配置">
+            <menu controller="email" permission='system_messenger_set_email' action="setting" display='false' order='3'>邮件账号设置</menu>
+        </menugroup>
+    </workground>
+</desktop>

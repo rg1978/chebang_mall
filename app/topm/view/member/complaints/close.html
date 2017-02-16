@@ -1,0 +1,43 @@
+<div class="apply shop order-detail">
+  <{include file="topm/common/top.html"}>
+  <div class="main">
+    <form action="<{url action=topm_ctl_member_complaints@closeComplaints}>" method="post" id="ajaxForm" class="form-tip-horizontal">
+      <input type='hidden' name='complaints_id' value='<{$complaints_id}>'>
+      <input type='hidden' name='oid' value='<{$oid}>'>
+      <div class="apply-info complain-status">
+        <ul class="repeal-list">
+          <li class="form-row">
+            <label for="for-type" class="form-label">投诉类型：</label>
+            <div class="txt"><{$complaints_type}></div>
+          </li>
+          <li class="form-row">
+            <label for="for-type" class="form-label">描述问题：</label>
+            <div class="txt"><{$content}></div>
+          </li>
+        <{if $image_url}>
+        <li clas="form-row">
+          <label for="for-type" class="form-label">投诉凭证：</label>
+          <div class="txt">
+            <{foreach from=$image_url item=pic}>
+            <img width="64" height="64" src="<{$pic|storager:t}>">
+            <{/foreach}>
+          </div>
+        </li>
+        <{/if}>
+        </ul>
+        <div class="msg">
+          <span class="hd">撤销原因：</span>
+          <textarea rows="3" name="buyer_close_reasons" placeholder="请输入投诉的原因，5-200字" class="comment"></textarea>
+        </div>
+      </div>
+      <div class="buy-action">
+        <button type="submit" class="ui-btn-warning">确认撤销</button>
+        <a  href="<{url action=topm_ctl_member_complaints@detail oid=$oid}>" class="cancel-now ui-btn-grey ui-btn">暂不撤销</a>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+
+</script>
+

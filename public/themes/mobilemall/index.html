@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <{header app=topwap}>
+  </head>
+
+  <!--首页头部-->
+  <body class="has-footer">
+    <{require file="block/header.html"}>
+    <!--首页顶部轮播-->
+    <section class="container">
+    <{widgets id="wap_top_slider"}>
+
+    <!--首页导航-->
+    <{widgets id="wap_nav_label"}>
+
+    <!--楼层-->
+    <{widgets id="wap_floor"}>
+    <!-- 商品类型 -->
+    <{widgets id="wap_goods_type"}>
+    <!-- 猜你喜欢商品 -->
+    <{widgets id="wap_like_goods_item"}>
+    
+    <{main app=topwap}>
+    <section class="section-white shopex-content-padded system-container">
+      <div class="system-type">
+        <a href="#" class="shopex-btn shopex-btn-warning shopex-btn-outlined btn-action-outlined">电脑版</a>
+      </div>
+      <div class="system-info">&copy; 2013 All rights reserved. Powered By ShopEx</div>
+    </section>
+  </section>
+  <{require file="block/footer.html"}>
+</body>
+<script>
+
+</script>
+</html>

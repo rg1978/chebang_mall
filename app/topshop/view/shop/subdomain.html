@@ -1,0 +1,52 @@
+<form  action="<{url action=topshop_ctl_shop_subdomain@saveSubdomain}>" method="post" class="form-horizontal" data-validate-onsuccess="ajaxSubmit" role="form">
+  <div class="panel panel-default">
+    <div class="info">
+      <span>二级域名设置说明：</span>
+      <span>
+      <br />1、基本规则，域名不能低于 4 个字符，不能超过 32 个字符。只能含有“字母”“数字”“-”，并且“-”不能出现在最前面或者最后面。
+      <br />2、已经被使用的域名是不能申请成功的。
+      <br />3、平台有权收回域名使用权。
+      <br />4、域名一共可以修改 <{$subdomain_limits|default:3}> 次。
+      </span>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">
+          <{t}>二级域名<{/t}>：
+        </label>
+        <div class="col-sm-4">
+          <input type="text" name="domain" required value="<{$subdomain}>" class="form-control" placeholder="二级域名" maxlength="32" minlength="4" required>
+        </div>
+        <label for="" class="col-sm-0 control-label">
+          <{t}>.<{$subdomain_basic}>    ，已经修改<{$times|default:0}>次<{/t}>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-5 col-sm-2">
+      <button type="submit" class="btn btn-primary btn-lg btn-block">提交审核</button>
+    </div>
+  </div>
+</form>
+
+<script>
+  function ajaxSubmit (e) {
+    var form = e.target;
+    e.preventDefault();
+    $.post(form.action, $(form).serialize(), function(rs) {
+      if(rs.error) {
+        $('#messagebox').message(rs.message);
+        return;
+      }
+      if(rs.success) {
+        $('#messagebox').message(rs.message, 'success');
+      }
+      if(rs.redirect) {
+        setTimeout(function(){location.href=rs.redirect;}, 800);
+      }
+    });
+  }
+</script>
+

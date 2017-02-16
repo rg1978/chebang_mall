@@ -1,0 +1,162 @@
+<{if $info.sendback_data}>
+<div class="form-horizontal">
+  <div class="border-box">
+    <div class="form-group">用户退换货物流信息：</div>
+    <div class="form-group">
+      <span class="order-form-w1">物流公司：</span><{$info.sendback_data.logi_name}>
+    </div>
+    <div class="form-group">
+      <span class="order-form-w1">运单号码：</span>
+      <span class="align-adjust-1"><{$info.sendback_data.logi_no}></span>
+    </div>
+    <{if $tracking && $tracking =='true' }>
+    <div class="form-group">
+      <span class="order-form-w1">物流跟踪：</span>
+      <span class="align-adjust-1" id="send_back_track">
+        <span id="click_get_track_back" class="sp-see">点击查看</span>
+      </span>
+    </div>
+    <{/if}>
+  </div>
+</div>
+<{/if}>
+
+<{if $info.aftersales_type == 'EXCHANGING_GOODS' }>
+
+<{if $info.sendconfirm_data}>
+<div class="border-box">
+  <div class="form-group">寄送信息：</div>
+  <{if ! $info.sendconfirm_data.return_trade_info }>
+  <div class="form-group">
+    <span class="order-form-w1 pull-left">用户收货信息：</span>
+    <span class="col-xs-8">
+      <{$info.sendback_data.receiver_address}>&nbsp;&nbsp;<{$info.sendback_data.mobile}>
+    </span>
+  </div>
+  <div class="form-group">
+    <span class="order-form-w1 pull-left">寄送物流信息：</span>
+    <span class="col-xs-8">
+      <span class="row">
+        <span>物流公司：<{$info.sendconfirm_data.logi_name}></span>
+      </span>
+      <span class="row">
+        <span>运单号码：<{$info.sendconfirm_data.logi_no}></span>
+      </span>
+    <{if $tracking && $tracking =='true' }>
+      <span class="clearfix">
+        <span class="pull-left">物流跟踪：</span>
+        <span class="pull-left" id="send_track">
+          <span id="click_get_track" class="sp-see">点击查看</span>
+        </span>
+      </span>
+      <{/if}>
+    </span>
+  </div>
+  <{else}>
+  <div class="form-group">
+    <span class="order-form-w1 pull-left"></span>
+    <span class="col-xs-8">
+      <{$info.sendconfirm_data.return_trade_info}>，
+      <{t}>您可将换货的订单号告知商家，由商家客服为您查找物流信息。<{/t}>
+    </span>
+  </div>
+  <{/if}>
+</div>
+<{else}>
+<div class="form-group">
+  <span class="order-form-w1 pull-left">用户收货信息：</span>
+  <span class="col-xs-8">
+    <{$info.sendback_data.receiver_address}>&nbsp;&nbsp;<{$info.sendback_data.mobile}>
+  </span>
+</div>
+<div class="form-group">
+  <span class="order-form-w1 pull-left"><a href="" data-toggle="modal" data-target="#logistics">填写物流信息></a></span>
+</div>
+<{/if}>
+
+<!--填写物流信息弹框-->
+<div class="modal fade" id="logistics">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">填写物流信息</h4>
+      </div>
+      <form action="<{url action=topshop_ctl_aftersales@sendConfirm}>" method="post" class="bg-white" data-validate-onsuccess="ajaxSubmit">
+        <input type='hidden' name='aftersales_bn' value="<{$info.aftersales_bn}>">
+        <div class="modal-body">
+          <div class="form-horizontal form-refund">
+            <div class="row">
+              <label for="" class="col-sm-4 control-label"><em class="text-red">*</em>选择物流公司</label>
+              <div class="col-xs-8">
+                <select name="corp_code" required="true" id="corp_code" data-validate-field="">
+                  <option value="">请选择</option>
+                  <{foreach from=$corpData item=item}>
+                  <option value="<{$item.corp_code}>-<{$item.corp_name}>" ><{$item.corp_name}></option>
+                  <{/foreach}>
+                  <option value="other">其他</option>
+                </select>
+                <div style="display:none" id="other"><input type="text" name='logi_name' placeholder="请填写物流公司名称" required></div>
+              </div>
+            </div>
+            <div class="row">
+              <label for="" class="col-sm-4 control-label"><em class="text-red">*</em>填写物流单号</label>
+              <div class="col-sm-8">
+                <input type="text" name='logi_no' required='true' minlength="6" maxlength="20">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<{/if}>
+<script>
+  $('#corp_code').change(function(){
+    if(this.value == "other"){
+      $('#other').show();
+    }else{
+      $('#other').hide();
+    }
+  });
+  function ajaxSubmit (e) {
+    var form = e.target;
+    e.preventDefault();
+    $.post(form.action, $(form).serialize(), function(rs) {
+      if(rs.error) {
+        $('#messagebox').message(rs.message);
+        return;
+      }
+      if(rs.success) {
+        $('#messagebox').message(rs.message, 'success');
+      }
+      if(rs.redirect) {
+        setTimeout(function(){location.href=rs.redirect;}, 800);
+      }
+    });
+  }
+
+  $('#click_get_track_back').click(function(e){
+    $('#send_back_track').html("加载中...");
+    $.post('<{url action=topshop_ctl_trade_detail@ajaxGetTrack}>',{'logi_no':'<{$info.sendback_data.logi_no}>','corp_code':'<{$info.sendback_data.corp_code}>'},function(rs){
+      if(rs.error){
+        return $('#messagebox').message(rs.message);
+      }
+      $('#send_back_track').html(rs);
+    });
+  });
+  $('#click_get_track').click(function(e){
+    $('#send_track').html("加载中...");
+    $.post('<{url action=topshop_ctl_trade_detail@ajaxGetTrack}>',{'logi_no':'<{$info.sendconfirm_data.logi_no}>','corp_code':'<{$info.sendconfirm_data.corp_code}>'},function(rs){
+      if(rs.error){
+        return $('#messagebox').message(rs.message);
+      }
+      $('#send_track').html(rs);
+    });
+  });
+</script>

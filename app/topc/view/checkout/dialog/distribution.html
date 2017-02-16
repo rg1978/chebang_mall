@@ -1,0 +1,43 @@
+<div id="distribution_dialog" class="distribution-dialog">
+  <ul>
+    <{if $dtytmpl}>
+    <li class="form-item">
+      <label for="" class="form-label">选择配送方式</label>
+      <{foreach from=$dtytmpl item=tmpl}>
+      <div class="item-addr form-act clearfix" data-id="<{$tmpl.template_id}>" data-addr="<{$tmpl.name}>" data-shopid="<{$tmpl.shop_id}>">
+        <span class="takegoods-addr active">
+          <div class="choose-triangle"></div>
+          <i class="icon icon-checkmark" data-icon="\2838"></i>
+          <{$tmpl.name}>[<{$tmpl.post_fee|cur}>]
+        </span>
+        <span class="sp-addr">
+          <{foreach from=$tmpl.corp_name item=corp}>
+          <{$corp.$corp_name}>
+          <{/foreach}>
+        </span>
+      </div>
+      <{/foreach}>
+      <span class="validation-messagebox"></span>
+    </li>
+    <li class="form-item last takegoods-item-action">
+      <label for="" class="form-label"></label>
+      <span class="form-act">
+        <button type="submit" class="btn btn-import" rel="_request"><span><span>确认配送方式</span></span></button>
+        <button type="button" class="btn btn-simple action-reset"><span><span>取消</span></span></button>
+      </span>
+    </li>
+    <li class="form-item takegoods-item-prompt">
+      <span class="form-act">
+        温馨提示：<br />
+        <label>您选择的配送方式根据不同地区运费和物流公司会有不同！</label>
+      </span>
+    </li>
+    <{else}>
+    <li class="form-item takegoods-item-prompt">
+      <span class="form-act">
+        <label>该店铺没有配送方式，请联系客服！</label>
+      </span>
+    </li>
+    <{/if}>
+  </ul>
+</div>

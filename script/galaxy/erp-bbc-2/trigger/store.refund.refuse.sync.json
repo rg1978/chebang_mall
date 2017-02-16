@@ -1,0 +1,11 @@
+{
+    "enabled": true,
+    "service": "httpd",
+    "title": "erp_bbc",
+    "pipe": "store.refund.refuse.sync",
+    "service_args": {
+        "path": "ecos.ome-bbc/store.refund.refuse/sync"
+    },
+    "pipe_params": {},
+    "input": null
+}

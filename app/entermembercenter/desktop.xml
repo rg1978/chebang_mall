@@ -1,0 +1,5 @@
+<desktop>
+    <adminpanel group="desktop_setting" controller="enterprise" action="index" permission="enterprise" display="true" order='60'>企业帐号</adminpanel>
+    <adminpanel group="desktop_setting" controller="enterprise" action="download" permission="enterprise" display="false" order='60'>企业帐号下载</adminpanel>
+    <adminpanel group="desktop_setting" controller="enterprise" action="upLicense" permission="enterprise" display="false" order='60'>企业帐号上传</adminpanel>
+</desktop>

@@ -1,0 +1,69 @@
+<desktop>
+
+    <permissions>
+        <permission id="site" display='true' workground='site.wrokground.theme'>站点管理</permission>
+        <permission id="theme" display='true' workground='site.wrokground.theme'>模板管理</permission>
+        <permission id="theme_edit" display='true' parent="theme" workground='site.wrokground.theme'>模板编辑</permission>
+        <permission id="theme_del" display='true' parent="theme" workground='site.wrokground.theme'>模板删除</permission>
+        <permission id="theme_download" display='true' parent="theme" workground='site.wrokground.theme'>模板下载</permission>
+        <permission id="theme_upload" display='true' parent="theme" workground='site.wrokground.theme'>模板上传</permission>
+        <permission id="seo" display='true' workground='site.wrokground.theme'>SEO管理</permission>
+        <permission id="wxshare" display='true' workground='site.wrokground.theme'>微信分享配置</permission>
+        <!--
+        <permission id="subdomain" display='true' workground='site.wrokground.theme'>二级域名配置</permission>
+        -->
+    </permissions>
+
+    <workground name="站点" id="site.wrokground.theme" controller="admin_theme_manage" action="index"  order="1">
+        <menugroup name="模板管理">
+            <menu controller='admin_theme_manage' action='index' permission='theme' display='true' order="5">模板列表(电脑端)</menu>
+            <!-- <menu controller='admin_theme_manage' action='index' params="platform:wap" permission='theme' display='true' order="6">模板列表(移动端)</menu> -->
+            <menu controller='admin_theme_manage' action='index' params="platform:mobile" permission='theme' display='true' order="6">模板列表(新移动端)</menu>
+            <menu controller='admin_theme_manage' action='editor' permission='theme_edit' display='false' order="5">可视化编辑(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='note' permission='theme_edit' display='false' order="5">模板备注页面(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='save_note' permission='theme_edit' display='false' order="5">保存模板备注(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='set_default' permission='theme_edit' display='false' order="5">设置默认模板(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='detail' permission='theme_edit' display='false' order="5">模板页面管理页面(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='bak' permission='theme_edit' display='false' order="5">备份模板(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='reset' permission='theme_edit' display='false' order="5">还原模板(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='cache_version' permission='theme_edit' display='false' order="5">清除模板缓存(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='maintenance' permission='theme_edit' display='false' order="5">维护模板(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='remove_theme' permission='theme_del' display='false' order="5">删除模板(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='download' permission='theme_download' display='false' order="5">下载模板(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='swf_upload' permission='theme_upload' display='false' order="5">上传模板窗口(pc、wap)</menu>
+            <menu controller='admin_theme_manage' action='upload' permission='theme_upload' display='false' order="5">上传模板(pc、wap)</menu>
+
+            <menu controller='admin_explorer_theme' action='directory' permission='theme_edit' display='false' order="5">模板源文件管理列表(pc、wap)</menu>
+            <menu controller='admin_explorer_theme' action='detail' permission='theme_edit' display='false' order="5">模板源文件详情(pc、wap)</menu>
+            <menu controller='admin_explorer_theme' action='svae_source' permission='theme_edit' display='false' order="5">保存模板源文件(pc、wap)</menu>
+            <menu controller='admin_explorer_theme' action='save_image' permission='theme_edit' display='false' order="5">保存模板源文件图片(pc、wap)</menu>
+            <menu controller='admin_explorer_theme' action='delete_file' permission='theme_edit' display='false' order="5">删除模板源文件(pc、wap)</menu>
+            <menu controller='admin_explorer_theme' action='recover_file' permission='theme_edit' display='false' order="5">恢复模板源文件(pc、wap)</menu>
+
+            <menu controller='admin_theme_tmpl' action='index' permission='theme_edit' display='false' order="5">模板页面列表(pc、wap)</menu>
+            <menu controller='admin_theme_tmpl' action='add' permission='theme_edit' display='false' order="5">添加模板新页面(pc、wap)</menu>
+            <menu controller='admin_theme_tmpl' action='add_source_page' permission='theme_edit' display='false' order="5">获取模板新页面源码页面(pc、wap)</menu>
+            <menu controller='admin_theme_tmpl' action='set_default' permission='theme_edit' display='false' order="5">设置默认模板文件(pc、wap)</menu>
+            <menu controller='admin_theme_tmpl' action='insert_tmpl' permission='theme_edit' display='false' order="5">插入模板文件(pc、wap)</menu>
+            <menu controller='admin_theme_tmpl' action='copy_tmpl' permission='theme_edit' display='false' order="5">添加相似模板文件(pc、wap)</menu>
+            <menu controller='admin_theme_tmpl' action='delete_tmpl' permission='theme_edit' display='false' order="5">删除模板文件(pc、wap)</menu>
+
+            <menu controller='admin_theme_widget' action='editor' permission='theme_edit' display='false' order="5">可视化编辑(pc、wap)</menu>
+            <menu controller='admin_theme_widget' action='preview' permission='theme_edit' display='false' order="5">预览模板(pc、wap)</menu>
+            <menu controller='admin_theme_widget' action='add_widgets_page' permission='theme_edit' display='false' order="5">挂件列表页(pc、wap)</menu>
+            <menu controller='admin_theme_widget' action='add_widgets_page_extend' permission='theme_edit' display='false' order="5">挂件列表页(pc、wap)</menu>
+            <menu controller='admin_theme_widget' action='insert_widget' permission='theme_edit' display='false' order="5">添加挂架(pc、wap)</menu>
+            <menu controller='admin_theme_widget' action='save_widget' permission='theme_edit' display='false' order="5">保存挂架(pc、wap)</menu>
+        </menugroup>
+        <menugroup name="站点管理">
+            <menu controller='admin_base_setting' action='index' permission='site' display='true' order="40">站点配置(电脑端)</menu>
+            <menu controller='admin_seo' action='index' permission='seo' display='true' order="60">SEO优化</menu>
+            <menu controller='admin_seo' action='set_defaut_seo' permission='seo' display='false' order="60">设置默认seo</menu>
+            <menu controller='admin_seo' action='saveseo' permission='seo' display='false' order="60">保存seo</menu>
+            <menu controller='admin_share' action='index' permission='wxshare' display='true' order="70">微信分享配置</menu>
+            <!--
+            <menu controller='admin_subdomain' action='index' permission='subdomain' display='true' order="80">二级域名配置</menu>
+            -->
+        </menugroup>
+    </workground>
+</desktop>

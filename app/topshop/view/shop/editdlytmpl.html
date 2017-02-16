@@ -1,0 +1,1093 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form  action="<{url action=topshop_ctl_shop_dlytmpl@savetmpl}>" method="post" class="form-horizontal" data-validate-onsuccess="ajaxSubmit" id="form_delivery" role="form">
+      <{if $tmplData.template_id}><input type="hidden" name="template_id" value=<{$tmplData.template_id}>><{/if}>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><{t}>模板名称<{/t}>：</label>
+        <div class="col-sm-3">
+          <input type="text" name="name" class="form-control" value="<{$tmplData.name}>" required maxlength="20">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><{t}>是否包邮<{/t}>：</label>
+        <div class="radio">
+          <label>
+            <input type="radio" name="is_free" value="0" <{if $tmplData.is_free == '0' || !$tmplData.is_free}> checked <{/if}>><{t}>自定义运费<{/t}>
+          </label>
+          <label>
+            <input type="radio" name="is_free" value="1" <{if $tmplData.is_free == '1'}> checked <{/if}>>
+            <{t}>卖家承担运费<{/t}>
+          </label>
+          <span class="label label-info">选择了卖家承担运费，运费计算和包邮规则设置将会丢失！<span>
+        </div>
+      </div>
+      <div class="form-group" id="id-valuation"  <{if $tmplData.is_free}>style="display:none;"<{/if}>>
+        <label class="col-sm-2 control-label"><{t}>计价方式<{/t}>：</label>
+        <div class="radio">
+          <label>
+            <input type="radio" name="valuation" value="1" <{if $tmplData.valuation == '1' || !$tmplData.valuation}> checked="checked" <{/if}> <{if $tmplData.template_id && $tmplData.valuation!='1'}> disabled <{/if}> ><{t}>按重量<{/t}>
+          </label>
+          <label>
+            <input type="radio" name="valuation" value="2" <{if $tmplData.valuation == '2'}> checked="checked" <{/if}> <{if $tmplData.template_id && $tmplData.valuation!='2'}> disabled <{/if}> ><{t}>按件数<{/t}>
+          </label>
+          <label>
+            <input type="radio" name="valuation" value="3" <{if $tmplData.valuation == '3'}> checked="checked" <{/if}> <{if $tmplData.template_id && $tmplData.valuation!='3'}> disabled <{/if}> ><{t}>按金额<{/t}>
+          </label>
+          <span class="label label-info">运费模版保存后，计费方式将无法切换！！<span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><{t}>是否启用<{/t}>：</label>
+        <div class="radio">
+          <label>
+            <input type="radio" name="status" value="on" <{if $tmplData.status == 'on' || !$tmplData.status}> checked <{/if}> ><{t}>启用<{/t}>
+          </label>
+          <label>
+            <input type="radio" name="status" value="off" <{if $tmplData.status == 'off'}> checked <{/if}> ><{t}>禁用<{/t}>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group free-calculate" <{if $tmplData.is_free}>style="display:none;"<{/if}>>
+        <label for="" class="col-sm-2 control-label">运费计算：</label>
+        <!-- 按重量设置运费 -->
+        <div class="col-sm-10 calculate-weight-content" <{if $tmplData.valuation==''||$tmplData.valuation=='1'}><{else}>style="display:none;"<{/if}>>
+          <div class="well well-sm clearfix">
+            <div class="form-inline">
+              <div class="form-label">默认运费：</div>
+              <div class="clearfix">
+                重量（kg以内）：<input type="text" name="fee_conf[0][start_standard]" size="1" value="<{$tmplData.byweight.fee_conf.0.start_standard}>" class="form-control" min="0">　
+                运费（元）：<input type="text" name="fee_conf[0][start_fee]" size="1" value="<{$tmplData.byweight.fee_conf.0.start_fee}>" class="form-control">
+              </div>
+            </div>
+            <div class="form-inline">
+              <div class="form-label">增重运费：</div>
+              <div class="clearfix">
+                每增加（kg内）：<input type="text" size="1" name="fee_conf[0][add_standard]" value="<{$tmplData.byweight.fee_conf.0.add_standard}>" class="form-control" min="0">　
+                增加（元）：<input type="text" name="fee_conf[0][add_fee]" size="1" value="<{$tmplData.byweight.fee_conf.0.add_fee}>" class="form-control" min="0">
+              </div>
+            </div>
+            <!--p><input type="checkbox" name="" value=""> 全区域配送</p-->
+          </div>
+          <div class="well well-sm">
+            <h5>为指定地区城市设置运费</h5>
+            <table class="table table-bordered table-valign-middle bg-white">
+              <col class="col-md-3">
+              <col class="col-md-2">
+              <col class="col-md-2">
+              <col class="col-md-2">
+              <col class="col-md-2">
+              <thead>
+                <tr>
+                  <td><{t}>运送到<{/t}></td>
+                  <td><{t}>首重<{/t}>(kg)</td>
+                  <td><{t}>首费<{/t}>(元)</td>
+                  <td><{t}>续重<{/t}>(kg)</td>
+                  <td><{t}>续费<{/t}>(元)</td>
+                  <td><{t}>操作<{/t}></td>
+                </tr>
+              </thead>
+              <tbody id="data_grid">
+                <{foreach from=$tmplData.byweight.fee_conf item=row name=name key=key}>
+                <{if !$row.area }><{continue}><{/if}>
+                <tr>
+                  <td>
+                    <a href="#" class="pull-right action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="addrule_template">编辑</a><span><{$tmplData.byweight.fee_conf.$key.area|areaNameById}></span>
+                    <input type="hidden" name="fee_conf[<{$key}>][area]" required value="<{$tmplData.byweight.fee_conf.$key.area}>">
+                  </td>
+                  <td><input type="text" name="fee_conf[<{$key}>][start_standard]" size="2" required data-validate-required-message="请填写重量。" min="0" data-validate-group="td" value="<{$tmplData.byweight.fee_conf.$key.start_standard}>" class="form-control"></td>
+                  <td><input type="text" name="fee_conf[<{$key}>][start_fee]" size="2" required data-validate-required-message="请填写运费。" min="0" data-validate-group="td" value="<{$tmplData.byweight.fee_conf.$key.start_fee}>" class="form-control"></td>
+                  <td><input type="text" name="fee_conf[<{$key}>][add_standard]" size="2" min="0" data-validate-group="td" value="<{$tmplData.byweight.fee_conf.$key.add_standard}>" class="form-control"></td>
+                  <td><input type="text" name="fee_conf[<{$key}>][add_fee]" size="2" value="<{$tmplData.byweight.fee_conf.$key.add_fee}>" class="form-control" data-validate-required-message="请填写续费。" min="0" data-validate-group="td"></td>
+                  <td><a href="javascript:void(0);" class="action-del">删除</a></td>
+                </tr>
+                <{/foreach}>
+              </tbody>
+            </table>
+            <button class="btn btn-default act-addrule" data-toggle="modal" data-target="#areaselect_modal" data-template="addrule_template"><i class="fa fa-plus"></i> <{t}>添加地区<{/t}></button>
+          </div>
+        </div>
+        <!-- 按件数设置运费 -->
+        <div class="col-sm-10 calculate-number-content" <{if $tmplData.valuation!='2'}>style="display:none;"<{/if}>>
+          <div class="well well-sm clearfix">
+            <div class="form-inline">
+              <div class="form-label">默认运费：</div>
+              <div class="clearfix">
+                件数（件以内）：<input type="text" name="fee_number_conf[0][start_standard]" size="1" value="<{$tmplData.bynum.fee_conf.0.start_standard}>" class="form-control" min="0">　
+                运费（元）：<input type="text" name="fee_number_conf[0][start_fee]" size="1" value="<{$tmplData.bynum.fee_conf.0.start_fee}>" class="form-control">
+              </div>
+            </div>
+            <div class="form-inline">
+              <div class="form-label">增件运费</div>
+              <div class="clearfix">
+                每增加（件内）：<input type="text" size="1" name="fee_number_conf[0][add_standard]" value="<{$tmplData.bynum.fee_conf.0.add_standard}>" class="form-control" min="0" >　
+                增加（元）：<input type="text" name="fee_number_conf[0][add_fee]" size="1" value="<{$tmplData.bynum.fee_conf.0.add_fee}>" class="form-control" min="0">
+              </div>
+            </div>
+          </div>
+          <div class="well well-sm">
+            <h5>为指定地区城市设置运费</h5>
+            <table class="table table-bordered table-valign-middle bg-white">
+              <col class="col-md-3">
+              <col class="col-md-2">
+              <col class="col-md-2">
+              <col class="col-md-2">
+              <col class="col-md-2">
+              <thead>
+                <tr>
+                  <td><{t}>运送到<{/t}></td>
+                  <td><{t}>首件<{/t}>(件)</td>
+                  <td><{t}>首费<{/t}>(元)</td>
+                  <td><{t}>续件<{/t}>(件)</td>
+                  <td><{t}>续费<{/t}>(元)</td>
+                  <td><{t}>操作<{/t}></td>
+                </tr>
+              </thead>
+              <tbody id="data_number_grid">
+                <{foreach from=$tmplData.bynum.fee_conf item=row name=name key=key}>
+                <{if !$row.area }><{continue}><{/if}>
+                <tr>
+                  <td>
+                    <a href="#" class="pull-right action-edit" data-toggle="modal" data-target="#freeselect_modal" data-template="addrule_number_template">编辑</a><span><{$tmplData.bynum.fee_conf.$key.area|areaNameById}></span>
+                    <input type="hidden" name="fee_number_conf[<{$key}>][area]" required value="<{$tmplData.bynum.fee_conf.$key.area}>">
+                  </td>
+                  <td><input type="text" name="fee_number_conf[<{$key}>][start_standard]" size="2" required data-validate-required-message="请填写重量。" min="0" data-validate-group="td" value="<{$tmplData.bynum.fee_conf.$key.start_standard}>" class="form-control"></td>
+                  <td><input type="text" name="fee_number_conf[<{$key}>][start_fee]" size="2" required data-validate-required-message="请填写运费。" min="0" data-validate-group="td" value="<{$tmplData.bynum.fee_conf.$key.start_fee}>" class="form-control"></td>
+                  <td><input type="text" name="fee_number_conf[<{$key}>][add_standard]" size="2" value="<{$tmplData.bynum.fee_conf.$key.add_standard}>" class="form-control" min="0" data-validate-group="td"></td>
+                  <td><input type="text" name="fee_number_conf[<{$key}>][add_fee]" size="2" value="<{$tmplData.bynum.fee_conf.$key.add_fee}>" class="form-control" data-validate-required-message="请填写续费。" min="0" data-validate-group="td"></td>
+                  <td><a href="javascript:void(0);" class="action-del">删除</a></td>
+                </tr>
+                <{/foreach}>
+              </tbody>
+            </table>
+            <button class="btn btn-default act-number-addrule" data-toggle="modal" data-target="#areaselect_modal" data-template="addrule_number_template"><i class="fa fa-plus"></i> <{t}>添加地区<{/t}></button>
+          </div>
+        </div>
+        <!-- 按金额设置运费 -->
+        <div class="col-sm-10 calculate-money-content" <{if $tmplData.valuation!='3'}>style="display:none;"<{/if}>>
+          <div class="well well-sm">
+            <h5>为指定地区城市设置运费</h5>
+            <table class="table table-bordered table-valign-middle bg-white">
+              <col class="col-md-2">
+              <col class="col-md-3">
+              <col class="col-md-2">
+              <col class="col-md-2">
+              <thead>
+                <tr>
+                  <td><{t}>运送到<{/t}></td>
+                  <td><{t}>金额上下限<{/t}>(元)</td>
+                  <td><{t}>运费<{/t}>(元)</td>
+                  <td><{t}>操作<{/t}></td>
+                </tr>
+              </thead>
+              <tbody id="calculate_money_grid">
+                <tr>
+                  <td>全国(默认)</td>
+                  <td colspan="3">
+                    <table class="table table-bordered table-valign-middle bg-white">
+                      <col class="col-md-3">
+                      <col class="col-md-2">
+                      <col class="col-md-2">
+                      <tbody>
+                        <{if $tmplData.template_id}>
+                        <{foreach from=$tmplData.bymoney.fee_conf.0.rules item=defaultrulerow name=defaultrulename key=defaultitemkey}>
+                        <tr id="deliveryType_0_<{$defaultitemkey}>">
+                          <td>
+                            <div class="form-inline x-input">
+                              <input type="text" name="fee_money_conf[0][rules][<{$defaultitemkey}>][up]" data-name="fee-money-up" class="form-control" size="10" data-key="0" value="<{if $defaultrulerow.up}><{$defaultrulerow.up}><{else}>0.00<{/if}>" readonly="true">-<input type="text" name="fee_money_conf[0][rules][<{$defaultitemkey}>][down]" data-name="fee-money-down" class="form-control" size="10" data-key="0" value="<{$defaultrulerow.down}>" placeholder="∞" <{if !$env.foreach.defaultrulename.last}>readonly="true"<{/if}> onblur="checkAndAddNewTr(this, 'deliveryType_0_0', '0', '0')">
+                            </div>
+                          </td>
+                          <td>
+                            <div class="form-inline x-input">
+                              <input type="text" name="fee_money_conf[0][rules][<{$defaultitemkey}>][basefee]" size="16" class="form-control money-number" data-key="0" value="<{$defaultrulerow.basefee}>">
+                            </div>
+                          </td>
+                          <td><{if !$env.foreach.defaultrulename.first}><a href="javascript:void(0);" class="action-del-item" <{if !$env.foreach.defaultrulename.last}>style="display:none"<{/if}>>删除</a><{/if}></td>
+                        </tr>
+                        <{/foreach}>
+                        <{else}>
+                        <tr id="deliveryType_0_0">
+                          <td>
+                            <div class="form-inline x-input">
+                              <input type="text" name="fee_money_conf[0][rules][0][up]" data-name="fee-money-up" class="form-control" size="10" data-key="0" value="0.00" readonly="true">-<input type="text" name="fee_money_conf[0][rules][0][down]" data-name="fee-money-down" class="form-control" size="10" data-key="0" placeholder="∞" onblur="checkAndAddNewTr(this, 'deliveryType_0_0', '0', '0')">
+                            </div>
+                          </td>
+                          <td>
+                            <div class="form-inline x-input">
+                              <input type="text" name="fee_money_conf[0][rules][0][basefee]" size="16" class="form-control money-number" data-key="0" >
+                            </div>
+                          </td>
+                          <td></td>
+                        </tr>
+                        <{/if}>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <{foreach from=$tmplData.bymoney.fee_conf item=feerow name=name key=key}>
+                <{if !$feerow.area }><{continue}><{/if}>
+                <{if $key==0}><{continue}><{/if}>
+                <tr>
+                  <td>
+                    <div class="pull-right"><a href="#" class="action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="calculate_money_template">编辑</a>&nbsp;<a href="javascript:void(0);" class="action-del">删除</a><input type="hidden" name="fee_money_conf[<{$key}>][area]" required value="<{$tmplData.bymoney.fee_conf.$key.area}>"></div><span><{$tmplData.bymoney.fee_conf.$key.area|areaNameById}></span>
+                  </td>
+                  <td colspan="3">
+                    <table class="table table-bordered table-valign-middle bg-white">
+                      <col class="col-md-3">
+                      <col class="col-md-2">
+                      <col class="col-md-2">
+                      <tbody>
+                        <{foreach from=$feerow.rules item=rulerow name=rulename key=itemkey}>
+                        <tr id="deliveryType_<{$key}>_<{$itemkey}>">
+                          <td>
+                            <div class="form-inline x-input">
+                              <input type="text" name="fee_money_conf[<{$key}>][rules][<{$itemkey}>][up]" data-name="fee-money-up" class="form-control" size="10" data-key="<{$key}>" value="<{$rulerow.up}>" readonly="true">-<input type="text" name="fee_money_conf[<{$key}>][rules][<{$itemkey}>][down]" data-name="fee-money-down" class="form-control" size="10" data-key="<{$key}>" value="<{$rulerow.down}>" placeholder="∞" <{if !$env.foreach.rulename.last}>readonly="true"<{/if}> onblur="checkAndAddNewTr(this, 'deliveryType_<{$key}>_<{$itemkey}>', '<{$key}>', '<{$itemkey}>')">
+                            </div>
+                          </td>
+                          <td>
+                            <div class="form-inline x-input">
+                              <input type="text" name="fee_money_conf[<{$key}>][rules][<{$itemkey}>][basefee]" size="16" data-key="<{$key}>" value="<{$rulerow.basefee}>" class="form-control money-number">
+                            </div>
+                          </td>
+                          <td><{if !$env.foreach.rulename.first}><a href="javascript:void(0);" class="action-del-item"  <{if !$env.foreach.rulename.last}>style="display:none"<{/if}> >删除</a><{/if}></td>
+                        </tr>
+                        <{/foreach}>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <{/foreach}>
+              </tbody>
+            </table>
+            <button class="btn btn-default btn-addcalculateaddr" data-toggle="modal" data-target="#areaselect_modal" data-template="calculate_money_template"><i class="fa fa-plus"></i> <{t}>添加地区<{/t}></button>
+          </div>
+        </div>
+      </div>
+      <!-- 设置包邮条件 -->
+      <div class="form-group" id="isfree-form" <{if $tmplData.is_free || $tmplData.valuation=='3'}> style="display:none;" <{/if}>>
+        <label for="" class="col-sm-2 control-label"><input type="checkbox" name="open_freerule" id="freepostage" <{if $tmplData.byweight.free_conf || $tmplData.bynum.free_conf || !$tmplData.template_id}> checked="checked"<{/if}> class="" value="1">指定条件包邮：</label>
+        <!-- 重量+金额 -->
+        <div class="col-sm-10" id="isfree-detail" <{if $tmplData.valuation=='' || $tmplData.valuation=='1'}><{else}>style="display:none;"<{/if}> >
+          <div class="well well-sm">
+            <h5>为指定地区设置包邮规则</h5>
+            <table class="table table-bordered table-valign-middle bg-white">
+              <col class="col-md-2">
+              <col class="col-md-4">
+              <col class="col-md-1">
+              <thead>
+                <tr>
+                  <td><{t}>地区设置<{/t}></td>
+                  <td><{t}>包邮条件<{/t}>(kg)</td>
+                  <td><{t}>操作<{/t}></td>
+                </tr>
+              </thead>
+              <tbody id="freedata_grid">
+                <tr>
+                  <td>全国(默认)</td>
+                  <td>
+                    <select name="free_conf[0][freetype]" id="freetype" class="form-control x-input" data-key="0">
+                      <option value="1" <{if $tmplData.byweight.free_conf.0.freetype==1}> selected <{/if}>>重量</option>
+                      <option value="2" <{if $tmplData.byweight.free_conf.0.freetype==2}> selected <{/if}>>金额</option>
+                      <option value="3" <{if $tmplData.byweight.free_conf.0.freetype==3}> selected <{/if}>>重量+金额</option>
+                    </select>
+                    <div class="form-inline x-input">
+                      <span class="free-inweight-0" <{if $tmplData.byweight.free_conf.0.freetype==2}> style="display:none;" <{/if}>>
+                        在<input type="text" class="form-control" size="6" name="free_conf[0][inweight]" data-key="0" value="<{$tmplData.byweight.free_conf.0.inweight}>" min="0" >kg内 包邮
+                      </span>
+                      <span class="free-upmoney-0" <{if $tmplData.byweight.free_conf.0.freetype==2 || $tmplData.byweight.free_conf.0.freetype==3}> <{else}> style="display:none;" <{/if}>>
+                        <span class="sp-split-0" style="<{if $tmplData.byweight.free_conf.0.freetype!=3}> display:none; <{/if}>">，</span><input type="text" class="form-control" size="6" name="free_conf[0][upmoney]" data-key="0" value="<{$tmplData.byweight.free_conf.0.upmoney}>" min="0">元以上 包邮
+                      </span>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+                <{foreach from=$tmplData.byweight.free_conf item=freerow name=name key=key}>
+                <{if !$freerow.area }><{continue}><{/if}>
+                <{if $key==0}><{continue}><{/if}>
+                <tr>
+                  <td>
+                    <a href="#" class="pull-right action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="addfreearea_template">编辑</a><span><{$tmplData.byweight.free_conf.$key.area|areaNameById}></span>
+                    <input type="hidden" name="free_conf[<{$key}>][area]" required value="<{$tmplData.byweight.free_conf.$key.area}>">
+                  </td>
+                  <td>
+                    <select name="free_conf[<{$key}>][freetype]" id="freetype" class="form-control x-input" data-key="<{$key}>">
+                      <option value="1" <{if $tmplData.byweight.free_conf.$key.freetype==1}> selected <{/if}>>重量</option>
+                      <option value="2" <{if $tmplData.byweight.free_conf.$key.freetype==2}> selected <{/if}>>金额</option>
+                      <option value="3" <{if $tmplData.byweight.free_conf.$key.freetype==3}> selected <{/if}>>重量+金额</option>
+                    </select>
+                    <div class="form-inline x-input">
+                     <span class="free-inweight-<{$key}>" <{if $tmplData.byweight.free_conf.$key.freetype==2}> style="display:none;" <{/if}>>
+                      在<input type="text" class="form-control" size="6" name="free_conf[<{$key}>][inweight]" data-key="<{$key}>" value="<{$tmplData.byweight.free_conf.$key.inweight}>" min="0">kg内 包邮
+                      </span>
+                      <span class="free-upmoney-<{$key}>" <{if $tmplData.byweight.free_conf.$key.freetype==2 || $tmplData.byweight.free_conf.$key.freetype==3}> <{else}> style="display:none;" <{/if}>>
+                        <span class="sp-split-<{$key}>" style="<{if $tmplData.byweight.free_conf.$key.freetype!=3}> display:none; <{/if}>">，</span><input type="text" class="form-control" size="6" name="free_conf[<{$key}>][upmoney]" data-key="<{$key}>" value="<{$tmplData.byweight.free_conf.$key.upmoney}>">元以上 包邮
+                      </span>
+                    </div>
+                  </td>
+                  <td><a href="javascript:void(0);" class="action-del">删除</a></td>
+                </tr>
+                <{/foreach}>
+              </tbody>
+            </table>
+            <button class="btn btn-default btn-addfreeaddr" data-toggle="modal" data-target="#areaselect_modal" data-template="addfreearea_template"><i class="fa fa-plus"></i> <{t}>添加地区<{/t}></button>
+          </div>
+        </div>
+        <!-- 件数+金额 -->
+        <div class="col-sm-10" id="isfree-number-detail" <{if $tmplData.valuation!='2'}> style="display:none;"<{/if}>>
+          <div class="well well-sm">
+            <h5>为指定地区设置包邮规则</h5>
+            <table class="table table-bordered table-valign-middle bg-white">
+              <col class="col-md-2">
+              <col class="col-md-4">
+              <col class="col-md-1">
+              <thead>
+                <tr>
+                  <td><{t}>地区设置<{/t}></td>
+                  <td><{t}>包邮条件<{/t}>(件)</td>
+                  <td><{t}>操作<{/t}></td>
+                </tr>
+              </thead>
+              <tbody id="freedata_number_grid">
+                <tr>
+                  <td>全国(默认)</td>
+                  <td>
+                    <select name="free_number_conf[0][freetype]" id="freetype" class="form-control x-input" data-key="0">
+                      <option value="1" <{if $tmplData.bynum.free_conf.0.freetype==1}> selected <{/if}>>件数</option>
+                      <option value="2" <{if $tmplData.bynum.free_conf.0.freetype==2}> selected <{/if}>>金额</option>
+                      <option value="3" <{if $tmplData.bynum.free_conf.0.freetype==3}> selected <{/if}>>件数+金额</option>
+                    </select>
+                    <div class="form-inline x-input">
+                      <span class="free-number-innumber-0" <{if $tmplData.bynum.free_conf.0.freetype==2}> style="display:none;" <{/if}>>
+                        满<input type="text" class="form-control" size="6" name="free_number_conf[0][upquantity]" data-key="0" value="<{$tmplData.bynum.free_conf.0.upquantity}>" min="0">件 包邮
+                      </span>
+                      <span class="free-number-upmoney-0" <{if $tmplData.bynum.free_conf.0.freetype==2 || $tmplData.bynum.free_conf.0.freetype==3}> <{else}> style="display:none;" <{/if}>>
+                        <span class="sp-number-split-0" style="<{if $tmplData.bynum.free_conf.0.freetype!=3}> display:none; <{/if}>">，</span><input type="text" class="form-control" size="6" name="free_number_conf[0][upmoney]" data-key="0" value="<{$tmplData.bynum.free_conf.0.upmoney}>">元以上 包邮
+                      </span>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+                <{foreach from=$tmplData.bynum.free_conf item=freerow name=name key=key}>
+                <{if !$freerow.area }><{continue}><{/if}>
+                <{if $key==0}><{continue}><{/if}>
+                <tr>
+                  <td>
+                    <a href="#" class="pull-right action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="addfreearea_number_template">编辑</a><span><{$tmplData.bynum.free_conf.$key.area|areaNameById}></span>
+                    <input type="hidden" name="free_number_conf[<{$key}>][area]" required value="<{$tmplData.bynum.free_conf.$key.area}>">
+                  </td>
+                  <td>
+                    <select name="free_number_conf[<{$key}>][freetype]" id="freetype" class="form-control x-input" data-key="<{$key}>">
+                      <option value="1" <{if $tmplData.bynum.free_conf.$key.freetype==1}> selected <{/if}>>件数</option>
+                      <option value="2" <{if $tmplData.bynum.free_conf.$key.freetype==2}> selected <{/if}>>金额</option>
+                      <option value="3" <{if $tmplData.bynum.free_conf.$key.freetype==3}> selected <{/if}>>件数+金额</option>
+                    </select>
+                    <div class="form-inline x-input">
+                     <span class="free-number-innumber-<{$key}>" <{if $tmplData.bynum.free_conf.$key.freetype==2}> style="display:none;" <{/if}>>
+                      满<input type="text" class="form-control" size="6" name="free_number_conf[<{$key}>][upquantity]" data-key="<{$key}>" value="<{$tmplData.bynum.free_conf.$key.upquantity}>" min="0">件 包邮
+                      </span>
+                      <span class="free-number-upmoney-<{$key}>" <{if $tmplData.bynum.free_conf.$key.freetype==2 || $tmplData.bynum.free_conf.$key.freetype==3}> <{else}> style="display:none;" <{/if}>>
+                        <span class="sp-number-split-<{$key}>" style="<{if $tmplData.bynum.free_conf.$key.freetype!=3}> display:none; <{/if}>">，</span><input type="text" class="form-control" size="6" name="free_number_conf[<{$key}>][upmoney]" data-key="<{$key}>" value="<{$tmplData.bynum.free_conf.$key.upmoney}>">元以上 包邮
+                      </span>
+                    </div>
+                  </td>
+                  <td><a href="javascript:void(0);" class="action-del">删除</a></td>
+                </tr>
+                <{/foreach}>
+              </tbody>
+            </table>
+            <button class="btn btn-default btn-number-addfreeaddr" data-toggle="modal" data-target="#areaselect_modal" data-template="addfreearea_number_template"><i class="fa fa-plus"></i> <{t}>添加地区<{/t}></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-3">
+      <button type="submit" class="btn btn-primary btn-lg btn-block">保存并返回</button>
+    </div>
+  </div>
+
+</form>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="areaselect_modal" tabindex="-1" role="dialog">
+  <div class="panel panel-default modal-dialog modal-lg">
+    <div class="panel-heading clearfix">
+      选择区域
+      <div class="pull-right">
+        <button type="button" class="btn btn-primary action-save">保存</button>
+        <button type="button" class="btn btn-default action-cancel" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+    <div class="panel-body" id="area_list">
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="freeselect_modal" tabindex="-1" role="dialog">
+  <div class="panel panel-default modal-dialog modal-lg">
+    <div class="panel-heading clearfix">
+      选择区域
+      <div class="pull-right">
+        <button type="button" class="btn btn-primary action-save">保存</button>
+        <button type="button" class="btn btn-default action-cancel" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+    <div class="panel-body" id="free_list">
+
+    </div>
+  </div>
+</div>
+
+<!-- 按重量设置运费模板 -->
+<textarea class="sr-only" id="addrule_template">
+  <tr>
+    <td><a href="javascript:void(0);" class="pull-right action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="addrule_template">编辑</a><span>{areas}</span><input type="hidden" name="fee_conf[{key}][area]" value="{values}"></td>
+    <td><input type="text" name="fee_conf[{key}][start_standard]" size="1" data-validate-required-message="请填写重量。" min="0"  value="" class="form-control"></td>
+    <td><input type="text" name="fee_conf[{key}][start_fee]" size="1" min="0" value="" class="form-control"></td>
+    <td><input type="text" name="fee_conf[{key}][add_standard]" size="1" value="" class="form-control"></td>
+    <td><input type="text" name="fee_conf[{key}][add_fee]" size="1" value="" class="form-control"></td>
+    <td><a href="javascript:void(0);" class="action-del">删除</a></td>
+  </tr>
+</textarea>
+<!-- 按件数设置运费模板 -->
+<textarea class="sr-only" id="addrule_number_template">
+  <tr>
+    <td><a href="javascript:void(0);" class="pull-right action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="addrule_number_template">编辑</a><span>{areas}</span><input type="hidden" name="fee_number_conf[{key}][area]" value="{values}"></td>
+    <td><input type="text" name="fee_number_conf[{key}][start_standard]" size="1" min="0" value="" class="form-control" ></td>
+    <td><input type="text" name="fee_number_conf[{key}][start_fee]" size="1" min="0" value="" class="form-control"></td>
+    <td><input type="text" name="fee_number_conf[{key}][add_standard]" size="1" value="" class="form-control"></td>
+    <td><input type="text" name="fee_number_conf[{key}][add_fee]" size="1" value="" class="form-control"></td>
+    <td><a href="javascript:void(0);" class="action-del">删除</a></td>
+  </tr>
+</textarea>
+<textarea class="sr-only" id="addarea_template">
+  <dl class="row">
+    <dt class="col-md-2"><label for="{id}"><input type="checkbox" name="{name}" id="{id}" value="{id}"> {value}</label></dt>
+    <dd class="row col-md-10">
+    <div class="col-md-3">
+      <label for="{id}"><input type="checkbox" name="{name}" id="{id}" value="{id}"> {value}</label> <span class="caret"></span>
+    </div>
+    </dd>
+  </dl>
+</textarea>
+<!-- 指定条件包邮：重量、金额模板 -->
+<textarea class="sr-only" id="addfreearea_template">
+  <tr>
+    <td><a href="javascript:void(0);" class="pull-right action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="addfreearea_template">编辑</a><span>{areas}</span><input type="hidden" name="free_conf[{key}][area]" value="{values}"></td>
+    <td>
+      <select name="free_conf[{key}][freetype]" id="freetype" class="form-control x-input" data-key="{key}">
+        <option value="1">重量</option>
+        <option value="2">金额</option>
+        <option value="3">重量+金额</option>
+      </select>
+      <div class="form-inline x-input">
+        <span class="free-inweight-{key}">
+          在<input type="text" class="form-control" size="6" name="free_conf[{key}][inweight]" data-key="{key}" min="0">kg内 包邮
+        </span>
+        <span class="free-upmoney-{key}" style="display:none;">
+          <span class="sp-split-{key}" style="display:none;">，</span><input type="text" class="form-control" size="6" name="free_conf[{key}][upmoney]" data-key="{key}">元以上 包邮
+        </span>
+      </div>
+    </td>
+    <td><a href="javascript:void(0);" class="action-del">删除</a></td>
+  </tr>
+</textarea>
+<!-- 指定条件包邮：件数、金额模板 -->
+<textarea class="sr-only" id="addfreearea_number_template">
+  <tr>
+    <td><a href="javascript:void(0);" class="pull-right action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="addfreearea_number_template">编辑</a><span>{areas}</span><input type="hidden" name="free_number_conf[{key}][area]" value="{values}"></td>
+    <td>
+      <select name="free_number_conf[{key}][freetype]" id="freetype" class="form-control x-input" data-key="{key}">
+        <option value="1">件数</option>
+        <option value="2">金额</option>
+        <option value="3">件数+金额</option>
+      </select>
+      <div class="form-inline x-input">
+        <span class="free-number-innumber-{key}">
+          满<input type="text" class="form-control" size="6" name="free_number_conf[{key}][innumber]" data-key="{key}">件 包邮
+        </span>
+        <span class="free-number-upmoney-{key}" style="display:none;">
+          <span class="sp-number-split-{key}" style="display:none;">，</span><input type="text" class="form-control" size="6" name="free_number_conf[{key}][upmoney]" data-key="{key}">元以上 包邮
+        </span>
+      </div>
+    </td>
+    <td><a href="javascript:void(0);" class="action-del">删除</a></td>
+  </tr>
+</textarea>
+<!-- 按金额设置运费 -->
+<textarea class="sr-only" id="addcalculate_money_template">
+  <tr>
+    <td><div class="pull-right"><a href="javascript:void(0);" class="action-edit" data-toggle="modal" data-target="#areaselect_modal" data-template="calculate_money_template">编辑</a>&nbsp;<a href="javascript:void(0);" class="action-del">删除</a><input type="hidden" name="fee_money_conf[{key}][area]" value="{values}"></div><span>{areas}</span></td>
+    <td colspan="3">
+      <table class="table table-bordered table-valign-middle bg-white">
+        <col class="col-md-3">
+        <col class="col-md-2">
+        <col class="col-md-2">
+        <tbody>
+          <tr id="deliveryType_{key}_{itemkey}">
+            <td>
+              <div class="form-inline x-input">
+                <input type="text" name="fee_money_conf[{key}][rules][{itemkey}][up]" data-name="fee-money-up" class="form-control" size="10" value="0.00" data-key="{key}" readonly="true">-<input type="text" name="fee_money_conf[{key}][rules][{itemkey}][down]" data-name="fee-money-down" class="form-control" size="10" data-key="{key}" placeholder="∞" onblur="checkAndAddNewTr(this, 'deliveryType_{key}_{itemkey}', '{key}', '{itemkey}')">
+              </div>
+            </td>
+            <td>
+              <div class="form-inline x-input">
+                <input type="text" name="fee_money_conf[{key}][rules][{itemkey}][basefee]" size="16" class="form-control money-number" data-key="{key}">
+              </div>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</textarea>
+
+<{script app="topshop" src="jquery.jsonlist.js"}>
+<script>
+
+$('#form_delivery').Validator({
+    fields: {
+        'fee_conf[0][start_standard]': {
+            group: '.clearfix',
+            validators: {
+                required: {
+                    message: '请填写重量。'
+                },
+                gt: {
+                    value: 0
+                }
+            }
+        },
+        'fee_conf[0][start_fee]': {
+            group: '.clearfix',
+            validators: {
+                required: {
+                    message: '请填写运费。'
+                },
+                gt: {
+                    value: 0
+                }
+            }
+        },
+        'fee_conf[0][add_standard]': {
+            group: '.clearfix',
+            validators: {
+                gt: {
+                    value: 0
+                }
+            }
+        },
+        'fee_conf[0][add_fee]': {
+            group: '.clearfix',
+            validators: {
+                gt: {
+                    value: 0
+                }
+            }
+        }
+    }
+});
+
+var area_list = $('#area_list');
+var free_list = $('#free_list');
+//按重量设置运费
+var tpl = $('#addrule_template').val();
+var tbody = $('#data_grid');
+var input = tbody.find('tr:last input[type=text]');
+var dialog = $('#areaselect_modal');
+var free_dialog = $('#freeselect_modal');
+var key;
+
+//按件数设置运费
+var number_tpl = $('#addrule_number_template').val();
+var number_tbody = $('#data_number_grid');
+var number_input = number_tbody.find('tr:last input[type=text]');
+var number_key;
+
+//按金额设置运费
+var calculate_money_tpl = $('#addcalculate_money_template').val();
+var calculate_money_tbody = $('#calculate_money_grid');
+var calculate_money_input = calculate_money_tbody.find('tr:last input[type=text]');
+var calculate_money_key;
+
+//重量+金额
+var free_tpl = $('#addfreearea_template').val();
+var free_tbody = $('#freedata_grid');
+var free_input = free_tbody.find('tr:last input[type=text]');
+var free_key;
+
+//件数+金额
+var free_number_tpl = $('#addfreearea_number_template').val();
+var free_number_tbody = $('#freedata_number_grid');
+var free_number_input = free_number_tbody.find('tr:last input[type=text]');
+var free_number_key;
+
+
+var currtpl;
+if(input.size()) {
+    key = input.attr('name').match(/^fee_conf\[(\d*)\].*/)[1] || 0;
+}
+else {
+    key = 0;
+}
+if(number_input.size()) {
+    number_key = number_input.attr('name').match(/^fee_number_conf\[(\d*)\].*/)[1] || 0;
+}
+else {
+    number_key = 0;
+}
+if(free_input.size()) {
+    free_key = free_input.attr('data-key');
+}
+else {
+    free_key = 0;
+}
+if(free_number_input.size()) {
+    free_number_key = free_number_input.attr('data-key');
+}
+else {
+    free_number_key = 0;
+}
+if(calculate_money_input.size()) {
+    calculate_money_key = calculate_money_input.attr('data-key');
+}
+else {
+    calculate_money_key = 0;
+}
+//按重量设置运费
+$('.act-addrule').on('click', function(e) {
+    e.preventDefault();
+    getAreaData(this);
+});
+
+//按件数设置运费
+$('.act-number-addrule').on('click', function(e) {
+    e.preventDefault();
+    getAreaData(this);
+});
+
+//重量+金额模板地区添加
+$('.btn-addfreeaddr').on('click', function(e) {
+  e.preventDefault();
+  getAreaData(this);
+});
+//件数+金额模板地区添加
+$('.btn-number-addfreeaddr').on('click', function(e) {
+  e.preventDefault();
+  getAreaData(this);
+});
+//按金额设置运费
+$('.btn-addcalculateaddr').on('click', function(e) {
+  e.preventDefault();
+  getAreaData(this);
+});
+
+//初始化地址弹出框数据
+function getAreaData(el) {
+    var self = area_list.data('JSONList');
+    currtpl = $(el).attr('data-template');
+    if(!self) return;
+
+    if(self.changeStatus(self.data, getDisabled('',el)).isDisabled()) {
+        e.stopPropagation();
+        return $('#messagebox').message('地区已经添加完毕。');
+    }
+
+    self.rebuild(null, getChecked());
+}
+
+tbody.on('click', '.action-edit', function(e) {
+    $(this).parents('td').addClass('editing');
+    currtpl = $(this).attr('data-template');
+    var self = area_list.data('JSONList');
+    self && self.rebuild(getDisabled(this), getChecked(this));
+})
+.on('click', '.action-del', function(e) {
+    var parent = $(this).parents('tr').eq(0);
+    $('#form_delivery')
+        .Validator('removeField', parent.find('.form-control').eq(0))
+        .Validator('removeField', parent.find('.form-control').eq(1));
+    parent.remove();
+});
+
+number_tbody.on('click', '.action-edit', function(e) {
+    $(this).parents('td').addClass('editing');
+    currtpl = $(this).attr('data-template');
+    var self = area_list.data('JSONList');
+    self && self.rebuild(getDisabled(this), getChecked(this));
+})
+.on('click', '.action-del', function(e) {
+    var parent = $(this).parents('tr').eq(0);
+    // $('#form_delivery')
+    //     .Validator('removeField', parent.find('.form-control').eq(0))
+    //     .Validator('removeField', parent.find('.form-control').eq(1));
+    parent.remove();
+});
+
+free_tbody.on('click', '.action-edit', function(e) {
+    $(this).parents('td').addClass('editing');
+    currtpl = $(this).attr('data-template');
+    var self = area_list.data('JSONList');
+    self && self.rebuild(getDisabled(this), getChecked(this));
+}).on('click', '.action-del', function(e) {
+    var parent = $(this).parents('tr').eq(0);
+    parent.remove();
+});
+
+free_number_tbody.on('click', '.action-edit', function(e) {
+    $(this).parents('td').addClass('editing');
+    currtpl = $(this).attr('data-template');
+    var self = area_list.data('JSONList');
+    self && self.rebuild(getDisabled(this), getChecked(this));
+}).on('click', '.action-del', function(e) {
+    var parent = $(this).parents('tr').eq(0);
+    parent.remove();
+});
+
+calculate_money_tbody.on('click', '.action-edit', function(e) {
+    $(this).parents('td').addClass('editing');
+    currtpl = $(this).attr('data-template');
+
+    var self = area_list.data('JSONList');
+    self && self.rebuild(getDisabled(this), getChecked(this));
+}).on('click', '.action-del', function(e) {
+    var parent = $(this).parents('tr').eq('0');
+    parent.remove();
+});
+
+function getChecked(element) {
+    var chk;
+    console.log(element);
+    if(element) {
+        chk = $(element).nextAll('input[type=hidden]').val().split(',');
+    }
+    else {
+        chk = [];
+    }
+    return chk;
+}
+function getDisabled(element,dom) {
+    var dis = [];
+    var dom;
+    $(dom).parent().find('tr').each(function (i) {
+        var disid;
+        if(element) {
+            var parent = $(element).parents('tr');
+            if(parent[0] == this) {
+                return;
+            }
+        }
+        disid = $(this).find('input[type=hidden]').val();
+        if(disid) {
+            dis = dis.concat(disid.split(','));
+        }
+    });
+    // console.log(dis);
+    return dis;
+}
+
+area_list.jsonList({
+    url: '<{$env.statics_host_url}>/ectools/statics/scripts/region.json',
+    type: '',
+    items: 'children',
+    label: 'value',
+    name: 'areas',
+    success: function(self) {
+        dialog.on('click', '.action-save', function(e){
+            if(!self.container.find('input[type=checkbox]:checked')[0]) {
+                return $('#messagebox').message('请至少选择一个地区。');
+            }
+
+            var selected = self.getChecked(['value', 'id']);
+            var value = selected[0].join() || '未选择地区';
+            var id = selected[1].join();
+            if(currtpl == 'addrule_template'){
+              if(tbody.find('.editing').length) {
+                  tbody.find('.editing').removeClass('editing').find('span').html(value).next().val(id);
+              }
+              else {
+                  key++;
+                  var rule = {
+                      key: key,
+                      areas: value,
+                      values: id
+                  };
+                  var row = $(substitute(tpl, rule));
+
+                  row.appendTo(tbody);
+
+                  $('#form_delivery')
+                      .Validator('addField', 'fee_conf[' + key + '][start_standard]', {
+                          group: 'td',
+                          validators: {
+                              required: {
+                                  message: '请填写重量。'
+                              },
+                              gt: {
+                                  value: 0
+                              }
+                          }
+                      })
+                      .Validator('addField', 'fee_conf[' + key + '][start_fee]', {
+                          group: 'td',
+                          validators: {
+                              required: {
+                                  message: '请填写运费。'
+                              },
+                              gt: {
+                                  value: 0
+                              }
+                          }
+                      });
+              }
+            }else if(currtpl == 'addrule_number_template'){
+              if(number_tbody.find('.editing').length) {
+                  number_tbody.find('.editing').removeClass('editing').find('span').html(value).next().val(id);
+              }
+              else {
+                  number_key++;
+
+                  var freerule = {
+                      key: number_key,
+                      areas: value,
+                      values: id
+                  };
+                  var row = $(substitute(number_tpl, freerule));
+                  row.appendTo(number_tbody);
+              }
+            }else if(currtpl == 'addfreearea_template'){
+              if(free_tbody.find('.editing').length) {
+                  free_tbody.find('.editing').removeClass('editing').find('span').html(value).next().val(id);
+              }
+              else {
+                  free_key++;
+
+                  var freerule = {
+                      key: free_key,
+                      areas: value,
+                      values: id
+                  };
+                  var row = $(substitute(free_tpl, freerule));
+                  row.appendTo(free_tbody);
+              }
+            }else if(currtpl == 'addfreearea_number_template'){
+              if(free_number_tbody.find('.editing').length) {
+                  free_number_tbody.find('.editing').removeClass('editing').find('span').html(value).next().val(id);
+              }
+              else {
+                  free_number_key++;
+
+                  var freerule = {
+                      key: free_number_key,
+                      areas: value,
+                      values: id
+                  };
+                  var row = $(substitute(free_number_tpl, freerule));
+                  row.appendTo(free_number_tbody);
+              }
+            }else if(currtpl == 'calculate_money_template'){
+              if(calculate_money_tbody.find('.editing').length) {
+                  calculate_money_tbody.find('.editing').removeClass('editing').find('span').html(value).next().val(id);
+              }
+              else {
+                  calculate_money_key++;
+                  var freerule = {
+                      key: calculate_money_key,
+                      itemkey: 1,
+                      areas: value,
+                      values: id
+                  };
+                  var row = $(substitute(calculate_money_tpl, freerule));
+                  row.appendTo(calculate_money_tbody);
+              }
+            }
+            dialog.modal('hide');
+        })
+        .on('click', '.action-cancel', function(e) {
+            tbody.find('.editing').removeClass('editing');
+            number_tbody.find('.editing').removeClass('editing');
+            free_tbody.find('.editing').removeClass('editing');
+            free_number_tbody.find('.editing').removeClass('editing');
+            calculate_money_tbody.find('.editing').removeClass('editing');
+        });
+    }
+});
+
+function ajaxSubmit (e) {
+  var form = e.target;
+  e.preventDefault();
+  $.post(form.action, $(form).serialize(), function(rs) {
+    if(rs.error) {
+      $('#messagebox').message(rs.message);
+      return;
+    }
+    if(rs.success) {
+      $('#messagebox').message(rs.message, 'success');
+    }
+    if(rs.redirect) {
+      location.href = rs.redirect;
+    }
+  });
+}
+
+$('.act-checkprotect').on('change', function(e) {
+  if(this.checked){
+    $("#protect_checke").css('display','');
+  }
+  else{
+    $("#protect_checke").css('display','none');
+  }
+}).trigger('change');
+
+$('#expressselect_modal .action-save').click(function(){
+  var list = $(this).parents('.modal-dialog').find('.primary li');
+  var checklist = ''
+  for (var i = 0; i < list.length; i++) {
+    if($(list[i]).find('input[type="checkbox"]').prop('checked')==true){
+      checklist += '<li>'+ $(list[i]).find('label').text() + '</li> ';
+    }
+  };
+  $('.express-list ul li').remove()
+  $('.express-list ul').append(checklist);
+  $('#expressselect_modal').modal('hide');
+})
+
+// 勾选是否免邮后后面的具体添加规则的显示与隐藏
+$('#freepostage').click(function(){
+  if($(this).prop('checked')==true){
+    var calculateType = $('input[name="valuation"]:checked').val();
+    $('#isfree-number-detail').hide();
+    $('#isfree-detail').hide();
+    if(calculateType == "1") {
+      $('#isfree-detail').show();
+    }else if(calculateType == "2") {
+      $('#isfree-number-detail').show();
+    }
+  }else{
+    $('#isfree-detail').hide();
+    $('#isfree-number-detail').hide();
+  }
+});
+
+//指定条件包邮
+$('#form_delivery').on('change', 'select[name^="free_conf"]', function() {
+  var selValue = $(this).val();
+  var key = $(this).attr('data-key');
+  if(selValue == 1) {
+    $('.free-inweight-'+key).show();
+    $('.free-upmoney-'+key).hide();
+    $('.sp-split-'+key).hide();
+  }else if(selValue == 2) {
+    $('.free-inweight-'+key).hide();
+    $('.free-upmoney-'+key).show();
+    $('.sp-split-'+key).hide();
+  }else {
+    $('.free-inweight-'+key).show();
+    $('.free-upmoney-'+key).show();
+    $('.sp-split-'+key).show();
+  }
+});
+
+$('#form_delivery').on('change', 'select[name^="free_number_conf"]', function() {
+  var selValue = $(this).val();
+  var key = $(this).attr('data-key');
+  if(selValue == 1) {
+    $('.free-number-innumber-'+key).show();
+    $('.free-number-upmoney-'+key).hide();
+    $('.sp-split-'+key).hide();
+  }else if(selValue == 2) {
+    $('.free-number-innumber-'+key).hide();
+    $('.free-number-upmoney-'+key).show();
+    $('.sp-number-split-'+key).hide();
+  }else {
+    $('.free-number-innumber-'+key).show();
+    $('.free-number-upmoney-'+key).show();
+    $('.sp-number-split-'+key).show();
+  }
+});
+
+$('input[name="is_free"]').on('change', function() {
+  if($(this).val() == '0') {
+    $('#isfree-form').show();
+    $('.free-calculate').show();
+    $('#id-valuation').show();
+  }else {
+    $('#isfree-form').hide();
+    $('.free-calculate').hide();
+    $('#id-valuation').hide();
+  }
+});
+
+//计价方式选择
+$('input[name="valuation"]').on('change', function() {
+  var value = $(this).val();
+  $('.calculate-weight-content').hide();
+  $('.calculate-number-content').hide();
+  $('.calculate-money-content').hide();
+  $('#isfree-number-detail').hide();
+  $('#isfree-detail').hide();
+  $('#isfree-form').show();
+  if(value == "1") {
+      $('#isfree-detail').show();
+      $('.calculate-weight-content').show();
+      $('select[name^="free_conf"]').val("1");
+      $('select[name^="free_conf"]').trigger('change');
+      if($('input[name="is_free"]:checked').val()=='1'){
+        $('#isfree-form').hide();
+      }
+    } else if(value == "2") {
+      $('#isfree-number-detail').show();
+      $('.calculate-number-content').show();
+      $('select[name^="free_number_conf"]').val("3");
+      $('select[name^="free_number_conf"]').trigger('change');
+      if($('input[name="is_free"]:checked').val()=='1'){
+        $('#isfree-form').hide();
+      }
+    } else if(value == "3") {
+      $('#isfree-form').hide();
+      $('.calculate-money-content').show();
+      $('#freepostage').prop('checked',false);
+    }
+});
+
+//验证并添加金额设置运费行
+function checkAndAddNewTr(el, trid, trIndex, key) {
+  var re = /^\d+\.?\d{0,2}$/;
+  var trKey = parseInt(key) + 1;
+  if (!re.test($(el).val())) {
+     $('#messagebox').message("请输入正确的数字,并且小数位最多2位");
+     $(el).val('');
+      return;
+  }
+  if($(el).attr('readonly')){
+    return;
+  }
+  var value = $(el).val();
+  var newTr = '<tr id="deliveryType_'+trIndex+'_'+trKey+'"><td><div class="form-inline x-input"><input type="text" name="fee_money_conf['+trIndex+'][rules]['+trKey+'][up]"  data-name="fee-money-up" class="form-control" size="10" data-key="'+trKey+'" value="'+value+'" readonly="true">-<input type="text" name="fee_money_conf['+trIndex+'][rules]['+trKey+'][down]" data-name="fee-money-down" class="form-control" size="10" data-key="'+trKey+'" placeholder="∞" onblur="checkAndAddNewTr(this, '+'\'deliveryType_'+trIndex+'_'+trKey+'\', '+'\''+trIndex+'\', '+'\''+trKey+'\')"></div></td> <td><div class="form-inline x-input"><input type="text" name="fee_money_conf['+trIndex+'][rules]['+trKey+'][basefee]" size="16" data-key="'+trKey+'" class="form-control money-number"></div></td><td><a href="javascript:void(0);" class="action-del-item">删除</a></td></tr>';
+  $(el).parents('td').nextAll().find('.action-del-item').hide();
+  $("#"+trid).parents('tbody').eq('0').append(newTr);
+  $(el).attr('readonly', 'true');
+}
+
+$('.free-calculate').on('click', '.action-del-item', function() {
+  var parent = $(this).parents('tr').eq('0');
+  parent.prev().find('.action-del-item').show();
+  var prevInput = parent.prev().find('input[data-name="fee-money-down"]');
+  prevInput.removeAttr('readonly');
+  prevInput.val('');
+  parent.remove();
+});
+$('.free-calculate').on('blur', '.money-number', function() {
+  if(!/^\d+\.?\d{0,2}$/.test($(this).val())){
+      $('#messagebox').message("请输入正确的数字,并且小数位最多2位");
+      $(this).val('');
+  }
+});
+</script>

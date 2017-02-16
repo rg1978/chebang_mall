@@ -1,0 +1,42 @@
+<div class="membercenter-box coupon-box">
+  <div class="membercenter-box-hd">
+    <div class="membercenter-box-left">我的红包</div>
+  </div>
+  <div class="membercenter-box-bd">
+    <div class="redpacket-toolbar">
+      <ul>
+        <li <{if $is_valid=='active'}>class="on" <{/if}> ><a href="<{url action=topc_ctl_member_hongbao@index is_valid=active}>">未使用</a></li>
+        <li <{if $is_valid=='used'}>class="on" <{/if}> ><a href="<{url action=topc_ctl_member_hongbao@index is_valid=used}>">已使用</a></li>
+        <li <{if $is_valid=='expired'}>class="on" <{/if}> ><a href="<{url action=topc_ctl_member_hongbao@index is_valid=expired}>">已过期</a></li>
+      </ul>
+    </div>
+    <{if !$list}>
+    <div class="no-content">暂无记录</div>
+    <{else}>
+    <!-- 未使用红包 -->
+    <div class="redpacket-list <{if $is_valid=='used'}> repacket-used-list <{elseif $is_valid=='expired'}>redpacket-expire-list<{/if}>">
+      <{foreach from=$list item=item}>
+      <div class="redpacket-item">
+        <div class="item-bg"></div>
+        <div class="clearfix">
+          <div class="redpacket-icon"></div>
+          <div class="redpacket-content">
+            <div title="" class="redpacket-name"><{$item.name}></div>
+            <div class="money"><{$item.money|cur}></div>
+          </div>
+        </div>
+        <div class="redpacket-info">
+          <div class="redpacket-date"><span>有效期：</span><{$item.start_time|cdate:FDATE_STIME}>&nbsp;至</div>
+          <div><span></span><{$item.end_time|cdate:FDATE_STIME}></div>
+          <div class="useway"><span>使用方法：</span>在<{if $item.used_platform == 'all'}>全平台<{elseif $item.used_platform == 'pc'}>电脑端<{else}>手机端<{/if}>支付时抵扣</div>
+          <{if $is_valid != 'active'}>
+          <div class="status-icon"></div>
+          <{/if}>
+        </div>
+      </div>
+      <{/foreach}>
+    </div>
+    <{pagers data=$pagers}>
+    <{/if}>
+  </div>
+</div>

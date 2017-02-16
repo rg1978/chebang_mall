@@ -1,0 +1,111 @@
+<div class="member shop">
+  <{include file="topm/common/top.html"}>
+  <div class="main">
+
+    <div class="member-info">
+      <div class="info-hd">
+        <div>
+          <!--
+          <span class="hd-img">
+            <img src="images/member.png" alt="" >
+          </span>
+          -->
+          <span class="hd-name"><{$account}> <a href="<{url action=topm_ctl_member_experience@experience}>" class="grade"><i class="icon icon-grade"></i><{$userInfo.grade_name}></a></span>
+          <a href="<{url action=topm_ctl_member@userinfoSet}>" class="icon-top"></a>
+        </div>
+      </div>
+      <!-- 无预存款时添加样式：no-deposit -->
+      <div class="info-data<{if $noDeposit}> no-deposit<{/if}>">
+
+        <!-- 无预存款时该div不加载 -->
+        <{if !$noDeposit}>
+        <div class="col-goods">
+           <a href="<{url action=topm_ctl_member_deposit@view}>">
+            <span class="txt">账户余额(元)：</span>
+            <span class="num"><{$deposit.deposit|cur}></span>
+          </a>
+        </div>
+        <{/if}>
+
+        <div class="col-goods col-stores">
+          <a href="<{url action=topm_ctl_member_coupon@couponList}>">
+            <span class="txt">优惠券：</span>
+            <span class="num"><{$coupon.count|default:0}> 张</span>
+          </a>
+        </div>
+        <div class="col-stores">
+          <a href="<{url action=topm_ctl_member_point@point}>">
+            <span class="txt">积分：</span>
+            <span class="num"><{$userInfo.point|default:0}></span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="order-status">
+      <div class="order-hd">
+        <a href="<{url action=topm_ctl_member_trade@index}>">
+          <span class="my-order">我的订单</span>
+          <span class="whole">全部<i class="icon icon-forward"></i></span>
+        </a>
+      </div>
+      <div class="order-icons">
+        <ul>
+          <li class="notpaid">
+            <a href="<{url action=topm_ctl_member_trade@index s=1}>" ><span class="icon icon-book"><i><{$nupay|default:0}></i></span>待付款</a>
+          </li>
+          <li class="unfilled">
+            <a href="<{url action=topm_ctl_member_trade@index s=2}>" ><span class="icon icon-ribbon"><i><{$nudelivery|default:0}></i></span>待发货</a>
+          </li>
+          <li class="receiving">
+            <a href="<{url action=topm_ctl_member_trade@index s=3}>" ><span class="icon icon-truck"><i><{$nuconfirm|default:0}></i></span>待收货</a>
+          </li>
+          <li class="receiving">
+            <a href="<{url action=topm_ctl_member_trade@index s=4}>" ><span class="icon icon-dialog"><i><{$unrate|default:0}></i></span>待评价</a>
+          </li>
+          <li class="receiving">
+            <a href="<{url action=topm_ctl_member_trade@canceledTradeList}>" ><span class="icon icon-diary"><i><{$canceled|default:0}></i></span>取消记录</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="receive-address my-favorite">
+      <a href="javascript:void(0);">
+        <span class="safe">我的收藏</span>
+      </a>
+    </div>
+    <div class="receive-address my-favorite-item">
+      <a href="<{url action=topm_ctl_member@itemsCollect}>">
+        <span class="safe">收藏的商品：<em><{$itemcount}></em> 件</span>
+      </a>
+      <a href="<{url action=topm_ctl_member@shopsCollect}>">
+        <span class="safe">收藏的店铺：<em><{$shopcount}></em> 家</span>
+      </a>
+    </div>
+    <div class="receive-address">
+      <a href="<{url action=topm_ctl_member_aftersales@aftersalesList}>">
+        <span class="safe">退换货记录</span>
+        <i class="icon icon-forward"></i>
+      </a>
+    </div>
+    <div class="receive-address">
+      <a href="<{url action=topm_ctl_member@address}>">
+        <span class="safe">收货地址</span>
+        <i class="icon icon-forward"></i>
+      </a>
+    </div>
+    <div class="safe-center">
+      <a href="<{url action=topm_ctl_member@security}>">
+        <span class="safe">安全中心</span>
+        <i class="icon icon-forward"></i>
+      </a>
+    </div>
+    <div class="help-center">
+      <a href="">
+        <span class="safe">帮助与反馈</span>
+        <i class="icon icon-forward"></i>
+      </a>
+    </div>
+  </div>
+
+</div>
+

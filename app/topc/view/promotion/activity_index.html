@@ -1,0 +1,133 @@
+<div class="wrap-lg clearfix">
+  <div class="col-lg-12 purchase-buying">
+    <div class="buying-title"><i class="icon icon-clock"></i> 正在抢购</div>
+    <{if $activity_list_start}>
+    <ul class="buying-list">
+      <{foreach from=$activity_list_start item=group}>
+      <li class="list-item">
+        <div class="item-img"><a href="<{url action=topc_ctl_activity@activity_item_list id=$group.activity_id}>" style="background:url(<{$group.slide_images}>) center; background-size:cover;"></a></div>
+        <div class="item-info">
+          <a href="<{url action=topc_ctl_activity@activity_item_list id=$group.activity_id}>" class="info-title"><{$group.activity_name}></a>
+          <a href="<{url action=topc_ctl_activity@activity_item_list id=$group.activity_id}>" class="info-discount"><span class="sp-discount"><strong><{$group.discount_min/10}></strong>折起</span></a>
+        </div>
+        <div class="item-time" data-time="<{$group.end_time}>" data-now=""><i class="icon icon-clock" data-icon="\2850"></i><span></span></div>
+      </li>
+      <{/foreach}>
+    </ul>
+    <{else}>
+    <div class="buying-list-default">
+      <div class="activity-icon"></div>
+      <p>暂无活动，敬请期待。</p>
+    </div>
+    <{/if}>
+  </div>
+  <div class="col-lg-4 purchase-advance">
+    <div class="advance-title">&nbsp;开售预告</div>
+    <{if $activity_list_nostart}>
+    <div class="advance-list">
+      <{if $nostart_count >6}>
+      <a href="javascript:void(0);" class="prev disable"><i class="icon icon-arrow-up" data-icon="\2818"></i></a>
+      <{/if}>
+      <div class="wrap-list">
+        <ul>
+          <{foreach from=$activity_list_nostart item=group}>
+          <li class="advance-item">
+            <div class="advance-img"> <a href="<{url action=topc_ctl_activity@activity_item_list id=$group.activity_id}>" style="background:url(<{$group.slide_images|storager}>) center; background-size:cover;"></a> </div>
+            <div class="dvbg"></div>
+            <a href="javascript:void(0);" class="activity-name">预告：<{$group.activity_name}></a>
+          </li>
+          <{/foreach}>
+        </ul>
+      </div>
+      <{if $nostart_count >6}>
+      <a href="javascript:void(0);" class="next"><i class="icon icon-arrow-down" data-icon="\2806"></i></a>
+      <{/if}>
+    </div>
+    <{else}>
+    <div class="advance-list-default">
+      <div class="activity-icon"></div>
+      <p>暂无活动，敬请期待</p>
+    </div>
+    <{/if}>
+  </div>
+</div>
+
+<script>
+
+$('.list-item').on('mouseover', function() {
+  $(this).addClass('active').siblings().removeClass('active');
+}).on('mouseout', function() {
+  $(this).removeClass('active');
+});
+
+//倒计时
+var now = "<{$now_time}>";
+$('.item-time').each(function() {
+  countdown('.item-time span',{
+    'start': $(this).attr('data-time') - now,
+    'secondOnly': false,
+    'callback': function() {
+      window.location.href = window.location.href;
+    }
+  });
+});
+
+//侧栏高度
+
+var adItemHeight = parseInt($('.advance-item').css('height'))+10;
+var itemLength = $('.advance-item').length;
+
+if(itemLength <= 6) {
+  $('a.next').addClass('disable');
+  $('.wrap-list').css('height',(adItemHeight*itemLength)+'px');
+  $('.wrap-list ul').css('height',adItemHeight*itemLength+'px');
+}else {
+  $('.wrap-list').css('height',(adItemHeight*6)+'px');
+  $('.wrap-list ul').css('height',adItemHeight*6+'px');
+}
+
+//侧栏上翻
+var index = 0;
+$('.prev').on('click', function() {
+  if(index <= 0) return;
+  index--;
+  if((index+6) < $('.advance-item').length)
+    {
+      if($('.next').hasClass('disable'))
+        $('.next').removeClass('disable');
+    }
+    if(index <= 0)
+      $('.prev').addClass('disable');
+    else
+      {
+        if($('.prev').hasClass('disable'))
+          $('.prev').removeClass('disable');
+      }
+      var liHeight = $('.advance-item').height() + 10;
+      $('.wrap-list>ul').stop().animate({top: -(index*liHeight) + 'px'}, 300);
+
+});
+//侧栏下翻
+$('.next').on('click', function() {
+  if((index+6) >= $('.advance-item').length) return;
+
+  index++;
+  if((index+6) >= $('.advance-item').length)
+    $('.next').addClass('disable');
+  else
+    {
+      if($('.next').hasClass('disable'))
+        $('.next').removeClass('disable');
+    }
+    if(index > 0)
+      {
+        if($('.prev').hasClass('disable'))
+          $('.prev').removeClass('disable');
+      }
+      var liHeight = $('.advance-item').height() + 10;
+      $('.wrap-list>ul').stop().animate({top: -(index*liHeight) + 'px'}, 300);
+});
+
+
+</script>
+

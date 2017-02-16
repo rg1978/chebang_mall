@@ -1,0 +1,43 @@
+<div id="main" class="main clearfix">
+	<div class="wrap-lg">
+		<div class="recharge-container">
+		  <div class="recharge-header clearfix">
+		    <div class="recharge-title">
+		      订单提交
+		    </div>
+		    <div class="recharge-steps">
+		      <span class="current">1.提交订单</span>
+		      <span class="current">2.选择支付方式</span>
+		      <span class="current">3.支付失败</span>
+		    </div>
+		  </div>
+		  <div class="recharge-content recharge-order-content">
+		  <{if $status}>
+		  	<div class="order-info clearfix">
+		  		<div class="goods-name">
+		  		<!-- <{foreach from=$orders item=item}>
+		  		<span><{$item.title}></span>
+		  		<{/foreach}> -->
+		  		</div>
+				<div class="order-total">应付金额：<span><{$cur_money|cur}></span></div>
+		  	</div>
+		  	<{/if}>
+		    <div class="recharge-result failed">
+			    <span>
+			    	<i class="icon icon-tip"></i>抱歉，<{$msg}>
+			    	<{if $status}>
+					<a href="<{url action=topc_ctl_paycenter@index payment_id=$payment_id}>" class="btn-goback"><i class="icon icon-arrow-left"></i>返回支付</a>
+					<{else}>
+					<a href="<{url action=topc_ctl_member_trade@tradeList}>" class="btn-goback"><i class="icon icon-arrow-left"></i>查看订单</a>
+					<{/if}>
+			    </span>
+		    </div>
+		    <{if $depositNotEnough}>
+		    <div class="text-center">
+		    	<a href="<{url action=topc_ctl_member_deposit@rechargeSubmit}>" class="btn btn-import"><span><span>去充值</span></span></a>
+		    </div>
+		    <{/if}>
+		  </div>
+		</div>
+	</div>
+</div>

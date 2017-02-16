@@ -1,0 +1,21 @@
+<desktop>
+
+    <permissions>
+        <permission id="aftersales" display='true' workground='systrade.workground.trades'>售后列表</permission>
+
+        <permission id="refunds" display='true' workground='systrade.workground.trades'>退款申请列表</permission>
+        <permission id="refunds_review" display='true' parent="refunds" workground='systrade.workground.trades'>退款审核与完成退款</permission>
+    </permissions>
+
+    <workground name="交易" id="systrade.workground.trades" controller="admin_trade" action="index" order='80'>
+        <menugroup name='申请售后'>
+            <menu controller='list' action='index' permission='aftersales' display='true' order='10'>售后申请列表</menu>
+            <menu controller='refunds' action='index' permission='refunds' display='true' order='10'>退款申请</menu>
+            <menu controller='refunds' action='rejectView' permission='refunds_review' display='false' order='10'>退款申请弹出页</menu>
+            <menu controller='refunds' action='doTeject' permission='refunds_review' display='false' order='10'>平台拒绝商家退款</menu>
+            <menu controller='refunds' action='refundsPay' permission='refunds_review' display='false' order='10'>退款页面详情</menu>
+            <menu controller='refunds' action='dorefund' permission='refunds_review' display='false' order='10'>实际退款</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

@@ -1,0 +1,80 @@
+<div class="panel panel-default modal-dialog">
+  <div class="panel-heading">
+    <div class="clearfix">
+      <span class="modal-title">选择要移动的文件夹</span>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+  </div>
+  <div class="panel-body text-center nav-tabs-movecat">
+    <input type="hidden" name="img_ids" />
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="category-type <{if $activeImageType == 'item'}>active<{/if}>">
+        <a href="#item" aria-controls="item" data-toggle="tab">产品图片</a>
+      </li>
+      <li class="category-type <{if $activeImageType == 'shop'}>active<{/if}>">
+        <a href="#shop" aria-controls="shop" data-toggle="tab">店铺图片</a>
+      </li>
+    </ul>
+
+    <div class="tab-content movecat-tab-content">
+      <{foreach  from=$imageShopCatList item=list key=imgType}>
+      <div class="tab-pane row gallery-category <{if $imgType == $activeImageType}>active<{/if}>" id="<{$imgType}>">
+        <div class="col-md-2">
+          <div class="category-item" data-img-cat-id="0" data-img-type="<{$imgType}>">
+            <i class="glyphicon glyphicon-folder-close"></i>
+            <p>默认</p>
+          </div>
+        </div>
+        <{if $list}>
+        <{foreach from=$list item=row}>
+        <div class="col-md-2">
+          <div class="category-item" data-img-cat-id="<{$row.image_cat_id}>" data-img-type="<{$imgType}>">
+            <i class="glyphicon glyphicon-folder-close"></i>
+            <p><{$row.image_cat_name}></p>
+          </div>
+        </div>
+        <{/foreach}>
+        <{/if}>
+      </div>
+      <{/foreach}>
+    </div>
+  </div>
+  <div class="modal-footer text-center">
+    <button type="button" class="btn btn-primary btn-move-save">确定</button>
+    <button type="button" class="btn btn-default action-cancel" data-dismiss="modal">取消</button>
+  </div>
+</div>
+<script>
+  $('.gallery-category').on('click','.category-item',function(){
+    $('.gallery-category').find('.category-item').removeClass('active')
+    $(this).addClass('active');
+  });
+
+  //保存
+  $('.btn-move-save').on('click', function() {
+    if($('.gallery-category').find('.active').length <= 0) {
+      $('#messagebox').message("请选择要移动的文件夹");
+      return;
+    }
+    var imgIds = $('input[name="img_ids"]').val();
+    var catId = $('.gallery-category').find('.active').attr('data-img-cat-id');
+    var imageType = $('.gallery-category').find('.active').attr('data-img-type');
+    $.post('<{url action=topshop_ctl_shop_image@moveImageCat}>', {'image_id': imgIds, 'image_cat_id': catId, 'img_type': imageType }, function(rs) {
+      if(rs.success) {
+        $('#messagebox').message(rs.message, 'success');
+        $('#img_move_modal').modal('hide');
+        if(rs.redirect) {
+          location.href = rs.redirect;
+        }
+      }else {
+        $('#messagebox').message(rs.message);
+      }
+    });
+  });
+
+  $('.movecat-tab-content').on('click', '.category-item', function() {
+    $(this).addClass('active').siblings('.category-item').removeClass('active');
+    $('.movecat-tab-content').find('.glyphicon').removeClass('glyphicon-folder-open');
+    $(this).find('.glyphicon').addClass('glyphicon-folder-open');
+  });
+</script>

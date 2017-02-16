@@ -1,0 +1,27 @@
+<section class="widgets-feature-goods section-white">
+  <div class="section-title">
+    <div class="title-txt"><{$setting.texttag}></div>
+    <!-- <div class="more-link"><{if $data.showMore}><a href="<{url action=topwap_ctl_item_list@index cat_id=$data.cat_id}>">查看更多<i class="bbc-icon bbc-icon-forward"></i></a><{/if}></div> -->
+  </div>
+  <ul class="feature-goods-list clearfix">
+    <{foreach from=$data.item item=item}>
+    <li>
+      <div class="goods-item">
+        <div class="floor-item-pic">
+          <a href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">
+            <img src="<{$item.image_default_id|default:$data.defaultImg.S.default_image|storager:'s'}>"  class="ui-imglazyload preload">
+          </a>
+        </div>
+        <div class="pro-info">
+          <div class="info-n">
+            <a href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>" class="fontS"><{$item.title}></a>
+          </div>
+          <div class="info-p">
+            <div class="font-red"><{$item.price|cur}></div><div class="fonts font-gray-40 content-right"><{$item.sold_quantity}>人购买</div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <{/foreach}>
+  </ul>
+</section>

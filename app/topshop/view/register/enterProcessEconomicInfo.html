@@ -1,0 +1,144 @@
+<div class="signup-box-header">
+	<div class="signup-state">
+	    <h3>商家入驻流程</h3>
+	    <ul class="signup-flow-list">
+	    	<li class="on arrow-icon"><{t}>公司基本信息<{/t}></li>
+	    	<li class="on arrow-icon"><{t}>银行及税务信息<{/t}><span class="arrow"></span></li>
+	        <li class="arrow-icon"><{t}>店铺信息<{/t}></li>
+	        <li class="arrow-icon"><{t}>提交完成，等待审核<{/t}></li>
+	        <li><{t}>审核通过，等待签约<{/t}></li>
+	    </ul>
+	</div>
+</div>
+<div class="signup-box signup-wrap">
+	<form action="" method="post" class="form-horizontal" role="form" data-validate-onsuccess="ajaxSubmit">
+	    <input type="hidden" name="enterapply_id" value="<{$applydata.enterapply_id}>">
+	    <fieldset>
+	      <div class="panel panel-outter">
+	        <div class="panel-body">
+		        <div class="col-md-12">
+		            <div>
+		              <legend id="license">税务登记证</legend>
+		            </div>
+		            <div class="form-group">
+		              <label for="tax_code" class="control-label col-md-3"><span class="text-red">*</span>税务登记证号：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[tax_code]" value="<{$shop_info.tax_code}>" id="tax_code" class="form-control" placeholder="税务登记证号" maxlength="20" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="tax_code_img" class="control-label col-md-3"><span class="text-red">*</span>税务登记证复印件：</label>
+		              <div class="col-md-5 relative">
+		                <div class="choose-image">
+		                  <input type="file" class="action-file-input" style="display:none;" data-size="<{$env.config.image.uploadedFileMaxSize}>" name="shop_info[tax_code_img]" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop type=shop_apply}>" accept="image/*" required>
+		                  <span class="image-box action-upload">
+		                    <img src="<{$shop_info.tax_code_img|storager:t}>" />
+		                    <input type="hidden" name="shop_info[tax_code_img]" value="<{$shop_info.tax_code_img}>">
+		                    </span><b class="choose-handle action-upload" title="选择图片">
+		                    <i class="icon-arrow-right-b"></i>
+		                  </b>
+		                  <span class="text-red">税务登记证复印件不能大于<{$env.config.image.uploadedFileMaxSize|format_filesize}></span>&nbsp;&nbsp;<a href="<{$resUrl}>/images/swdjh.jpg"  class="img-example">查看示例</a>
+		                </div>
+		                <div class="remind-content right-350"><i class="glyphicon glyphicon-exclamation-sign"></i><span class="w115p">若国税章和地税章不在同一个证上，请扫描至一张图片中再上传。</span>
+		                </div>
+		              </div>
+		            </div>
+		            <div>
+		              <legend id="bank">结算账号</legend>
+		            </div>
+		            <div class="form-group">
+		              <label for="bank_user_name" class="control-label col-md-3"><span class="text-red">*</span>银行开户公司名：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[bank_user_name]" value="<{$shop_info.bank_user_name}>" id="bank_user_name" class="form-control" placeholder="开户银行" maxlength="50" required>
+		                <div class="remind-content"><i class="glyphicon glyphicon-exclamation-sign"></i><span class="w30p">公司开户名称</span></div>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="bankID" class="control-label col-md-3"><span class="text-red">*</span>银行开户账号：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[bankID]" value="<{$shop_info.bankID}>" id="bankID" class="form-control" placeholder="账号" maxlength="50" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="bank_area" class="control-label col-md-3"><span class="text-red">*</span>开户银行所在地：</label>
+		              <div class="col-md-5">
+		                <input type="text" name="shop_info[bank_area]" value="<{$shop_info.bank_area}>" id="bank_area" class="form-control" placeholder="开户银行所在地" required>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <label for="bank_name" class="control-label col-md-3"><span class="text-red">*</span>开户银行：</label>
+		              <div class="col-md-5 relative">
+		                <input type="text" name="shop_info[bank_name]" value="<{$shop_info.bank_name}>" id="bank_name" class="form-control" placeholder="支行名称" maxlength="50" required>
+		                <div class="remind-content"><i class="glyphicon glyphicon-exclamation-sign"></i><span class="w62p">例：中国银行上海市南京东路支行</span></div>
+		              </div>
+		            </div>
+		      	</div>
+	      	</div>
+	      </div>
+	    </fieldset>
+	    <div class="navbar-fixed-bottom navbar-fixed-btn btn-group-lg">
+	    	<button type="button" class="btn btn-primary btn-back">保存，返回上一步修改</button>
+	      <button type="submit" class="btn btn-primary btn-next">下一步</button>
+	    </div>
+	  </form>
+</div>
+<!-- modal -->
+<div class="modal fade" id="example_img_modal" tabindex="-1" role="dialog">
+  <div class="panel panel-default modal-dialog modal-lg">
+    <div class="panel-heading">
+      <div class="clearfix">
+      	<div class="pull-left">示例</div>
+        <div class="pull-right">
+          <i class="glyphicon glyphicon-remove" data-dismiss="modal"></i>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body text-center">
+      <div class="big-img-show example-img-show"><div class="show-position"><img src="" alt="" ></div></div>
+    </div>
+  </div>
+</div>
+<script>
+	$('.remind-content > .glyphicon').on('mouseover', function() {
+		$(this).siblings('span').show();
+	}).on('mouseout', function() {
+		$(this).siblings('span').hide();
+	});
+
+	function ajaxSubmit (e) {
+	  var form = e.target;
+	  e.preventDefault();
+	  $.post(form.action, $(form).serialize(), function(rs) {
+	    if(rs.error) {
+	    	$('#messagebox').message(rs.message);
+	      	return;
+	    }
+	    if(rs.redirect) {
+	      location.href = rs.redirect;
+	    }
+	  });
+	}
+
+$('.btn-back').click(function(e){
+  var form = $('form')[0];
+  $.post(form.action + '?action=back', $(form).serialize(), function(rs) {
+    if(rs.error) {
+    	$('#messagebox').message(rs.message);
+      	return;
+    }
+    if(rs.redirect) {
+      location.href = rs.redirect;
+    }
+  });
+});
+
+//查看示例
+$('.img-example').on('click', function(e) {
+	e.preventDefault();
+	var that = $(this);
+	$('.show-position').empty();
+	$('#example_img_modal').modal('show').on('shown.bs.modal', function() {
+		$(this).find('.show-position').html('<img src="'+ that.attr('href') +'">');
+	});
+});
+</script>

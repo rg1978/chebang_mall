@@ -1,0 +1,41 @@
+<div id="goods_exshow_config" class="tableform">
+  <div class="division">
+    <p>
+      <label for="">标题：</label>
+      <input type="text" name="title" value="<{$setting.title}>" >
+      <input type="color" name="title_color" value="<{$setting.title_color}>" style="background: none; padding: 0; border: 0">
+    </p>
+    <p>
+      <label>描述：</label>
+      <input type="text" name="desc" vtype="required" value="<{$setting.desc}>" >
+      <input type="color" name="desc_color" value="<{$setting.desc_color}>" style="background: none; padding: 0; border: 0">
+    </p>
+    <p>
+      <label>背景图：</label>
+      <input name='pic' class="imgsrc" id="bg-image"  value="<{$setting.pic}>">
+      <input type=button value=上传图片 class="uploadbtn">
+      <span>（建议图片尺寸：1190px*170px）</span>
+    </p>
+  </div>
+  <div class="division">
+    <div class="division goods-selector">
+      <span>添加红包(最多可添加4个)：</span><div data-extend = "select" <{if $setting.selector=="filter"}>style="display:none;"<{/if}>>
+        <{input type="object" value=$setting.hongbao_select object="hongbao" app="syspromotion" filter="status|nequal=active" name="hongbao_select" select="checkbox" multiple="true" textcol="name"}>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var tag_type='p',tag_class='pic_items';
+  $$(".uploadbtn").addEvent('click',function(e){bindevent(this)});
+  function bindevent(el){
+    var target=$(el).getParent(tag_type).getElement('.imgsrc');
+    var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+    var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;
+    Ex_Loader('modedialog',function(){
+        return new imgDialog(url,{onCallback:function(image_id,image_src){
+                target.value=image_src;
+        }});
+    });
+  }
+</script>

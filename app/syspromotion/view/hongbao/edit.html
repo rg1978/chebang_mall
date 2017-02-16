@@ -1,0 +1,244 @@
+<form id="hongbaoForm" action="?app=syspromotion&ctl=admin_hongbao&act=saveHongbao"  method="POST" >
+  <input type="hidden" name="hongbao_id"  value="<{$hongbao_id}>">
+  <div class="tableform">
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>红包名称：<{/t}></th>
+          <td><{input type="text" name="name" size=30 vtype="required" value=$name maxlength='20'}><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>每人限领金额：<{/t}></th>
+          <td><{input type="text" name="user_total_money" vtype="required&&positive"  value="$user_total_money" size=10}><em><font color='red'>*</font></em></td>
+          <th><{t}>每人限领数量：<{/t}></th>
+          <td><{input type="text" name="user_total_num" vtype="required&&unsignedint"  value="$user_total_num" size=10}><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>领取红包起始时间：<{/t}></th>
+          <td><{input type="time" name="get_start_time" vtype="required" value=$get_start_time size=10}><em><font color='red'>*</font></em></td>
+          <th><{t}>领取红包截止时间：<{/t}></th>
+          <td><{input type="time" name="get_end_time" vtype="required"  value=$get_end_time size=10}><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>	使用红包起始时间：<{/t}></th>
+          <td><{input type="time" name="use_start_time" vtype="required"  value=$use_start_time size=10 }><em><font color='red'>*</font></em></td>
+          <th><{t}>	使用红包截止时间：<{/t}></th>
+          <td><{input type="time" name="use_end_time" vtype="required" value=$use_end_time size=10 }><em><font color='red'>*</font></em></td>
+        </tr>
+        <tr>
+          <th><{t}>使用平台：<{/t}></th>
+          <td>
+            <label><input type="radio" name="used_platform" value="pc" checked/><{t}>电脑端<{/t}></label>
+            <!--select name="used_platform">
+              <option value="pc" <{if $used_platform == 'pc'}>checked<{/if}>>电脑端</option>
+              <option value="all" <{if $used_platform == 'all'}>checked<{/if}>>全平台</option>
+              <option value="wap" <{if $used_platform == 'wap'}>checked<{/if}>>手机端</option>
+            </select-->
+          </td>
+        </tr>
+        <tr>
+          <th><{t}>红包类型：<{/t}></th>
+          <td>
+            <div class='hongbao_type'>
+              <label><input type="radio" name="hongbao_type" value="fixed" checked/><{t}>定额红包<{/t}></label>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="division">
+      <div class="gridlist-action">
+        <{button app="desktop" label="添加红包规则"|t:'syscategory' class="addhongbao" id="addhongbao" icon="btn_add.gif" }><!--<span class="notice-inline"></span>-->
+      </div>
+
+      <table border="0" cellspacing="0" cellpadding="0" class="gridlist hongbao_value_table <{$propInfo.show_type|default:'text'}>-prop-value-table">
+        <thead>
+          <tr>
+            <th><{t}>红包金额<{/t}></th>
+            <th><{t}>红包数量<{/t}></th>
+            <th><{t}>操作<{/t}></th>
+          </tr>
+        </thead>
+        <tbody>
+          <{if $hongbao_list}>
+          <{foreach from=$hongbao_list item=item key=key}>
+          <tr>
+            <td>
+              <{input type="text" name="money[$key]" value=$item.money size=10 vtype='required&&positive'}>
+            </td>
+            <td>
+              <{input type='text' name="num[$key]"  value=$item.num  size=10 vtype='required&&unsignedint'}>
+            </td>
+            <td>
+              <{img app=desktop src="bundle/delete.gif" class="delete"  title="删除" style="cursor:pointer;" }>
+            </td>
+          </tr>
+          <{/foreach}>
+          <{/if}>
+        </tbody>
+      </table>
+    </div>
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>红包总金额：<{/t}></th>
+          <td><h2><font color='red total-money' id="total_money"><{$total_money|cur}></font></h2></td>
+          <th><{t}>红包总数量：<{/t}></th>
+          <td><h2><font color='red total-num' id="total_num"><{$total_num|default:0}></font></h2></td>
+        </tr>
+      </table>
+    </div>
+    <{if $hongbao_id}>
+    <div class="division">
+      <div class="notice">红包开启领取后则不可在编辑红包信息，只能终止领取红包操作。开启在红包领取开始时间后可领取红包。</div>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><font color='red'><{t}>是否开启红包领取：<{/t}></font></th>
+          <td><input type="radio" name="status" value="active">&nbsp;&nbsp;&nbsp;开启 </td>
+        </tr>
+      </table>
+    </div>
+    <{/if}>
+    <div class="table-action">
+      <{button type="submit" id='brand-form-submit' label="保存"|t:'syscategory'}>
+    </div>
+  </div>
+</form>
+<script>
+  (function(){
+    var _form = $('hongbaoForm');
+    var btn =$('brand-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+    var new_item = "<{$hongbao_list|count}>";
+
+    if( new_item != "" ){
+      new_item = Number(new_item) + 1;
+    }else{
+      new_item = 0;
+    }
+    console.log(new_item);
+
+    var table_hongbao_value=$E("#hongbaoForm table.hongbao_value_table");
+
+    var total_money = 0;
+    var total_num = 0;
+    var cur_total_money = Number("<{$total_money|default:0}>");
+    var cur_total_num = Number("<{$total_num|default:0}>");
+    var bindEditEvent=function(row){
+      var flag = true;
+      var del=row.getElement('img.delete');
+      var money = row.getElement('input[name^="money"]');
+      var nums = row.getElement('input[name^="num"]');
+
+      del.addEvent('click',function(){
+        if(confirm('<{t}>确认删除本行吗？<{/t}>')){
+          // if(flag){
+            reloadValue(row.getElement('input[name^="money"]'), row.getElement('input[name^="num"]'));
+          // }
+          row.remove();
+          return;
+        };
+      });
+      money.addEvent('change', function(){
+        calculaMoney(this);
+      });
+      nums.addEvent('change', function(){
+        calculaNum(this);
+      });
+    }
+
+    var getTemp = function(i){
+      return '<td> <{input type="text" size=10 name="money[' + i + ']" value="" vtype="required&&positive" }> </td> <td> <{input type="text" size=10 name="num[' + i + ']" value="" vtype="required&&unsignedint" }> </td><td><{img app=desktop src="bundle/delete.gif" class="delete"  title="删除" style="cursor:pointer;" }></td>';
+    };
+
+    $('addhongbao').addEvent('click',function(e){
+      var num = $E('tbody',table_hongbao_value).getChildren().length;
+      if(num >= 20) {
+        alert('<{t}>红包规则不能超过20个<{/t}>');
+        return;
+      }
+      var newRow=new Element('tr');
+      newRow.inject($E('tbody',table_hongbao_value));
+      newRow.setHTML(getTemp(new_item++));
+      bindEditEvent(newRow);
+    });
+    $$('img.delete').addEvent('click', function(){
+      if(confirm('<{t}>确认删除本行吗？<{/t}>')){
+        var parent = this.parentNode.parentNode;
+        reloadValue($$(parent).getElement('input[name^="money"]'), $(parent).getElement('input[name^="num"]'));
+        parent.remove();
+        return;
+      };
+    });
+
+    $$('input[name^="money"]').addEvent('change', function(){
+      calculaMoney(this);
+    });
+
+    $$('input[name^="num"]').addEvent('change', function(){
+      calculaNum(this);
+    });
+    function calculaMoney(element) {
+      var that = element;
+      flag = true;
+      total_money = 0;
+      $$('input[name^="money"]').each(function(el, index){
+        var cur_num = el.parentNode.parentNode.getElement('input[name^=num]').value;
+        cur_num = cur_num ? Number(cur_num) : 0;
+        if(el.name != that.name && el.value == that.value) {
+          alert('不能添加相同面额的红包！');
+          that.value = "";
+          return false;
+        } else {
+          total_money += Number(el.value) * cur_num;
+        }
+      });
+      $('total_money').setHTML("¥" + total_money);
+      cur_total_money = total_money;
+    }
+    function calculaNum(element) {
+      // var that = el;
+      total_money = 0;
+      total_num = 0;
+      $$('input[name^="num"]').each(function(el, index){
+        var curmoney = el.parentNode.parentNode.getElement('input[name^=money]');
+        cur_money = curmoney.value ? Number(curmoney.value) : 0;
+        total_money += Number(el.value) * cur_money;
+        total_num += Number(el.value);
+      });
+      $('total_num').setHTML(total_num);
+      $('total_money').setHTML("¥" + total_money);
+      cur_total_money = total_money;
+      cur_total_num = total_num;
+    }
+
+    function reloadValue(moneyEl, numEl) {
+      cur_total_money -= Number(moneyEl.get('value')) * Number(numEl.get('value'));
+      cur_total_num -= Number(numEl.get('value'));
+      $('total_money').setHTML(cur_total_money);
+      $('total_num').setHTML(cur_total_num);
+    }
+  })();
+</script>

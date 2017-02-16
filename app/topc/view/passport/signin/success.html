@@ -1,0 +1,20 @@
+<div class="signin2">
+    <div class="success-info text-center">
+      <div class="success-info-l1"><i class="icon icon-checkmark-c"></i>恭喜<{$loginname}>已经注册成功！</div>
+      <!--开启注册送积分-->
+      <div class="success-info-l2">
+        <{if $setting==1}>
+        <p>您已获得<{$sendPointNum}>积分，积分已汇入您的账户</p>
+        <{/if}>
+        <div class="success-info-operate">
+          <a href="<{url action=topc_ctl_default@index}>" class="btn btn-sm btn-danger" data-min="1"><span><span>立即购物</span></span></a>
+          <a href="<{if $next_page}><{$next_page}><{else}><{url action=topc_ctl_default@index}><{/if}>" data-min="1">返回上一页>></a>
+          <!-- <a href="<{url action=topc_ctl_member@index}>" class="btn btn-sm btn-primary" data-min="1"><span><span>进入会员中心</span></span></a>  -->
+        </div>
+        <!--
+        <p class="text-muted">建议您立即进行邮箱验证，使账户更安全购物更放心，<a href="#">点击</a>进行邮箱验证！</p>
+        -->
+      </div>
+    </div>
+  </div>
+

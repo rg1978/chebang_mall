@@ -1,0 +1,12 @@
+{
+    "enabled": true,
+    "service": "prism",
+    "title": "prism_amq",
+    "pipe": "prism.amq",
+    "service_args": {
+        "node": "prism.amq",
+        "topic":"messages"
+    },
+    "pipe_params": {},
+    "input": null
+}

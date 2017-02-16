@@ -1,0 +1,58 @@
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title">365webcall账户信息</h3>
+  </div>
+  <div class="box-body">
+    <div class="text-center">
+      <form  action='<{url action=topshop_ctl_im_webcall@save}>' method="post" class="form-horizontal" data-validate-onsuccess="ajaxSubmit" id="form_delivery" role="form">
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" >E-mail：</label>
+            <div class="col-sm-3">
+              <input type="text" name="email" value='<{$wc.email}>'>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" >开启365webcall：</label>
+            <div class="col-sm-3">
+              <input type='radio' name='use_im' value='1' <{if $wc.use_im == 1}>checked='checked' <{/if}>>开启
+              <input type='radio' name='use_im' value='0' <{if $wc.use_im != 1}>checked='checked' <{/if}>>关闭
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" >客服管理：</label>
+            <div class="col-sm-3">
+              <a href='http://shopex.365webcall.com'>365webcall 管理平台</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ></label>
+            <div class="col-sm-3">
+              <a href='<{url action=topshop_ctl_im_webcall@applyPage}>'>没有账户？点此注册</a>
+            </div>
+          </div>
+          <div class="modal-footer text-center">
+            <button type="submit" class="btn btn-primary btn-flat"><{t}>保存配置<{/t}></button>
+          </div>
+       </form>
+    </div>
+  </div>
+</div>
+<script>
+  function ajaxSubmit (e) {
+    var form = e.target;
+    e.preventDefault();
+    $.post(form.action, $(form).serialize(), function(rs) {
+      if(rs.error) {
+        $('#messagebox').message(rs.message);
+        return;
+      }
+      if(rs.success) {
+        $('#messagebox').message(rs.message, 'success');
+      }
+      if(rs.redirect) {
+        setTimeout(function(){location.href=rs.redirect;}, 800);
+      }
+    });
+  }
+</script>

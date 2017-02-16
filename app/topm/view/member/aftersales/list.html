@@ -1,0 +1,53 @@
+<ul>
+  <{foreach from=$list item=row key=id}>
+  <li>
+    <div class="select-store">
+      <div class="store-n clearfix">
+        <div class="fl"><label for="name">退换货编号：</label> <span><{$row.aftersales_bn}></span></div>
+        <span class="fr"><{$row.created_time|cdate:'FDATE_FTIME'}></span>
+      </div>
+      <div class="store-g">
+        <ul>
+          <li>
+            <div class="g-info">
+              <div class="check">
+                <label for="goods1"></label>
+              </div>
+              <div class="info-l">
+                <a href="<{url action=topm_ctl_member_aftersales@goAftersalesDetail id=$row.oid}>" class="g-pic">
+                  <{if $row.sku.pic_path }>
+                  <img src="<{$row.sku.pic_path|storager:t}>">
+                  <{else}>
+                  <img src="<{$defaultImageId.T.default_image|storager}>">
+                  <{/if}>
+                </div>
+                <div class="info-m">
+                  <a href="<{url action=topm_ctl_member_aftersales@goAftersalesDetail id=$row.oid}>" class="g-name">
+                    <{$row.sku.title}>
+                  </a>
+                  <div class="num"><{$row.sku.spec_nature_info}></div>
+                  <div class="num">共<i><{$row.num}></i>件</div>
+                </div>
+                <div class="info-r">
+                  <div class="g-price">
+                    <span class="out ui-badge-danger ui-badge-inverted">
+                      <{if $row.status == '0'}>
+                      待处理
+                      <{elseif $row.status == '1'}>
+                      处理中
+                      <{elseif $row.status == '2'}>
+                      已处理
+                      <{elseif $row.status == '3'}>
+                      已驳回
+                      <{/if}>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <{/foreach}>
+  </ul>

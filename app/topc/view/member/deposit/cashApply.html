@@ -1,0 +1,92 @@
+<div class="membercenter-box">
+  <div class="membercenter-box-hd">
+    <div class="membercenter-box-left">预存款提现申请</div>
+  </div>
+  <div class="membercenter-box-bd">
+    <form action="<{url action=topc_ctl_member_deposit@cashCheckPage}>" id='cash_apply_form' method="post" data-async="false">
+      <div class='help-block'>
+        提现须知：预存款提现支持各类银行卡，请填写正确的银行卡信息，提交申请后，由平台审核并完成提现，提示完成后，金额到账需要一定的时间。
+      </div>
+      <div class="membercenter-box-hd" style='border-bottom:none'>
+        <div class="membercenter-box-left">提现银行卡信息</div>
+      </div>
+      <div class='row'>
+        <ul>
+          <li class="form-row">
+            <label class="form-label" for="for_name"><em>*</em>银行卡号</label>
+            <span class="form-act">
+              <input class="input-ln" type="text" name="bank_card_id" id="input_bank_card_id" required minlength="16" maxlength="20" autocomplete="off">
+            </span>
+          </li>
+          <li class="form-row">
+            <label class="form-label" for="for_name"><em>*</em>开户行名称</label>
+            <span class="form-act">
+              <input class="input-ln" type="text" name="bank_name" id="input_bank_name" required maxlength="100" autocomplete="off">
+            </span>
+          </li>
+          <li class="form-row">
+            <label class="form-label" for="for_name"><em>*</em>持卡人姓名</label>
+            <span class="form-act">
+              <input class="input-ln" type="text" name="bank_card_owner" id="input_bank_card_owner" required maxlength="20" autocomplete="off">
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class="membercenter-box-hd" style='border-bottom:none'>
+        <div class="membercenter-box-left">提现金额</div>
+      </div>
+      <div class='row'>
+        <ul>
+          <li class="form-row">
+            <label class="form-label" for="for_name"><em>*</em>提现金额</label>
+            <span class="form-act">
+              <input class="input-ln" type="text" name="amount" id="input_amount" required>
+              <span class="help-block">单次提现限额<{$config.depositCashLimitAmount|default:0}>元，今日还可提现<{$config.depositCashLimitTimesLeft}>次</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class='row'>
+        <ul>
+          <li class="form-row">
+            <label class="form-label" for="for_name"></label>
+            <span class="form-act">
+              <div class="recharge"><button id='cash_apply_form_submit' type='submit' class="btn btn-danger"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提交提现申请&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></button></div>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  var depositCashLimitAmount = <{$config.depositCashLimitAmount|default:0}>;
+  var depositCashLimitTimesLeft = <{$config.depositCashLimitTimesLeft}>;
+  var form1 = $('#cash_apply_form');
+  form1.submit(function(){
+    var amount = $('#input_amount').val();
+    if(!(/^-?\d+\.?\d{0,2}$/.test(amount)))
+    {
+      Message.error('<{t}>提现金额只能是两位小数<{/t}>');
+      return false;
+    }
+    if(amount > depositCashLimitAmount)
+    {
+      Message.error('<{t}>提现金额已经超出单次提现额度<{/t}>');
+      return false;
+    }
+    if(amount <= 0)
+    {
+      Message.error('<{t}>提现金额不能小于0<{/t}>');
+      return false;
+    }
+    return;
+  });
+
+if(depositCashLimitTimesLeft == 0)
+{
+  Message.error('<{t}>今天的提现次数已经用完<{/t}>');
+  $('#cash_apply_form_submit').attr('disabled', true);
+}
+</script>
+

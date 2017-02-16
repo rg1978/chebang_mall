@@ -1,0 +1,103 @@
+<div class="panel panel-default">
+  <div class="panel-heading">赠品促销名称</div>
+  <div class="panel-body">
+    <p>
+      <span>名称：</span>
+      <span>
+        <{$gift_name}>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="panel panel-default select-goods-panel">
+  <div class="panel-heading">
+    已选择适用商品
+  </div>
+  <div class="panel-body">
+    <div class="selected-goods-list">
+      <table wdith="100%" class="table table-primary table-hover table-goods">
+        <{foreach from=$itemsList item=itemslist}>
+        <tr>
+          <td>
+            <div class="goods">
+              <a href="<{url action=topc_ctl_item@index item_id=$itemslist.item_id}>" target="_blank">
+                <{if $itemslist.image_default_id}>
+                <img src="<{$itemslist.image_default_id|storager:t}>" alt="">
+                <{else}>
+                <img src="<{$image_default_id.S.default_image}>" alt="">
+                <{/if}>
+                <{$itemslist.title}>
+              </a>
+            </div>
+          </td>
+          <td>
+            销售价:<{$itemslist.price|cur}>
+          </td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">设置规则</div>
+  <div class="panel-body">
+    <p>
+      <span>促销规则：单品购买数量满<{$limit_quantity}>件，送以下赠品</span>
+      <span>
+        <div class="sku-list col-sm-12 p-l-4p">
+          <{foreach from=$gift_item item=giftitem}>
+          <div class="sku-item col-sm-5">
+            <div class="sku-img fl">
+              <a href="<{url action=topc_ctl_item@index item_id=$giftitem.item_id}>">
+                <{if $giftitem.image_default_id}>
+                <img src="<{$giftitem.image_default_id|storager:'s'}>" alt="">
+                <{else}>
+                <img src="<{$image_default_id.S.default_image}>" alt="">
+                <{/if}>
+              </a>
+            </div>
+            <div class="sku-info fl">
+              <a href="<{url action=topc_ctl_item@index item_id=$giftitem.item_id}>" title=""><{$giftitem.title}></a>
+              <span class="text-gray"><{if $giftitem.spec_info}>[<{$giftitem.spec_info}>]<{/if}></span>
+              <div class="info-bottom">
+                <span class="price fl"><{$giftitem.price|cur}></span>
+                <span class="txt-right fr">
+                  <{$giftitem.sku_num}>
+                </span>
+              </div>
+            </div>
+          </div>
+          <{/foreach}>
+        </div>
+      </span>
+    </p>
+    <p>
+      <span>规则描述：</span>
+      <span>
+        <{$gift_desc}>
+      </span>
+    </p>
+    <p>
+      <span>适用会员：</span>
+      <span>
+        <{$grade_str}>
+      </span>
+    </p>
+    <p>
+      <span>有效期：</span>
+      <{$valid_time}>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+
+  </div>
+  <div class="col-md-2">
+    <a href="<{url action="topshop_ctl_promotion_gift@list_gift"}>"><button type="submit" class="btn btn-primary btn-lg btn-block action-save">返回</button></a>
+  </div>
+  <div class="col-md-4">
+
+  </div>
+</div>

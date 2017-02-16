@@ -1,0 +1,14 @@
+<services>
+    <service id="desktop_finder.importexport_mdl_task">
+        <class>importexport_finder_task</class>
+    </service>
+    <service id="importexport.sysclearing_mdl_settlement_detail">
+        <class>importexport_data_settlement_detail</class>
+    </service>
+    <service id="importexport.systrade_mdl_trade">
+        <class>importexport_data_trade_trade</class>
+    </service>
+    <service id="importexport.ectools_mdl_trade_paybill">
+        <class>importexport_data_ectools_paybill</class>
+    </service>
+</services>

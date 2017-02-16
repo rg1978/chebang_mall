@@ -1,0 +1,81 @@
+<style>
+.section-white {
+  border:0;
+}
+</style>
+
+<section class="cb_like">
+  <h3 class="title_txt"><span>实时推荐最适合你的商品</span>猜你喜欢</h3>
+  <ul>
+    <{foreach from=$data.item item=item}>
+    <li>
+      <a href="<{url action=topwap_ctl_item_detail@index item_id=$item.item_id}>">  
+      <div class="cb_likeBox">
+        <figure class="pic">
+          <img src="<{$item.image_default_id}>" alt="" />
+          <h4><{$item.title}></h4>
+          <p><{$item.shop_name}></p>
+        </figure>
+        <p class="price"><span>月销<{$item.sold_quantity}>笔</span><i><{$item.price|cur}></i></p>
+      </div>
+      </a>
+    </li>
+    <{/foreach}>
+    <div class="clear"></div>
+  </ul>
+</section>
+
+<!-- <section class="cb_like">
+<h3 class="title_txt"><span>实时推荐最适合你的商品</span>猜你喜欢</h3>
+<ul class="data-list floor-images">
+  <li>
+    <a href="<{url action=topwap_ctl_item_detail@index item_id=130}>">  
+    <div class="cb_likeBox">
+      <figure class="pic">
+        <img src="images/prod01.jpg" alt="" />
+        <h4>手缝真皮方向盘套专用北京现代悦动瑞纳名图I30胜…</h4>
+        <p>卡卡汽车用品旗舰店</p>
+      </figure>
+      <p class="price"><span>月销1737笔</span>¥<i>9.9</i></p>
+    </div>
+    </a>
+  </li>
+  <li>
+    <a href="<{url action=topwap_ctl_item_detail@index item_id=130}>">  
+    <div class="cb_likeBox">
+      <figure class="pic">
+        <img src="images/prod01.jpg" alt="" />
+        <h4>手缝真皮方向盘套专用北京现代悦动瑞纳名图I30胜…</h4>
+        <p>卡卡汽车用品旗舰店</p>
+      </figure>
+      <p class="price"><span>月销1737笔</span>¥<i>9.9</i></p>
+    </div>
+    </a>
+  </li>
+  <li>
+    <a href="<{url action=topwap_ctl_item_detail@index item_id=130}>">  
+    <div class="cb_likeBox">
+      <figure class="pic">
+        <img src="images/prod01.jpg" alt="" />
+        <h4>手缝真皮方向盘套专用北京现代悦动瑞纳名图I30胜…</h4>
+        <p>卡卡汽车用品旗舰店</p>
+      </figure>
+      <p class="price"><span>月销1737笔</span>¥<i>9.9</i></p>
+    </div>
+    </a>
+  </li>
+  <li>
+    <a href="<{url action=topwap_ctl_item_detail@index item_id=130}>">  
+    <div class="cb_likeBox">
+      <figure class="pic">
+        <img src="images/prod01.jpg" alt="" />
+        <h4>手缝真皮方向盘套专用北京现代悦动瑞纳名图I30胜…</h4>
+        <p>卡卡汽车用品旗舰店</p>
+      </figure>
+      <p class="price"><span>月销1737笔</span>¥<i>9.9</i></p>
+    </div>
+    </a>
+  </li>
+  <div class="clear"></div>
+</ul>
+</section> -->

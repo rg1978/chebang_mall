@@ -1,0 +1,38 @@
+<div class="tableform">
+  <form id="set_offline_form" class="tableform" name="set_offline_form" action="<{url route='shopadmin' app='ectools' ctl='payment_cfgs' act='doSetOffline'}>"  method="post">
+    <div class="division">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <th><{t}>是否开启"货到付款":<{/t}></th>
+          <td>
+            <input type="radio" value="true"  name='open' <{if $open == 'true'}>checked="checked"<{/if}>  />
+            <label for="bool-t"><{t}>开启<{/t}></label>
+            <input  type="radio" value="false" name='open' <{if $open != 'true'}>checked="checked"<{/if}> />
+            <label for="bool-t"><{t}>关闭<{/t}></label>
+          </td>
+        </tr>
+    </table>    </div>
+    <div class="table-action">
+      <button class="btn btn-primary" type="submit"><span><span><{t}>保存<{/t}></span></span></button>
+    </div>
+  </form>
+</div>
+
+<script>
+  $('set_offline_form').store('target',{
+        onComplete:function(rs){
+            if(!rs) return;
+            rs = JSON.decode(rs);
+            if(rs.success){
+                if(window.finderGroup) window.finderGroup['<{$env.get.finder_id}>'].refresh();
+                if($('set_offline_form').getParent('.dialog')){
+                    var Dlg = $('set_offline_form').getParent('.dialog').retrieve('instance');
+                    if(Dlg.update){
+                        Dlg.update.retrieve('instance').initContent();
+                    }
+                    Dlg.close();
+                }
+            }
+        }
+    });
+</script>

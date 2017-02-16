@@ -1,0 +1,35 @@
+<form id='redirectForm' action='aa'>
+</form>
+<script>
+  function goUrl(){
+
+    var form = document.getElementById('redirectForm');
+
+    var queryStr = location.search;
+    queryStr = decodeURI(queryStr);
+    queryStr = queryStr.substr(1, queryStr.length);
+    queryArr = queryStr.split('&');
+
+    for(var i=0; i<queryArr.length; i++)
+    {
+      paramArr = queryArr[i].split('=');
+
+      if(paramArr[0] == 'url')
+      {
+        var url = unescape(paramArr[1]);
+        urlArgs = url.split('/');
+        if(urlArgs[2] != document.domain)
+          return false;
+        form.action = unescape(url);
+      }
+      else if(paramArr[0] == 'method')
+        form.method=paramArr[1];
+      else
+        form.innerHTML = form.innerHTML + '<input type="hidden" name="' + paramArr[0] + '" value="' + paramArr[1] + '" >'
+    }
+    form.submit();
+  }
+
+goUrl();
+
+</script>

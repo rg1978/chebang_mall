@@ -1,0 +1,17 @@
+<{foreach from=$deposit.list item=log}>
+<li class="shopex-table-view-cell">
+	<div class="box-display">
+		<div class="box-item-flex1">
+			<{$log.message}><br>
+			<span class="fontS font-gray-60 fonts"><{$log.logtime|cdate}></span>
+		</div>
+		<div class="box-item-flex1 content-right deposit-detail-amount <{if $log.type=='expense'}>font-green<{else}>font-red<{/if}>">
+		<{if $log.type=='expense'}>
+		-<{$log.fee|cur}>
+		<{else}>
+		+<{$log.fee|cur}>
+		<{/if}>
+		</div>
+	</div>
+</li>
+<{/foreach}>

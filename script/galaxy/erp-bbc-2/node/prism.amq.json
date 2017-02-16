@@ -1,0 +1,9 @@
+{
+    "title": "test",
+    "type": "prism_amq",
+    "config": {
+        "host": "http://omsbbc2.shopexprism.onex.software:8080/api",
+        "key": "5k7y7hnq",
+        "secret": "5ulx44honatwk7rnhnxd"
+    }
+}

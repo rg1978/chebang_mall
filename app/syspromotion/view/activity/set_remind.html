@@ -1,0 +1,50 @@
+<form id="reminForm" action="?app=syspromotion&ctl=admin_activity&act=setRemind"  method="POST" >
+  <div class="tableform">
+    <div class="notice">
+      会员订阅规则：<br>每个活动同一个邮箱地址只能订阅一次，一天邮件的订阅无上限；<br>每个活动同一个手机号只能订阅一次，每天短信有上限限制。
+    </div>
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>开售提醒短信上限：<{/t}></th>
+          <{if $mobile_num}>
+          <td>每个会员每天<{input style="width:50px;" type="unsignedint" name="remind[mobile_num]" maxlength="3" value=$mobile_num}> 条</td>
+          <{else}>
+          <td>每个会员每天<{input style="width:50px;" type="unsignedint" name="remind[mobile_num]" maxlength="3" value=5}> 条</td>
+          <{/if}>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="table-action">
+    <{button type="submit" id='brand-form-submit' label="保存"|t:'syscategory'}>
+  </div>
+</form>
+
+<script>
+  (function(){
+    var _form = $('reminForm');
+    var btn =$('brand-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+  })();
+</script>

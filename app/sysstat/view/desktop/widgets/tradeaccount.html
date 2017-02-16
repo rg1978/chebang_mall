@@ -1,0 +1,20 @@
+<!--   <div class="frame-box">
+    
+    <div class="chart-container swf-box clear" style="height:450px;">
+      <iframe  class="loading" frameborder="0" src="?app=sysstat&ctl=admin_tradeData&act=commonAnalysis&time_start=<{$time_start}>&time_end=<{$time_end}>" scrolling="no"  width="100%" height="100%" ></iframe>
+    </div>
+  </div> -->
+
+<div class="item-block item-business">
+    <div class="item-info-default">
+        <dl class="clearfix">
+            <dt><span><i></i></span></dt>
+            <dd>新增订单：<em><{$tradedata.new_trade|default:0}></em></dd>
+            <dd>订单投诉：<em><{$tradedata.refunds_num|default:0}></em></dd>
+        </dl>
+    </div>
+    <div class="btn-default">
+        <a href="?app=systrade&ctl=admin_trade&act=index" class="btn"><span><span>订单列表<em class="has-info"></em></span></span></a> 
+        <a href="?app=systrade&ctl=admin_complaints&act=index" class="btn"><span><span>订单投诉<em></em></span></span></a> 
+    </div>
+</div>

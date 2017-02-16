@@ -1,0 +1,70 @@
+<desktop>
+
+    <permissions>
+        <permission id="system_messenger" display='true' parent='0' workground='system'>邮件短信配置列表</permission>
+        <permission id="system_messenger_smssign" display='true' parent='system_messenger' workground='system'>设置短信签名</permission>
+        <permission id="system_messenger_vcode" display='true' parent='system_messenger' workground='system'>设置短信验证码</permission>
+        <permission id="system_messenger_emailtmpl" display='true' parent='system_messenger' workground='system'>编辑邮件模板</permission>
+
+        <permission id="system_prismmanager" display='true' parent='0' workground='system'>prism配置列表</permission>
+        <permission id="system_prismmanager_edit" display='true' parent='system_prismmanager' workground='system'>编辑prism Keys </permission>
+        <permission id="system_adminlogmanager" display='true' parent='0' workground='system'>日志管理列表</permission>
+        <permission id="system_apilog_delete" display='true' parent='system_adminlogmanager' workground='system'>api日志删除</permission>
+
+
+        <permission id="system_crontab" display='true' parent='0' workground='system'>定时任务列表</permission>
+        <permission id="system_crontab_edit" display='true' parent='system_crontab' workground='system'>定时任务编辑</permission>
+        <permission id="system_crontab_exec" display='true' parent='system_crontab' workground='system'>手动执行定时任务</permission>
+
+        <permission id="system_queue" display='true' parent='0' workground='system'>队列列表</permission>
+        <permission id="system_queue_exec" display='false' parent='system_queue' workground='system'>手动执行队列</permission>
+        <permission id="system_queue_delete" display='true' parent='system_queue' workground='system'>队列删除</permission>
+    </permissions>
+
+    <workground name="系统" id="system" controller="admin_crontab" action="index" order="205">
+
+        <menugroup name="定时任务">
+            <menu controller="admin_crontab" permission='system_crontab' action="index" display='true' order='1'>定时任务</menu>
+            <menu controller="admin_crontab" permission='system_crontab_edit' action="edit" display='false' order='1'>定时任务编辑</menu>
+            <menu controller="admin_crontab" permission='system_crontab_edit' action="save" display='false' order='1'>定时任务编辑保存</menu>
+            <menu controller="admin_crontab" permission='system_crontab_exec' action="exec" display='false' order='1'>手动执行定时任务</menu>
+
+            <menu controller="admin_queue" permission='system_queue' action="index" display='true' order='2'>队列管理</menu>
+            <menu controller="admin_queue" permission='system_queue_delete' params="action:dodelete" action="index" display='false' order='2'>队列删除</menu>
+            <menu controller="admin_queue" permission='system_queue' action="showRedisQueueParams" display='false' order='2'>查看指定队列详细参数</menu>
+            <menu controller="admin_queue" permission='system_queue_delete' action="delRedisQueue" display='false' order='2'>删除指定队列</menu>
+
+            <menu controller="admin_queueFailed" permission='system_queue' action="index" display='false' order='3'>失败队列管理</menu>
+            <menu controller="admin_queueFailed" permission='system_queue' action="edit" display='false' order='3'>查看队列详情</menu>
+            <menu controller="admin_queueFailed" permission='system_queue_exec' action="exec" display='false' order='3'>手动执行失败队列</menu>
+        </menugroup>
+
+        <menugroup name="邮件短信配置">
+            <menu controller="admin_messenger" permission='system_messenger' action="index" display='true' order='3'>邮件短信配置</menu>
+            <menu controller="admin_messenger" permission='system_messenger_emailtmpl' action="edtmpl" display='false' order='3'>邮件模板编辑</menu>
+            <menu controller="admin_messenger" permission='system_messenger_emailtmpl' action="saveTmpl" display='false' order='3'>邮件模板编辑保存</menu>
+            <menu controller="admin_messenger" permission='system_messenger' action="viewtmpl" display='false' order='3'>短信模板预览</menu>
+            <menu controller="admin_messenger" permission='system_messenger_smssign' action="setSmsSign" display='false' order='3'>设置短信签名</menu>
+            <menu controller="admin_messenger" permission='system_messenger_smssign' action="saveSmsSign" display='false' order='3'>设置短信签名保存</menu>
+            <menu controller="admin_messenger" permission='system_messenger_vcode' action="setSmsConf" display='false' order='3'>设置短信验证码</menu>
+            <menu controller="admin_messenger" permission='system_messenger_vcode' action="saveSmsConf" display='false' order='3'>设置短信验证码保存</menu>
+            <menu controller="admin_messenger" permission='system_messenger' action="save" display='false' order='3'>邮件配置保存</menu>
+        </menugroup>
+
+        <menugroup name="prism配置">
+            <!--
+            <menu controller="admin_prism" permission='prismmanager' action="getConf" display='true' order='1'>查看prism设置</menu>
+            -->
+            <menu controller="admin_prism" permission='system_prismmanager' action="getKeys" display='true' order='4'>访问Keys</menu>
+            <menu controller="admin_prism" permission='system_prismmanager_edit' action="editKey" display='false' order='4'>编辑keys</menu>
+        </menugroup>
+
+        <menugroup name="日志管理">
+            <menu controller="admin_adminlog" permission='system_adminlogmanager' action="index" display='true' order='5'>平台操作日志</menu>
+            <menu controller="admin_apilog" permission='system_adminlogmanager' action="index" display='true' order='5'>API日志</menu>
+            <menu controller="admin_apilog" permission='system_apilog_delete' params="action:dodelete" action="index" display='false' order='5'>API日志删除</menu>
+            <menu controller="admin_apilog" permission='system_adminlogmanager' action="edit" display='false' order='5'>查看api日志详情</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

@@ -1,0 +1,49 @@
+<{if $setting.pic.1.tagname=='one'}>
+<section class="widgets-floor section-white">
+  <div class="section-title">
+    <div class="title-txt"><{$setting.pic.first.tagname}></div>
+    <div class="more-link"><a href="<{url to=$data.pic.first.more}>">查看更多<i class="bbc-icon bbc-icon-forward"></i></a></div>
+  </div>
+  <div class="floor-container floor-showarea-inline">
+    <div class="showarea-item"><a href="<{url to=$data.pic.first.1.linktarget}>"><img src="<{$data.pic.first.1.link|storager}>"></a></div>
+    <div class="showarea-item"><a href="<{url to=$data.pic.first.2.linktarget}>"><img src="<{$data.pic.first.2.link|storager}>"></a></div>
+  </div>
+</section>
+<{/if}>
+<{if $setting.pic.1.tagname=='three'}>
+<section class="widgets-floor section-white">
+  <div class="section-title">
+    <div class="title-txt"><{$setting.pic.third.tagname}></div>
+    <div class="more-link"><a href="<{url to=$data.pic.third.more}>">查看更多<i class="bbc-icon bbc-icon-forward"></i></a></div>
+  </div>
+  <div class="floor-container floor-showarea-group">
+    <div class="showarea-item"><a href="<{url to=$data.pic.third.1.linktarget}>"><img src="<{$data.pic.third.1.link|storager}>"></a></div>
+    <div class="showarea-item-ingroup">
+      <div class="item-ingroup-top"><a href="<{url to=$data.pic.third.2.linktarget}>"><img src="<{$data.pic.third.2.link|storager}>"></a></div>
+      <div class="item-ingroup-bottom">
+        <div class="ingroup-item"><a href="<{url to=$data.pic.third.3.linktarget}>"><img src="<{$data.pic.third.3.link|storager}>"></a></div>
+        <div class="ingroup-item"><a href="<{url to=$data.pic.third.4.linktarget}>"><img src="<{$data.pic.third.4.link|storager}>"></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+<{/if}>
+
+<{if $setting.pic.1.tagname=='two'}>
+<section class="widgets-floor section-white">
+  <div class="section-title">
+    <div class="title-txt"><{$setting.pic.second.tagname}></div>
+    <div class="more-link"><a href="<{url to=$data.pic.second.more}>">查看更多<i class="bbc-icon bbc-icon-forward"></i></a></div>
+  </div>
+  <div class="floor-container floor-showarea-group">
+    <div class="showarea-item-ingroup">
+      <div class="item-ingroup-top"><a href="<{$data.pic.second.1.linktarget}>"><img src="<{$data.pic.second.1.link|storager}>"></a></div>
+      <div class="item-ingroup-bottom">
+        <div class="ingroup-item"><a href="<{$data.pic.second.2.linktarget}>"><img src="<{$data.pic.second.2.link|storager}>"></a></div>
+        <div class="ingroup-item"><a href="<{$data.pic.second.3.linktarget}>"><img src="<{$data.pic.second.3.link|storager}>"></a></div>
+      </div>
+    </div>
+    <div class="showarea-item"><a href="<{$data.pic.second.4.linktarget}>"><img src="<{$data.pic.second.4.link|storager}>"></a></div>
+  </div>
+</section>
+<{/if}>

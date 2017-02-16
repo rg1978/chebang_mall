@@ -1,0 +1,48 @@
+<div class="tabs-wrap">
+  <ul>
+    <li class="tab current"><span><{t}>单图<{/t}></span></li>
+  </ul>
+</div>
+<div class="tableform clearfix">
+  <div class=" fl item" style="margin-left: 30px;">
+    <div class="piccontent">
+      <div class="firsttag">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <th>上传图片: </th>
+              <td>
+                <input type='text' name="image" class="imgsrc" value="<{$setting.image}>">
+                <input type="button" value="上传图片" class="uploadbtn"><span>（建议图片尺寸：px*px）</span>
+              </td>
+            </tr>
+            <tr>
+              <th>链接到: </th>
+              <td>
+                <{input type="applink" name="link" value=$setting.link linktypename="linktype" linktypevalue=$setting.linktype}>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  (function(){
+    var tag_type='tr';
+    $$(".piccontent .uploadbtn").addEvent('click',function(e){bindevent(this)});
+    function bindevent(el){
+      var target=$(el).getParent(tag_type).getElement('.imgsrc');
+      var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+      var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;  
+      Ex_Loader('modedialog',function(){
+        return new imgDialog(url,{onCallback:function(image_id,image_src){
+          target.value=image_src;
+        }});
+      });
+    }
+  })();
+</script>

@@ -1,0 +1,125 @@
+<input type="hidden" name="ruledata[status]" value="<{$status}>">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>活动名称：<{/t}></th>
+    <td><{$ruleInfo.activity_name}></td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>活动标签：<{/t}></th>
+    <td>
+      <{$ruleInfo.activity_tag}>
+      <span class="notice"  style="margin:10px"><{t}>如“团购”，“限时抢购”<{/t}></span>
+    </td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>规则描述：<{/t}></th>
+    <td><{$ruleInfo.activity_desc}></td>
+  </tr>
+
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>报名开始时间：<{/t}></th>
+    <td><{$ruleInfo.apply_begin_time|cdate}></td>
+  </tr>
+
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>报名结束时间：<{/t}></th>
+    <td><{$ruleInfo.apply_end_time|cdate}>
+      <span class="notice"  style="margin:10px"><{t}>报名结束时间要大于报名开始时间<{/t}></span>
+    </td>
+  </tr>
+
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>发布时间：<{/t}></th>
+    <td>
+      <{$ruleInfo.release_time|cdate}>
+      <span class="notice"  style="margin:10px"><{t}>发布时间要介于报名结束时间和开售时间之间，以便留出时间审核商家报名<{/t}></span>
+    </td>
+  </tr>
+
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>开售时间：<{/t}></th>
+    <td><{$ruleInfo.start_time|cdate}></td>
+  </tr>
+
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>结束时间：<{/t}></th>
+    <td>
+      <{$ruleInfo.end_time|cdate}>
+      <span class="notice"  style="margin:10px"><{t}>活动结束时间要大于活动开售时间<{/t}></span>
+    </td>
+  </tr>
+
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>每人每件限购：<{/t}></th>
+    <td><{$ruleInfo.buy_limit}>件</td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>每间店铺可以报名商品数量：<{/t}></th>
+    <td><{$ruleInfo.enroll_limit}>件</td>
+  </tr>
+  <tr>
+    <th><{t}>可报名的店铺类型：<{/t}></th>
+    <td>
+      <{foreach from=$shoptype item=item key=id}>
+       <{if $item.checked}> <{$item.name}> 、<{/if}>
+      <{/foreach}>
+    </td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>选择参加活动的类目：<{/t}></th>
+    <td>
+      <{foreach from=$cat item=item key=id}>
+      <{if $item.checked}> <{$item.cat_name}>、 <{/if}>
+      <{/foreach}>
+    </td>
+  </tr>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>店铺设置商品折扣范围：<{/t}></th>
+    <td>
+      <{$ruleInfo.discount_min}>%  &nbsp; ~
+      <{$ruleInfo.discount_max}>%
+    </td>
+  </tr>
+  <tr>
+    <th><em></em><{t}>设置活动宣传图：<{/t}></th>
+    <td>
+      <table>
+        <tr>
+          <td>
+            <a href='<{$ruleInfo.slide_images}>' class='img-tip pointer lnk' target='_blank' onmouseover='bindFinderColTip(event);'>查看宣传图 </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <{if $ruleInfo.remind_enabled}>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>是否启用开售提醒：<{/t}></th>
+    <td class="remind-enabled">
+      是
+    </td>
+  </tr>
+  <tr>
+    <th><em></em><{t}>开售提醒：<{/t}></th>
+    <td>活动开始前<{$ruleInfo.remind_time}> 分钟发送提醒</td>
+  </tr>
+  <tr>
+    <th><em></em><{t}>提醒方式：<{/t}></th>
+    <td>
+      <{if $ruleInfo.remind_way =="email"}>
+      邮件
+      <{/if}>
+      <{if $ruleInfo.remind_way =="mobile"}>
+      短信
+      <{/if}>
+    </td>
+  </tr>
+  <{else}>
+  <tr>
+    <th><em><font color='red'>*</font></em><{t}>是否启用开售提醒：<{/t}></th>
+    <td class="remind-enabled">
+      否
+    </td>
+  </tr>
+  <{/if}>
+</table>

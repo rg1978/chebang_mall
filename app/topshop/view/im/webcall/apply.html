@@ -1,0 +1,107 @@
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title">365webcall账户信息</h3>
+  </div>
+  <div class="box-body">
+    <div class="text-center">
+      <form  action='<{url action=topshop_ctl_im_webcall@apply}>' method="post" class="form-horizontal" data-validate-onsuccess="ajaxSubmit" id="form_delivery" role="form">
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" >E-mail：</label>
+            <div class="col-sm-3">
+              <input type="text" name="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>密码：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="password" name="pwd">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>重复密码：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="password" name="pwd_confirm">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>昵称：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="text" name="name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>网址：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="text" name="url">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>地区：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="text" name="area">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>公司名称：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="text" name="corpName">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>电话号码：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="text" name="phone">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>QQ：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="text" name="qq">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>联系人：<{/t}></label>
+            <div class="col-sm-3">
+              <input type="text" name="contact">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ><{t}>开启365webcall：<{/t}></label>
+            <div class="col-sm-3">
+              <input type='radio' name='use_im' value='1' checked='checked'><{t}>开启<{/t}>
+              <input type='radio' name='use_im' value='0' ><{t}>关闭<{/t}>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" ></label>
+            <div class="col-sm-3">
+              <a href='<{url action=topshop_ctl_im_webcall@index}>?flag=1'><{t}>已有账号？点此直接添加<{/t}></a>
+            </div>
+          </div>
+          <div class="modal-footer text-center">
+            <button type="submit" class="btn btn-primary btn-flat"><{t}>保存配置<{/t}></button>
+          </div>
+       </form>
+    </div>
+  </div>
+</div>
+<script>
+function ajaxSubmit (e) {
+  var form = e.target;
+  e.preventDefault();
+  $.post(form.action, $(form).serialize(), function(rs) {
+    $(form).find('button[type=submit]').prop('disabled', false);
+    if(rs.error) {
+      $('#messagebox').message(rs.message);
+      return;
+    }
+    if(rs.success) {
+      $('#messagebox').message(rs.message, 'success');
+    }
+    if(rs.redirect) {
+      location.href = rs.redirect;
+    }
+  });
+}
+</script>

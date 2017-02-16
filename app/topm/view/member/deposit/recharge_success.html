@@ -1,0 +1,20 @@
+<div class="address-edit recharge-pay">
+  <header>
+    <div class="list-hd">
+      <div class="backto icon-back">
+        <input type="button" name="returnBcak" onclick="history.back()">
+      </div>
+      <div class="tit">预存款充值</div>
+    </div>
+  </header>
+  <div class="main" id="main">
+    <div class="remind-content">
+      <span class="success-icon"><i class="icon-ok"></i></span>恭喜您，充值成功！
+    </div>
+
+    <div class="next">
+      <div class="dv-amount">充值金额：<span class="price"><{$cur_money|cur}></span></div>
+      <a href="<{url action=topm_ctl_default@index}>" class="btn-block ui-btn ui-btn-warning">去逛逛</a>
+    </div>
+  </div>
+</div>

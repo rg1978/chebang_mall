@@ -1,0 +1,78 @@
+<div class="panel panel-outter">
+  <{include file='topshop/aftersales/search.html'}>
+  <div class="panel-body">
+    <h4>退换货列表</h4>
+    <div class="nav-tabs-custom" id="tabs">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="<{url action=topshop_ctl_aftersales@search}>#tab_all" data-toggle="tab" data-progress="all">全部</a></li>
+        <li><a href="<{url action=topshop_ctl_aftersales@search}>#tab_0" data-toggle="tab" data-progress="0">等待审核</a></li>
+        <li><a href="<{url action=topshop_ctl_aftersales@search}>#tab_1" data-toggle="tab" data-progress="1">等待买家回寄</a></li>
+        <li><a href="<{url action=topshop_ctl_aftersales@search}>#tab_2" data-toggle="tab" data-progress="2">待确认发货</a></li>
+        <li><a href="<{url action=topshop_ctl_aftersales@search}>#tab_5" data-toggle="tab" data-progress="5">商家已收货</a></li>
+        <li><a href="<{url action=topshop_ctl_aftersales@search}>#tab_8" data-toggle="tab" data-progress="8">等待平台退款</a></li>
+        <li><a href="<{url action=topshop_ctl_aftersales@search}>#tab_3-4-6-7" data-toggle="tab" data-progress="3-4-6-7">已完成</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab_all">
+          <{include file='topshop/aftersales/item.html'}>
+        </div><!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_0">
+        </div><!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_1">
+        </div><!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_2">
+        </div><!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_5">
+        </div><!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_8">
+        </div><!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_3-4-6-7">
+        </div><!-- /.tab-pane -->
+
+      </div><!-- /.tab-content -->
+    </div>
+  </div>
+</div>
+<script>
+  $('.reservation').daterangepicker({
+    format: 'YYYY/MM/DD',
+  opens: 'right'
+  });
+
+$('#tabs a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+  var tabhref = $(this).attr('href');
+  var tab = tabhref.split("#")[1];
+  var progress = tab.split("_")[1];
+  $('#'+tab).load(tabhref,{'progress':progress});
+  $("form select[name=progress]").val(progress);
+}).eq($('#filter_progress').val()).trigger('click');
+
+function ajaxSuccess(e) {
+  e.preventDefault();
+  var form = e.target;
+  $(form).find('button[type=submit]').prop('disabled', false);
+  $.post(form.action, $(form).serialize(),function(rs){
+    var progress = $(form).find('select[name=progress]').val();
+    var tabs = $('#tabs a[data-toggle="tab"]');
+    tabs.each(function(){
+        if($(this).attr('data-progress') == progress) {
+            $(this).parent().addClass('active').siblings().removeClass('active');
+        }
+    });
+    $('#tabs .tab-pane.active').html(rs);
+  });
+}
+
+</script>
+
+<script>
+  $(document).ready(function() {
+    $(".sidebar .sidebar-menu li a i.glyphicon").eq(1).removeClass("glyphicon-list-alt").addClass("glyphicon-stats");
+  });
+</script>

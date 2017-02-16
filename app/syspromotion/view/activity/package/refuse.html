@@ -1,0 +1,46 @@
+<div id="reason">
+  <ul>
+    <li class="form-row">
+      <textarea type="textarea" name="reason" cols="5" rows="3" maxlength='500' vtype="required" placeholder="请填写驳回原因" style="margin: 0px; height: 100px; width: 360px;"> </textarea>
+    </li>
+  </ul>
+  <h5 class='red'>最多输入500字符</h5>
+  <div class="table-action">
+    <{button type="submit" id='action-refuse' class="act-refuse" label="确定"}>
+    <{button label="取消" onclick="$(this).getParent('.dialog').getElement('.btn-close').fireEvent('click');"}>
+  </div>
+</div>
+
+<script>
+  var approve_url = "?app=syspromotion&ctl=admin_package&act=approve";
+  $('reason').getElement('.act-refuse').addEvent('click',function(e){
+    var _self = this;
+    var url = window.location.href;
+    if(url.indexOf("singlepage") == -1){
+      var flag = true;
+    }else{
+      var flag = false;
+    }
+    var reason = $$('textarea[name=reason]').getValue();
+    new Request.JSON({
+      url:approve_url,
+        method:'post',
+        data:'shop_id=<{$shop_id}>&package_id=<{$package_id}>&package_name=<{$package_name}>&package_status=refuse&reason='+reason,
+        onComplete:function(rs){
+          if(rs.success){
+            MessageBox.success(rs.success);
+            _self.getParent('.dialog').retrieve('instance').close();
+            if(flag){
+              window.finderGroup['<{$env.get.finder_id}>'].refresh();
+              window.close();
+            }else{
+              window.opener.finderGroup['<{$env.get.finder_id}>'].refresh();
+              window.close();
+            }
+          }else{
+            MessageBox.error(rs.error);
+          }
+        }
+    }).send();
+  });
+</script>

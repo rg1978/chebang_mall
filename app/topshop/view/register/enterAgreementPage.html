@@ -1,0 +1,22 @@
+<div class="signup-box">
+    <form action="<{url action=topshop_ctl_register@enterProcessCompanyInfo}>" method="get" class="form-horizontal">
+        <div class="panel panel-outter">
+            <div class="panel-heading text-center">
+                <h4>商城入驻协议</h4>
+            </div>
+            <div class="panel-body agreement-panel">
+                <div>
+                    <{$content}>
+                </div>
+                <div class="checkbox form-group argeement-box">
+                    <label class="checkbox dis-inblock">
+                        <input type="checkbox" name="license" value="true" required>我已阅读并同意以上协议
+                    </label>
+                </div>
+                <div class="btn-option sign-footer center">
+                    <button type="submit" class="btn btn-block btn-lg">下一步</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

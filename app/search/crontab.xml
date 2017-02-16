@@ -1,0 +1,7 @@
+<cronentries>
+    <cron id="search_tasks_cleardeltadata">
+        <description>清除增量表中过期的商品数据</description>
+        <schedule>30 3 * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

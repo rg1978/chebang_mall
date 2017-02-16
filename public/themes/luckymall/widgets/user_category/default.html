@@ -1,0 +1,44 @@
+<div class="channel-floor clearfix">
+  <div class="module-hd"><{$setting.name}><span><{$setting.desc}></span></div>
+  <div class="module-bd floor-container floor-style">
+    <div class="floor-left">
+      <div class="floor-recommend">
+        <a href="<{$setting.small_pic0_link}>"><img width="216" height="186" src="<{$setting.small_pic0}>" alt="<{$setting.small_pic0_txt}>"></a>
+      </div>
+      <div class="floor-brand">
+        <ul>
+        <{if $setting.picData}>
+          <{foreach from=$setting.picData item=item}>
+          <li>
+            <a href="<{$item.linktarget}>"><img src="<{$item.link}>" alt="<{$item.linkinfo}>"></a>
+          </li>
+          <{/foreach}>
+        <{/if}>
+        </ul>
+      </div>
+    </div>
+
+    <div class="floor-center">
+      <a href="<{$setting.small_pic1_link}>"><img width="376" height="421" src="<{$setting.small_pic1}>" alt="<{$setting.small_pic1_txt}>"></a>
+    </div>
+    <div class="floor-right">
+      <div class="floor-pro-group">
+        <ul>
+          <li><a href="<{$setting.small_pic2_link}>"><img width="199" height="210" src="<{$setting.small_pic2}>" alt="<{$setting.small_pic2_txt}>"></a></li>
+          <li><a href="<{$setting.small_pic3_link}>"><img width="199" height="210" src="<{$setting.small_pic3}>" alt="<{$setting.small_pic3_txt}>"></a></li>
+        </ul>
+      </div>
+      <div class="floor-pro-group group-b">
+        <ul>
+          <li><a href="<{$setting.small_pic4_link}>"><img width="199" height="421" src="<{$setting.small_pic4}>" alt="<{$setting.small_pic4_txt}>"></a></li>
+        </ul>
+      </div>
+      <div class="floor-pro-group">
+        <ul>
+          <li><a href="<{$setting.small_pic5_link}>"><img width="199" height="210" src="<{$setting.small_pic5}>" alt="<{$setting.small_pic5_txt}>"></a></li>
+          <li><a href="<{$setting.small_pic6_link}>"><img width="199" height="210" src="<{$setting.small_pic6}>" alt="<{$setting.small_pic6_txt}>"></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

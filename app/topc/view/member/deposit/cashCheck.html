@@ -1,0 +1,34 @@
+<div class="membercenter-box">
+  <div class="membercenter-box-hd">
+    <div class="membercenter-box-left">验证支付密码</div>
+  </div>
+  <div class="membercenter-box-bd">
+    <form action="<{url action=topc_ctl_member_deposit@cashApply}>" method="post" id="ajaxForm"  data-async="false">
+      <input type="hidden" name="rsftockens" value="<{$rsf|gettocken}>">
+      <{foreach from=$cash item=value key=key}>
+      <input type='hidden' name='<{$key}>' value='<{$value}>'>
+      <{/foreach}>
+      <div class='row'>
+        <ul>
+          <li class="form-row">
+            <label class="form-label" for="for_name">支付密码</label>
+            <span class="form-act">
+              <input class="input-ln" type="password" name="password" id="password" required >
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class='row'>
+        <ul>
+          <li class="form-row">
+            <label class="form-label" for="for_name"></label>
+            <span class="form-act">
+              <div class="recharge"><button type='submit' class="btn btn-danger"><span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></button></div>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
+</div>
+

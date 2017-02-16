@@ -1,0 +1,67 @@
+<div class="order-search shop">
+  <div class="ui-mask"></div>
+  <{include file="topm/common/top.html"}>
+  <div class="main">
+    <div class="showarea order-return-list ui-refresh">
+      <{if $list}>
+      <section class="data-list">
+        <{include file="topm/member/aftersales/list.html"}>
+      </section>
+      <div class="ui-refresh-handle">
+        <div class="ui-refresh-down"></div>
+      </div>
+      <{else}>
+      <div class="order-search shop store-empty">
+        <div class="main" id="main">
+          <div class="empty-area">
+            <i class="icon icon-order"></i>
+            <span class="empty-txt">您还没有退换货记录哦</span>
+          </div>
+        </div>
+      </div>
+      <{/if}>
+
+    </div>
+  </div>
+  <!--返回顶部-->
+  <div id="gotop"></div>
+</div>
+
+<script>
+  $('#backtop').backTop();
+
+  // 全setup方式调用
+  $('#menu').click(
+    function(){
+      $('.hd-menu .ui-mark-temp').removeClass('ui-in');
+    }
+  );
+
+  window.scrollTo(0, 1);//收起地址栏
+
+  var pagers = <{$pagers|json_encode}>;
+  pagers.next = pagers.current + 1;
+  $('.ui-refresh').refresh({
+    init: function () {
+      if(pagers.current == pagers.total) {
+        this.disable();
+      }
+    },
+    load: function (dir, type) {
+      var self = this;
+      var $list = $('.data-list');
+      $.get('<{url action=topm_ctl_member_aftersales@ajaxAftersalesList}>', location.search.slice(1) + '&pages=' + pagers.next, function (rs) {
+            if(rs.success) {
+              pagers.next = +rs.pagers.current + 1;
+              $list[dir == 'up' ? 'prepend' : 'append'](rs.html);
+            }
+            self.afterDataLoading();
+            if(rs.pagers.current == rs.pagers.total) {
+              self.disable();
+            }
+    });
+  }
+  });
+</script>
+
+

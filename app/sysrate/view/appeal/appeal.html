@@ -1,0 +1,113 @@
+<{if $appealData.appeal_again}>
+<ul class="complain-list">
+  <li>
+    <div class="item-status"></div>
+    <div class="complain-item">
+      <div>第一次申诉内容:<{$appealData.appeal_log.content}></div>
+      <div class="imgs-show clearfix">
+        <{if $appealData.appeal_log.evidence_pic}>
+        <ul class="thumb">
+          <{foreach from=$appealData.appeal_log.evidence_pic item=first_pic}>
+          <li>
+            <span data-href='<{$first_pic|storager}>' style="color:red" class='img-tip pointer lnk enterapply-pic' target='_blank'>
+              <img width="150" height="100"  src="<{$first_pic|storager:t}>">
+            </span>
+          </li>
+          <{/foreach}>
+        </ul>
+        <{else}>
+        无图片申诉材料
+        <{/if}>
+      </div>
+    </div>
+    <div class="complain-item reject">
+      <div>第一次驳回理由: <{$appealData.appeal_log.reject_reason}></div>
+    </div>
+  </li>
+  <li>
+    <div class="item-status lastest"></div>
+    <div class="complain-item">
+      <div>第二次申诉内容: <{$appealData.content}></div>
+      <div class="imgs-show clearfix">
+        <{if $appealData.evidence_pic}>
+        <ul class="thumb">
+          <{foreach from=$appealData.evidence_pic item=first_pic}>
+          <li><a href="<{$first_pic}>" target="_blank"><img src="<{$first_pic|storager:t}>"></a></li>
+          <{/foreach}>
+        </ul>
+        <{else}>
+        无图片申诉材料
+        <{/if}>
+      </div>
+    </div>
+    <{if $appealData.reject_reason}>
+    <div class="complain-item reject">
+      <div>再次驳回理由: <{$appealData.reject_reason}></div>
+    </div>
+    <{else}>
+    <div class="complain-item no-reject">
+      <div>再次驳回理由: </div>
+    </div>
+    <{/if}>
+  </li>
+</ul>
+
+<{else}>
+<ul class="complain-list">
+  <li>
+    <div class="item-status lastest"></div>
+    <div class="complain-item">
+      <div>第一次申诉内容:<{$appealData.content}></div>
+      <div class="imgs-show clearfix">
+        <{if $appealData.evidence_pic}>
+        <ul class="thumb">
+          <{foreach from=$appealData.evidence_pic item=first_pic}>
+          <li><a href="<{$first_pic}>" target="_blank"><img src="<{$first_pic|storager:t}>"></a></li>
+          <{/foreach}>
+        </ul>
+        <{else}>
+        无图片申诉材料
+        <{/if}>
+      </div>
+    </div>
+    <{if $appealData.reject_reason}>
+    <div class="complain-item reject">
+      <div>第一次驳回理由: <{$appealData.reject_reason}></div>
+    </div>
+    <{else}>
+    <div class="complain-item no-reject">
+      <div>第一次驳回理由: </div>
+    </div>
+    <{/if}>
+  </li>
+</ul>
+
+<{/if}>
+
+<div class="carrousel">
+  <span class="close-img entypo-cancel">x</span>
+  <div class="wrapper">
+    <a href="javascript:void(0);"><img src="" class="showImg"/></a>
+  </div>
+</div>
+<script>
+  var carrousel = $$( ".carrousel" );
+  $$( ".enterapply-pic" ).addEvent('click', function(e){
+    var _this = this;
+    var src = _this.getProperty('data-href');
+    carrousel.getElement("img").setProperty( "src", src );
+    // console.log(carrousel.getElement("img").getProperty( "src"));
+    carrousel.setStyle("display","block");
+  });
+
+  $$( ".close-img" ).addEvent('click', function(e){
+    closeShowImg();
+  });
+  $$( ".carrousel a" ).addEvent('click', function() {
+    closeShowImg();
+  });
+  function closeShowImg() {
+    carrousel.getElement( "img" ).setProperty( "src", '' );
+    carrousel.setStyle("display","none");
+  }
+</script>

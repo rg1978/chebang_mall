@@ -1,0 +1,38 @@
+<{if $setting.hongbao}>
+<div class="module">
+  <div class="module-bd widget-redpacket2" <{if $setting.pic}>style="background:url(<{$setting.pic}>) no-repeat;background-size:cover;" <{else}>style="background:#db3a1c;background-size:cover;"<{/if}>>
+    <div class="redpacket-info">
+      <div class="title" style="color:<{$setting.title_color}>;"><{$setting.title}></div>
+      <div class="redpacket-description" style="color:<{$setting.desc_color}>;"><{$setting.desc}></div>
+    </div>
+    <ul>
+      <{foreach from=$setting.hongbao item=row}>
+      <li>
+        <a href="" data-id="<{$row.hongbao_id}>">
+          <div class="redpacket-title center"><{$row.name}></div>
+          <div class="redpacket-money"><{$row.money|cur}></div>
+        </a>
+      </li>
+      <{/foreach}>
+    </ul>
+  </div>
+</div>
+<{/if}>
+<script>
+  $('.widget-redpacket2').on('click', 'li > a', function(e){
+    e.preventDefault();
+    $.get('<{url action=topc_ctl_member_hongbao@getHongbao}>', 
+            {
+              'hongbao_id': $(this).attr('data-id'), 
+              'money': $(this).find('.redpacket-money').text().substr(1)
+            },
+            function(rs){
+              if(rs.success) {
+                Message.success(rs.message);
+              }
+              if(rs.error) {
+                Message.error(rs.message);
+              } 
+            });
+  });
+</script>

@@ -1,0 +1,24 @@
+<div class="notice">
+  初始化物流公司会对已添加的不做变动，新增默认物流公司数据<br>
+</div>
+
+<hr>
+
+<div align="center" id="init_logistics">
+  <{button label=$___syslogistics="初始化物流公司"|t:'syslogistics' onclick="submitInit()" }>
+</div>
+<script>
+  function submitInit(){
+    if(confirm('<{t}>初始化物流公司会将默认数据都进行添加，确定要初始化吗？<{/t}>')){
+      W.page('?app=syslogistics&ctl=admin_logistics&act=init&init=true',{
+        method:'get',
+        update:'messagebox',
+        onComplete:function(re){
+          if($('init_logistics').getParent('.dialog')){
+            $('init_logistics').getParent('.dialog').retrieve('instance').close();
+          }
+        }
+      });
+    }
+  }
+</script>

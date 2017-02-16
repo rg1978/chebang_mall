@@ -1,0 +1,14 @@
+<services>
+
+    <service id="desktop_finder.sysaftersales_mdl_refunds">
+        <class>sysaftersales_finder_refunds</class>
+    </service>
+    <!--清除初始化数据-->
+    <service id="desktop_debug_clean_data">
+        <class>sysaftersales_data_clean</class>
+    </service>
+    <service id="desktop_finder.sysaftersales_mdl_aftersales">
+        <class>sysaftersales_finder_aftersales</class>
+    </service>
+
+</services>

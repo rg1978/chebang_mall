@@ -1,0 +1,229 @@
+<body class="no-fix">
+  <header class="icons-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more-vertical btn-mini-menu"></a>
+  </header>
+  <section class="container no-header">
+    <{if $pagers.total}>
+    <div id="pullrefresh" class="shopex-scroll-wrapper">
+      <div class="shopex-scroll">
+        <div class="page-banner activity-banner"><div class="imgcover"><img src="<{$activity.slide_images|storager}>" alt=""></div></div>
+        <section class="section-white content-padded">
+          <p class="activity-title"><span class="tag"><{$activity.discount_min/10}>折起</span>
+            <span><{$activity.activity_name}></span>
+          </p>
+          <{if $activity.release_time < $env.now && $env.now < $activity.start_time}>
+            <p><span class="fontS font-gray-20">距离活动开始还有：</span>
+              <mark class="countdown-view" data-time="<{$activity.start_time}>"></mark>
+            </p>
+          <{elseif $activity.start_time <=$env.now && $env.now < $activity.end_time }>
+            <p><span class="fontS font-gray-20">距离活动结束还有：</span>
+              <mark class="countdown-view" data-time="<{$activity.end_time}>"></mark>
+            </p>
+          <{elseif $activity.end_time <=$env.now }>
+            <p><span class="fontS font-gray-20">活动已结束</span></p>
+          <{/if}>
+        </section>
+        <div class="section-white goods-filters">
+          <div class="goods-filters-item active">综合</div>
+          <div class="goods-filters-item" data-order="sales_count desc">销量</div>
+          <div class="goods-filters-item " data-order="activity_price">价格 <i class="goods-filters-order order-asc"></i></div>
+          <div id="show_style" class="goods-show-style"><i class="bbc-icon bbc-icon-thumb"></i></div>
+        </div>
+        <ul class="shopex-table-view pro-list-grid goods-list activity">
+          <{include file="topwap/activity/itemlist.html" }>
+        </ul>
+      </div>
+    </div>
+    <{else}>
+      <{include file="topwap/empty/item.html"}>
+    <{/if}>
+  </section>
+
+  <!-- 右上角menu菜单 -->
+  <div id="minimenu" class="bbc-mini-menu shopex-popover">
+    <div class="shopex-popover-arrow"></div>
+    <div>
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category-empty"></i> 分类</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 购物车</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 会员</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<{script src="share.js" app="topwap"}>
+<script>
+  $(function(){
+    var activityTitle = $('.activity-title span').first().text() + $('.activity-title span').last().text();
+    wxShare({
+      title: activityTitle,
+      desc: '',
+      link: location.href,
+      imgUrl: $('.activity-banner').first().find('img').attr('src')
+    });
+  });
+//实现ios平台的侧滑关闭页面；
+if (shopex.os.plus && shopex.os.ios) {
+  offCanvasWrapper[0].addEventListener('shown', function(e) { //菜单显示完成事件
+    plus.webview.currentWebview().setStyle({
+      'popGesture': 'none'
+    });
+  });
+  offCanvasWrapper[0].addEventListener('hidden', function(e) { //菜单关闭完成事件
+    plus.webview.currentWebview().setStyle({
+      'popGesture': 'close'
+    });
+  });
+}
+
+// 倒计时
+var end_time = $('.countdown-view').attr('data-time');
+countdown('.countdown-view', {
+  'start': end_time - "<{$env.now}>",
+  'secondOnly': false,
+  'callback': null
+});
+
+
+// 显示样式，橱窗/列表
+var flag = localStorage.getItem('list_type');
+if (flag && flag == 'gallery') {
+  $('#show_style .bbc-icon').addClass('bbc-icon-thumb').removeClass('bbc-icon-gallery');
+  $('.goods-list').addClass('pro-list-grid').removeClass('pro-list-normal');
+} else if (flag && flag == 'thumb') {
+  $('#show_style .bbc-icon').addClass('bbc-icon-gallery').removeClass('bbc-icon-thumb');
+  $('.goods-list').addClass('pro-list-normal').removeClass('pro-list-grid');
+}
+
+var activity_id = "<{$activity.activity_id}>";
+
+$('#show_style').on('tap', function() {
+  if ($(this).find('.bbc-icon').hasClass('bbc-icon-gallery')) {
+    $(this).find('.bbc-icon').removeClass('bbc-icon-gallery').addClass('bbc-icon-thumb');
+    $('.goods-list').addClass('pro-list-grid').removeClass('pro-list-normal');
+    shopex('#pullrefresh').pullRefresh().scrollTo(0,0);
+    localStorage.setItem('list_type', 'gallery');
+  } else if ($(this).find('.bbc-icon').hasClass('bbc-icon-thumb')) {
+    $(this).find('.bbc-icon').removeClass('bbc-icon-thumb').addClass('bbc-icon-gallery');
+    $('.goods-list').addClass('pro-list-normal').removeClass('pro-list-grid');
+    shopex('#pullrefresh').pullRefresh().scrollTo(0,0);
+    localStorage.setItem('list_type', 'thumb');
+  }
+
+});
+
+var count = 1;
+var totalpage = "<{$pagers.total}>";
+var listwrapper = document.body.querySelector('.goods-list');
+var order;
+
+$('.goods-filters-item').on('tap', function() {
+  $(this).addClass('active').siblings().removeClass('active');
+  order = $(this).data('order');
+  var filterItem = $(this).find('.goods-filters-order')
+  if (filterItem && $(this).hasClass('active') && filterItem.hasClass('order-asc')) {
+    filterItem.removeClass('order-asc').addClass('order-desc');
+    order = order ? order + ' ' + 'asc' : '';
+  } else if (filterItem && $(this).hasClass('active') && filterItem.hasClass('order-desc')) {
+    filterItem.removeClass('order-desc').addClass('order-asc');
+    order = order ? order + ' ' + 'desc' : '';
+  }
+  getList(1, order, function(rs) {
+    $(listwrapper).html(rs);
+    shopex('#pullrefresh').pullRefresh().scrollTo(0,0);
+    shopex('#pullrefresh').pullRefresh().enablePullupToRefresh();
+  });
+});
+
+shopex.init({
+  swipeBack: false,
+  pullRefresh: {
+    container: '#pullrefresh',
+    down: {
+      callback: pulldownRefresh
+    },
+    up: {
+      contentrefresh: '正在加载...',
+      callback: pullupRefresh
+    }
+  }
+});
+/**
+ * 下拉刷新具体业务实现
+ */
+function pulldownRefresh() {
+  count = 1;
+  setTimeout(function() {
+    $.ajax({
+      url: '<{url action=topwap_ctl_activity@itemlist}>',
+      type: 'get',
+      dataType: 'html',
+      data: {
+        'id': activity_id,
+        'pages': count,
+        'order_by': order
+      },
+      success: function(rs) {
+        $('.goods-list').html(rs);
+        shopex('#pullrefresh').pullRefresh().endPulldownToRefresh()
+        shopex('#pullrefresh').pullRefresh().enablePullupToRefresh(); //refresh completed
+      }
+    });
+  }, 1500);
+}
+/**
+ * 上拉加载具体业务实现
+ */
+function pullupRefresh() {
+  setTimeout(function() {
+    shopex('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalpage)); //参数为true代表没有更多数据了。
+    if(!(count > totalpage)) {
+      $.ajax({
+        url: '<{url action=topwap_ctl_activity@itemlist}>',
+        type: 'get',
+        dataType: 'html',
+        data: {
+          'id': activity_id,
+          'pages': count,
+          'order_by': order
+        },
+        success: function(rs) {
+          $('.goods-list').append(rs);
+        }
+      });
+    }
+  }, 1500);
+}
+
+  function getList(count,order,callback){
+    $.ajax({
+      url: '<{url action=topwap_ctl_activity@itemlist}>',
+      type: 'get',
+      dataType: 'html',
+      data: {
+        'id': activity_id,
+        'pages': count,
+        'order_by': order
+      },
+      success: callback
+    });
+  };
+
+
+$('.shopex-table-view').on('tap', 'a', function() {
+  var link = $(this).attr('href');
+  location.href = link;
+})
+</script>

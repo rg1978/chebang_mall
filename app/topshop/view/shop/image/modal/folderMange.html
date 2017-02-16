@@ -1,0 +1,117 @@
+<div class="modal-content modal-dialog">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <span class="modal-title">文件夹管理</span>
+    <input type="hidden" value="<{$activeImageType}>" name="image_type">
+  </div>
+  <div class="modal-body">
+    <div class="modal-body-content">
+        <div class="folder-list">
+          <{if $imageShopCatList}>
+          <{foreach from=$imageShopCatList item=row}>
+          <div class="folder-item">
+            <div class="folder-img">
+              <i class="glyphicon glyphicon-folder-close"></i>
+              <span class="icon icon-close folder-del" data-img-cat-id="<{$row.image_cat_id}>" title="删除"></span>
+            </div>
+            <div class="folder-info">
+              <p class="folder-name" title="<{$row.image_cat_name}>"><{$row.image_cat_name}></p>
+              <input type="text" class="form-control folder-name-input" name="image_cat_name" value="<{$row.image_cat_name}>"  data-img-cat-id="<{$row.image_cat_id}>">
+            </div>
+          </div>
+          <{/foreach}>
+          <{/if}>
+          <button class="folder-item-add folder-add">
+            <i class="glyphicon glyphicon-plus"></i>
+          </button>
+        </div>
+    </div>
+  </div>
+  <div class="modal-footer text-center">
+    <button type="button" class="btn btn-primary w200 btn-close-folder">关闭</button>
+  </div>
+</div>
+<script>
+//修改文件夹名称
+$('.folder-list').on('click','.folder-name',function(){
+  var nameInput = $(this).siblings('.folder-name-input');
+  var $this = $(this);
+  $(this).hide();
+  nameInput.show().focus();
+  nameInput.blur(function(){
+    nameInput.hide();
+    $this.show();
+  })
+});
+$('.folder-list').on('blur','.folder-name-input',function(){
+  var $this = $(this);
+  var name = $(this).val();
+  var imgCatId = $(this).attr('data-img-cat-id');
+  var nameDom = $(this).parent().find('.folder-name');
+  var parentFolderItem = $(this).parents('.folder-item')
+  $.post('<{url action=topshop_ctl_shop_image@editImgCat}>', {'image_cat_id': imgCatId,'image_cat_name': name}, function(data){
+    if(data.error){
+      $('#messagebox').message(data.message);
+      $this.select();
+    }else{
+      nameDom.text(name);
+      nameDom.attr('title', name);;
+      if(parentFolderItem.hasClass('new-folder-item')) {
+        parentFolderItem.removeClass('new-folder-item');
+      }
+    }
+  });
+});
+
+  //添加文件夹
+  $('.folder-add').on('click', function() {
+    var imgType = $('input[name="image_type"]').val();
+    var $this = $(this);
+    $.post('<{url action=topshop_ctl_shop_image@addImgCat}>', {'image_type': imgType}, function(data) {
+      if(data.error) {
+        $('#messagebox').message(data.message);
+      } else {
+        var imgCatId = data.message.image_cat_id;
+        var imgName = data.message.image_cat_name;
+        var itemHtml = '<div class="folder-item new-folder-item">'
+                  +'<div class="folder-img">'
+                  +'<i class="glyphicon glyphicon-folder-close"></i>'
+                  +'<span class="icon icon-close folder-del" data-img-cat-id="' + imgCatId + '" title="删除"></span>'
+                  +'</div>'
+                  +'<div class="folder-info">'
+                  +'<p class="folder-name" tile="'+imgName+'">'+imgName+'</p>'
+                  +'<input type="text" class="form-control folder-name-input" name="image_name" value="'+imgName+'" data-img-cat-id="' + imgCatId + '">'
+                  +'</div>'
+                  +'</div>';
+        $('.folder-item-add').before(itemHtml);
+        var folderItemLast = $('.folder-list').find('.folder-item:last');
+        folderItemLast.find('.folder-name-input').select();
+      }
+    });
+
+  });
+
+  //删除文件夹
+  $('.folder-list').on('click', '.folder-del', function(e) {
+    var $this = $(this);
+    e.preventDefault();
+    Modal.confirm({msg: '确定删除该文件夹'}).on(function(e) {
+      if(e==true) {
+        var imgCatId = $this.attr('data-img-cat-id');
+        $.post('<{url action=topshop_ctl_shop_image@delImgCat}>', {'image_cat_id': imgCatId}, function(data) {
+          if(data.error){
+            $('#messagebox').message(data.message);
+          }else{
+            $this.parents('.folder-item').remove();
+            $('#messagebox').message(data.message,'success');
+          }
+        });
+      }
+    });
+  });
+
+  //关闭文件夹管理窗口
+  $('.btn-close-folder').on('click', function() {
+    $('#folder_mange_modal').modal('hide');
+  });
+</script>

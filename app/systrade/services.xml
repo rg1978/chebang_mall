@@ -1,0 +1,16 @@
+<services>
+    <service id="cart_object_apps">
+        <class>systrade_cart_object_item</class>
+        <class>systrade_cart_object_package</class>
+    </service>
+    <service id="desktop_finder.systrade_mdl_trade">
+        <class>systrade_finder_trade</class>
+    </service>
+    <service id="desktop_finder.systrade_mdl_order_complaints">
+        <class>systrade_finder_complaints</class>
+    </service>
+    <!--清除初始化数据-->
+    <service id="desktop_debug_clean_data">
+        <class>systrade_data_clean</class>
+    </service>
+</services>

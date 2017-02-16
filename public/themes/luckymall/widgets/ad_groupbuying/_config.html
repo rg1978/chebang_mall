@@ -1,0 +1,124 @@
+<div class="widgetconfig" >
+  <div class="tableform">
+    <table width="100%">
+      <tr>
+        <th>栏目标题：</th>
+        <td><input type="text" name="block_name" value="<{$setting.block_name|default:'今日团购'}>"/></td>
+      </tr>
+      <tr>
+        <th>栏目描述：</th>
+        <td><input type="text" name="desc" value="<{$setting.desc|default:'buying'}>"/></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="featured" class="tableform">
+    <h5>栏目主推列表</h5>
+    <table width="100%">
+      <tbody>
+        <tr>
+          <th><{t app="b2c"}>主标题:<{/t}></th>
+          <td>
+            <input name="pic[0][title]" value="<{$setting.pic.0.title}>">
+          </td>
+          <th><{t app="b2c"}>副标题:<{/t}></th>
+          <td>
+            <input name="pic[0][small_title]" value="<{$setting.pic.0.small_title}>">
+          </td>
+        </tr>
+        <tr>
+          <th><{t app="b2c"}>图片地址:<{/t}></th>
+          <td>
+            <input name='pic[0][link]' class="imgsrc" id="pic[0][link]"  value="<{$setting.pic.0.link}>">
+            <input type=button value=上传图片 class="uploadbtn"><span>（推荐图片尺寸400px*250px）</span>
+          </td>
+          <th><{t app="b2c"}>链接地址:<{/t}></th>
+          <td>
+            <input name="pic[0][linktarget]" value="<{$setting.pic.0.linktarget}>">
+          </td>
+        </tr>
+        <tr>
+          <th><{t app="b2c"}>图片描述:<{/t}></th>
+          <td>
+            <input name="pic[0][linkinfo]" value="<{$setting.pic.0.linkinfo}>">
+          </td>
+        </tr>
+      </tbody>
+      
+      <tbody>
+        <tr>
+          <th><{t app="b2c"}>主标题:<{/t}></th>
+          <td>
+            <input name="pic[1][title]" value="<{$setting.pic.1.title}>">
+          </td>
+          <th><{t app="b2c"}>副标题:<{/t}></th>
+          <td>
+            <input name="pic[1][small_title]" value="<{$setting.pic.1.small_title}>">
+          </td>
+        </tr>
+        <tr>
+          <th><{t app="b2c"}>图片地址:<{/t}></th>
+          <td>
+            <input name='pic[1][link]' class="imgsrc" id="pic[1][link]"  value="<{$setting.pic.1.link}>">
+            <input type=button value=上传图片 class="uploadbtn"><span>（推荐图片尺寸400px*250px）</span>
+          </td>
+          <th><{t app="b2c"}>链接地址:<{/t}></th>
+          <td>
+            <input name="pic[1][linktarget]" value="<{$setting.pic.1.linktarget}>">
+          </td>
+        </tr>
+        <tr>
+          <th><{t app="b2c"}>图片描述:<{/t}></th>
+          <td>
+            <input name="pic[1][linkinfo]" value="<{$setting.pic.1.linkinfo}>">
+          </td>
+        </tr>
+      </tbody>
+      
+      <tbody>
+        <tr>
+          <th><{t app="b2c"}>主标题:<{/t}></th>
+          <td>
+            <input name="pic[2][title]" value="<{$setting.pic.2.title}>">
+          </td>
+          <th><{t app="b2c"}>副标题:<{/t}></th>
+          <td>
+            <input name="pic[2][small_title]" value="<{$setting.pic.2.small_title}>">
+          </td>
+        </tr>
+        <tr>
+          <th><{t app="b2c"}>图片地址:<{/t}></th>
+          <td>
+            <input name='pic[2][link]' class="imgsrc" id="pic[2][link]"  value="<{$setting.pic.2.link}>">
+            <input type=button value=上传图片 class="uploadbtn"><span>（推荐图片尺寸400px*250px）</span>
+          </td>
+          <th><{t app="b2c"}>链接地址:<{/t}></th>
+          <td>
+            <input name="pic[2][linktarget]" value="<{$setting.pic.2.linktarget}>">
+          </td>
+        </tr>
+        <tr>
+          <th><{t app="b2c"}>图片描述:<{/t}></th>
+          <td>
+            <input name="pic[2][linkinfo]" value="<{$setting.pic.2.linkinfo}>">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<script>
+  (function(){
+    var tag_type='tbody';
+    $$(".uploadbtn").addEvent('click',function(e){bindevent(this)});
+    function bindevent(el){
+      var target=$(el).getParent(tag_type).getElement('.imgsrc');
+      var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+      var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;      
+      Ex_Loader('modedialog',function(){
+        return new imgDialog(url,{onCallback:function(image_id,image_src){
+          target.value=image_src;
+        }});
+      });
+    }
+  })();
+</script>

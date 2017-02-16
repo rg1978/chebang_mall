@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <{include file="topdev/common/head.html"}>
+    <{css app="toputil" src="googlecode.css"}>
+    <{script app="toputil" src="highlight.pack.js"}>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+<body class="hold-transition skin-green sidebar-mini fixed" data-spy="scroll" data-target="#scrollspy">
+  <div class="wrapper">
+    <header class="main-header">
+      <{include file="topdev/common/header.html"}>
+    </header>
+    <aside class="main-sidebar">
+      <section class="sidebar" id="scrollspy">
+        <div class="user-panel">
+          <div class="pull-left image">
+            <{img src="bbclogo.jpeg" app=topdev class="img-circle" alt="User Image"}>
+          </div>
+          <div class="pull-left info">
+            <p>平台管理员权限</p>
+            <a href="#"><i class="fa fa-circle text-success"></i> <{$topdevSysData.loginName}></a>
+          </div>
+        </div>
+        <form action="<{url action=topdev_ctl_apis@search}>" method="get" class="sidebar-form">
+          <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search...">
+            <span class="input-group-btn">
+              <button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+          </div>
+        </form>
+        <ul class="sidebar-menu">
+          <{include file="topdev/common/menu.html"}>
+        </ul>
+      </section>
+    </aside>
+
+    <div class="content-wrapper">
+      <section class="content">
+        <ol class="breadcrumb">
+          <{foreach from=$runtimePath item=item name=name}>
+          <li <{if $env.foreach.name.last}>class="active"<{/if}>><a href="<{if $item.url}><{$item.url}><{/if}>"><strong><{$item.title}></strong></a></li>
+          <{/foreach}>
+        </ol>
+        <{include file=$output.view }>
+      </section>
+    </div>
+    <{include file="topdev/common/footer.html"}>
+  </body>
+</html>

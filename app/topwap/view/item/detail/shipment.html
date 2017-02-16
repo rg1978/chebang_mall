@@ -1,0 +1,23 @@
+<header class="page-header">
+  <i
+    class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+  <div class="header-title"><{$title}></div>
+</header>
+<section class="container">
+  <form class="form-container" action="<{url action=topwap_ctl_item_detail@userNotifyItem}>" method="post" id="ajaxForm">
+    <input type="hidden" name="item_id" value="<{$item_id}>" />
+    <input type="hidden" name="shop_id" value="<{$shop_id}>" />
+    <input type="hidden" name="sku_id" value="<{$sku_id}>" />
+    <section class="shopex-input-group">
+      <div class="shopex-input-row">
+        <label>电子邮箱：</label> <input type="text" class="shopex-input-clear"
+        placeholder="请输入您的电子邮箱地址" name="email" required data-caution="请输入您的电子邮箱地址" >
+      </div>
+    </section>
+    <div class="content-padded font-gray-20 fontS">请输入您的邮箱地址，当我们有现货供应时，我们会发送邮件通知您！</div>
+    <section class="shopex-content-padded form-op-section">
+      <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning btn-user-notify-item" rel="_request" >确定</button>
+    </section>
+  </form>
+</section>
+

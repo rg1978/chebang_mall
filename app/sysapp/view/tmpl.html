@@ -1,0 +1,71 @@
+<form id="tmplForm" action="?app=sysapp&ctl=admin_tmpl&act=saveTmpl"  method="POST" >
+  <input type="hidden" name="widgets_id" value="<{$data.widgets_id}>">
+  <div class="tableform notice">
+  <{t}>如果是编辑模块时，修改了页面和挂件，挂件配置也得重新配置！<{/t}>
+</div>
+  <div class="tableform">
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>页面：<{/t}></th>
+          <td>
+            <select name="tmpl">
+              <{foreach from=$tmpls item=tmpl key=key}>
+              <option value="<{$key}>" <{if $key==$data.tmpl }> selected='selected' <{/if}>><{$tmpl}></option>
+              <{/foreach}>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th><{t}>挂件：<{/t}></th>
+          <td>
+            <select name="widget">
+              <{foreach from=$widgets item=widget key=key}>
+              <option value="<{$key}>" <{if $key==$data.widget }>selected='selected'<{/if}>><{$widget}></option>
+              <{/foreach}>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th><{t}>排序：<{/t}></th>
+          <td><{input style="width:50px;" type="unsigned" name="order_sort"  value=$data.order_sort|default:'0'}></td>
+        </tr>
+
+      </table>
+    </div>
+
+  <div class="table-action">
+    <{button type="submit" id='tmpl-form-submit' label="保存"|t:'sysapp'}>
+  </div>
+
+</form>
+
+<script>
+  (function(){
+    var _form = $('tmplForm');
+    var btn =$('tmpl-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+  })();
+</script>

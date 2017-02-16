@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <{header app=topc}>
+    <link rel="stylesheet" href="images/index.css" />
+  </head>
+  <body class="login-panel">
+    <{require file="block/passport_header.html"}>
+    <{main}>
+    <{require file="block/passport_footer.html"}>
+  </body>
+  <script>
+  $(function(){
+    $("img.imglazyload").lazyload({
+         effect : "fadeIn"
+     });
+  });
+  </script>
+</html>

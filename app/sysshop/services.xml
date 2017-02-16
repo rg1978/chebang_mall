@@ -1,0 +1,30 @@
+<services>
+    <service id="desktop_finder.sysshop_mdl_shop_type">
+        <class>sysshop_finder_shoptype</class>
+    </service>
+    <service id="desktop_finder.sysshop_mdl_enterapply">
+        <class>sysshop_finder_enterapply</class>
+    </service>
+    <service id="desktop_finder.sysshop_mdl_shop">
+        <class>sysshop_finder_shop</class>
+    </service>
+    <service id="desktop_finder.sysshop_mdl_shop_rel_lv1cat">
+        <class>sysshop_finder_shop_rel_lv1cat</class>
+    </service>
+    <service id="desktop_finder.sysshop_mdl_shop_apply_cat">
+        <class>sysshop_finder_shop_apply_cat</class>
+    </service>
+    <service id="desktop_finder.sysshop_mdl_seller">
+        <class>sysshop_finder_seller</class>
+    </service>
+    <service id="desktop_finder.sysshop_mdl_subdomain">
+        <class>sysshop_finder_subdomain</class>
+    </service>
+    <!-- <service id="desktop_finder.sysshop_mdl_shop_notice">
+        <class>sysshop_finder_shopnotice</class>
+    </service> -->
+    <!--清除初始化数据-->
+    <service id="desktop_debug_clean_data">
+        <class>sysshop_data_clean</class>
+    </service>
+</services>

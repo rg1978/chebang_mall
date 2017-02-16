@@ -1,0 +1,43 @@
+<{if $group_item}>
+<ul class="clearfix" id="search-list">
+  <{foreach from=$group_item item=item}>
+  <{if $now_time < $activity.start_time}>
+  <li>
+    <div class="search-item">
+      <div class="item-img"><a href="<{url action=topc_ctl_activity@detail a=$item.activity_id g=$item.item_id}>"><img src="<{$item.item_default_image|storager:'m'}>" alt=""></a></div>
+      <a href="<{url action=topc_ctl_activity@detail a=$item.activity_id g=$item.item_id}>" class="item-describe-tag"><{$activity.activity_tag}></a>
+      <p class="item-describe"><a href="<{url action=topc_ctl_activity@detail a=$item.activity_id g=$item.item_id}>"><{$item.title}></a></p>
+      <p class="buy-numbuy-num price"><{$item.activity_price|cur}></p>
+      <div class="item-info buy-remind">
+        <span class="del"><{$item.price|cur}></span>
+        <a class="btn" href="<{url action=topc_ctl_activity@detail a=$item.activity_id g=$item.item_id}>">去看看</a>
+      </div>
+    </div>
+
+  </li>
+  <{elseif $activity.start_time < $now_time && $now_time < $activity.end_time}>
+  <li>
+    <div class="search-item">
+      <div class="item-img">
+        <a href="<{url action=topc_ctl_activity@detail a=$item.activity_id g=$item.item_id}>">
+          <img src="<{$item.item_default_image|storager:'m'}>" alt=""></a></div>
+      <a href="<{url action=topc_ctl_activity@detail a=$item.activity_id g=$item.item_id}>" class="item-describe-tag"><{$activity.activity_tag}></a>
+      <p class="item-describe"><a href="<{url action=topc_ctl_activity@detail a=$item.activity_id g=$item.item_id}>"><{$item.title}></a></p>
+      <p class="buy-numbuy-num price"><{$item.activity_price|cur}></p>
+      <div class="item-info buy">
+        <span class="del"><{$item.price|cur}></span><br />
+        <span class="buy-num">已有<span class="number"><{$item.sales_count|default:0}></span>人购买</span>
+         <a class="btn" href="<{url action=topc_ctl_activity@detail a=$item.activity_id g=$item.item_id}>">马上抢</a>
+      </div>
+    </div>
+  </li>
+  <{/if}>
+  <{/foreach}>
+</ul>
+<{else}>
+<div class="empty-area">
+  <span><i class="icon-result"></i>暂无该活动商品</span>
+</div>
+<{/if}>
+
+<{pagers data=$pagers}>

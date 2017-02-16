@@ -1,0 +1,6 @@
+a:8:{s:7:"corp_id";i:1;s:9:"corp_code";s:3:"STO";s:9:"full_name";s:0:"";s:9:"corp_name";s:12:"申通快递";s:7:"website";s:0:"";s:11:"request_url";s:0:"";s:10:"order_sort";i:0;s:6:"custom";i:0;}
+a:8:{s:7:"corp_id";i:2;s:9:"corp_code";s:2:"SF";s:9:"full_name";s:0:"";s:9:"corp_name";s:12:"顺丰速递";s:7:"website";s:0:"";s:11:"request_url";s:0:"";s:10:"order_sort";i:0;s:6:"custom";i:0;}
+a:8:{s:7:"corp_id";i:3;s:9:"corp_code";s:3:"YTO";s:9:"full_name";s:0:"";s:9:"corp_name";s:12:"圆通快递";s:7:"website";s:0:"";s:11:"request_url";s:0:"";s:10:"order_sort";i:0;s:6:"custom";i:0;}
+a:8:{s:7:"corp_id";i:4;s:9:"corp_code";s:2:"YD";s:9:"full_name";s:0:"";s:9:"corp_name";s:12:"韵达快递";s:7:"website";s:0:"";s:11:"request_url";s:0:"";s:10:"order_sort";i:0;s:6:"custom";i:0;}
+a:8:{s:7:"corp_id";i:5;s:9:"corp_code";s:3:"EMS";s:9:"full_name";s:0:"";s:9:"corp_name";s:9:"EMS快递";s:7:"website";s:0:"";s:11:"request_url";s:0:"";s:10:"order_sort";i:0;s:6:"custom";i:0;}
+a:8:{s:7:"corp_id";i:6;s:9:"corp_code";s:4:"HTKY";s:9:"full_name";s:0:"";s:9:"corp_name";s:12:"百世汇通";s:7:"website";s:0:"";s:11:"request_url";s:0:"";s:10:"order_sort";i:0;s:6:"custom";i:0;}

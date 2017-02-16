@@ -1,0 +1,88 @@
+<div class="panel panel-default">
+  <div class="panel-heading">活动信息</div>
+  <div class="panel-body">
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>活动名称<{/t}>：</label>
+      <div class="col-sm-4"><{$activity_name}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>活动类型<{/t}>：</label>
+      <div class="col-sm-4"><{$activity_tag}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>活动描述<{/t}>：</label>
+      <div class="col-sm-4"><{$activity_desc}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>发布时间<{/t}>：</label>
+      <div class="col-sm-4"><{$release_time|cdate:FDATE_STIME}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>申请开始时间<{/t}>：</label>
+      <div class="col-sm-4"><{$apply_begin_time|cdate:FDATE_STIME}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>申请结束时间<{/t}>：</label>
+      <div class="col-sm-4"><{$apply_end_time|cdate:FDATE_STIME}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>开始时间<{/t}>：</label>
+      <div class="col-sm-4"><{$start_time|cdate:FDATE_STIME}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>结束时间<{/t}>：</label>
+      <div class="col-sm-4"><{$end_time|cdate:FDATE_STIME}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>每人每件限购<{/t}>：</label>
+      <div class="col-sm-4"><{$buy_limit}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>可报名商品数量<{/t}>：</label>
+      <div class="col-sm-4"><{$enroll_limit}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>可报名店铺类型<{/t}>：</label>
+      <div class="col-sm-4"><{$shoptype}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>参加活动的类目<{/t}>：</label>
+      <div class="col-sm-4"><{$limit_cat}></div>
+    </div>
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label"><{t}>商品折扣范围<{/t}>：</label>
+      <div class="col-sm-4"><{$discount_min}>% ~ <{$discount_max}>%</div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="result">
+      <div class="item-filter-title clearfix">
+        <h5 class="pull-left">参加活动的商品</h5>
+      </div>
+
+      <table wdith="100%" class="table table-primary table-hover table-goods">
+        <{foreach from=$itemsList item=itemslist}>
+        <tr>
+          <td>
+            <div class="goods">
+              <a href="<{url action=topc_ctl_item@index item_id=$itemslist.item_id}>" target="_blank">
+                <img src="<{$itemslist.item_default_image|default:$image_default_id.S.default_image|storager:t}>" alt="">
+                <{$itemslist.title}>
+              </a>
+            </div>
+          </td>
+          <td>
+            原价:<{$itemslist.price|cur}>
+          </td>
+          <td>
+            促销价:<{$itemslist.activity_price|cur}>
+          </td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+  </div>
+</div>

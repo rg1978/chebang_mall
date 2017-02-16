@@ -1,0 +1,111 @@
+<div class="form-box signup-box" id="login-box">
+  <div class="signup-header">手机验证</div>
+  <form action="<{url action=topshop_ctl_register@signCheckPhoneAction}>" method="post" class="bg-white" role="form" data-validate-onsuccess="ajaxSubmit">
+    <input type="hidden" value="<{$type}>" name="type" />
+    <div class="body">
+      <div class="form-group relative group-verify-code">
+        <label for="find_code" class="control-label">图片验证码：</label>
+        <input type="text" name="imgcode" id="imgcode" style='width:25%' class="form-control h42" placeholder="请输入图片验证码" maxlength="4" required data-validate-icons='false'>
+        <img align="absmiddle" class="auto-change-verify-handle" id="membervocde" src="<{url action=toputil_ctl_vcode@gen_vcode key=topshop_signin}>" alt="验证码" width="100" height="40" title="点击图片刷新验证码">
+      </div>
+      <div class="form-group relative group-mobile">
+        <label for="mobile" class="control-label">联系人手机号：</label>
+        <input type="text" name="mobile" id="mobile" class="form-control h42" placeholder="请输入联系人手机" maxlength="11" required data-validate-mobile>
+        <a href="javascript:void(0);" class="auth-code">获取验证码</a>
+        <p class="txt-remind"><i class="icon icon-checkmark-a"></i>验证码已发送至您的手机，请查收</p>
+      </div>
+      <div class="form-group">
+        <label for="find_code" class="control-label">验证码：</label>
+        <input type="text" name="verify_code" id="find_code" class="form-control h42" placeholder="短信收到的验证码" maxlength="11" required>
+      </div>
+      <div class="btn-option">
+        <button type="submit" class="btn btn-block btn-lg">下一步</button>
+        <a href="<{url action=topshop_ctl_passport@signin}>" class="text-center"><已有账户&nbsp;去登录</a>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+//获取手机验证码
+var btn = $('.auth-code');
+var type = 'mobile';
+var countdown = 120, t;
+function setTime(val){
+  t = setTimeout(function() {
+      setTime(val)
+      },1000);
+  if(countdown == 0){
+      btn.removeClass('disabled');
+      btn.html('重新获取验证码');
+      countdown = 120;
+      clearTimeout(t);
+  }else{
+      btn.addClass('disabled');
+      btn.html("获取验证码("+ countdown +")");
+      countdown --;
+  }
+}
+btn.on('click',function(e){
+    e.preventDefault();
+    if($.trim($('#imgcode').val()) == '') {
+      $('#messagebox').message('请输入图片验证码');
+      $('#imgcode').focus();
+      return;
+    }
+    if($(this).hasClass('disabled')) return;
+    var authInfo = $('#mobile').val();
+    var vcode = $('#imgcode').val();
+    $.ajax({
+        'url':'<{url action=topshop_ctl_register@sendSms}>',
+        'data': 'auth_info='+authInfo+'&type='+type+'&imagevcodekey=topshop_signin&vcode=' + vcode,
+        'dataType':'json',
+        'type':'POST',
+        'success':function(rs){
+            if(rs.error) {
+                $('#messagebox').message(rs.message);
+                getImgCode();
+                return;
+            }
+            if(rs.success) {
+                $('#messagebox').message(rs.message, 'success');
+                $('.txt-remind').show();
+                setTime(this);
+            }
+        }
+    });
+});
+
+function ajaxSubmit (e) {
+  var form = e.target;
+  e.preventDefault();
+  $.post(form.action, $(form).serialize(), function(rs) {
+    if(rs.error) {
+      $('#messagebox').message(rs.message);
+      $('.group-verify-code').removeClass('has-success').addClass('has-error');
+      $('.group-verify-code').find('.form-control-feedback').removeClass('icon-checkmark-a').addClass('icon-alert');
+      return;
+    }
+    if(rs.redirect) {
+      location.href = rs.redirect;
+    }
+  });
+}
+
+//刷新图形验证码
+$('#membervocde').on('click',function(){
+  getImgCode();
+});
+function getImgCode(){
+  var url = $('#membervocde').attr('src');
+   var random = +new Date;
+   var urlrandom = url.match(/\b_=([\d]+)\b/);
+    if(urlrandom) {
+        url = url.replace(urlrandom[1], random);
+    }
+    else {
+        url += (url.indexOf('?') > -1 ? '&' : '?') + '_=' + random;
+    }
+    $('#membervocde').attr('src', url);
+    return false;
+}
+</script>

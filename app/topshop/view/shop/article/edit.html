@@ -1,0 +1,87 @@
+<form class="form-horizontal" action="<{url action=topshop_ctl_shop_article@saveArticle}>" method="post" role="form" data-validate-onsuccess="ajaxSubmit" data-validate-excluded=":disabled, :not(:visible)">
+<input type="hidden" name="article[id]" value="<{$article.article_id}>">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">文章编辑</h3>
+  </div>
+  <div class="panel-body">
+    		<div class="form-group">
+              <label for="" class="col-sm-2 control-label"><span class="txt-required">*</span> 文章标题：</label>
+              <div class="col-md-6">
+                <input type="text" name="article[title]" value="<{$article.title}>" required class="form-control" maxlength="50">
+              </div>
+            </div>
+            <!-- 
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">发布平台：</label>
+              <div class="col-sm-10">
+                <input type="radio" name="article[use_platform]" value="0" <{if !$article.platform}>checked<{/if}> > 电脑端和手机端
+                <input type="radio" name="article[use_platform]" value="1" <{if $article.platform == 1}>checked<{/if}>> 电脑端
+                <input type="radio" name="article[use_platform]" value="2" <{if $article.platform == 2}>checked<{/if}>> 手机端
+              </div>
+            </div>
+             -->
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">文章分类：</label>
+              <div class="col-sm-3">
+                <select name="article[node]" class="form-control">
+                	<option value="0">请选择</option>
+                	<{foreach from=$nodes item=node}>
+                	<option <{if $article.node_id == $node.node_id}>selected<{/if}> value="<{$node.node_id}>" ><{$node.node_name}></option>
+                	<{/foreach}>
+                </select>
+              </div>
+            </div>
+            
+          <div class="form-group">
+	        <label class="col-md-2 control-label"><{t}>发布时间<{/t}>：</label>
+	        <div class="col-sm-3">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input size="16" type="text" value="<{$article.pubtime|cdate}>" readonly class="form-control pull-right datetimepicker" name="article[pubtime]">
+                    </div>
+	        </div>
+	      </div>
+
+            <div class="form-group">
+              <label for="" class="col-sm-2 control-label">文章内容：</label>
+              <div class="col-md-8">
+                  <textarea name="article[content]" style="width:100%;" class="rich-editor"><{$article.content}></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary center-block btn-lg">保存</button>
+            
+  </div>
+
+</div>
+</form>
+
+<script>
+$('.datetimepicker').datetimepicker({
+    format: 'yyyy-mm-dd hh:ii',
+    autoclose: true,
+});
+$('.rich-editor').summernote({
+    height: 600,
+    tabsize: 2,
+    uploadURI: '<{url action=toputil_ctl_image@uploadImages from=shop}>',
+    uploadPerfix: 'upload_file'
+});
+
+  function ajaxSubmit (e) {
+      var form = e.target;
+      e.preventDefault();
+      $.post(form.action, $(form).serialize(), function(rs) {
+        if(rs.error) {
+          $('#messagebox').message(rs.message);
+          return;
+        }
+        if(rs.success) {
+          $('#messagebox').message(rs.message, 'success');
+        }
+        if(rs.redirect) {
+          setTimeout(function(){location.href=rs.redirect;}, 800);
+        }
+      });
+    }
+</script>

@@ -1,0 +1,12 @@
+<div class="module-hd"><{$data.block_name}><span><{$data.desc}></span></div>
+<div class="categorygoods">
+  <{foreach from=$data.pic item=item}>
+  <div class="categorygoods-item">
+    <div class="categorygoods-pic">
+      <a href="<{$item.linktarget}>">
+        <{img width="238" src="loading_bg.png" app="topc" data-original=$item.link|storager class="imglazyload" alt=$item.linkinfo}>
+      </a>
+    </div>
+  </div>
+  <{/foreach}>
+</div>

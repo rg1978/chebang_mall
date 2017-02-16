@@ -1,0 +1,13 @@
+<services>
+
+    <service id="site_view_helper.topwap">
+        <class>topwap_site_view_helper</class>
+    </service>
+    <service id="site_theme_helper.topwap">
+        <class>topwap_theme_helper</class>
+    </service>
+
+   <service id="desktop.cert.check">
+        <class>topwap_cert_certcheck</class>
+    </service>
+</services>

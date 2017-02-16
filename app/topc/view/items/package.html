@@ -1,0 +1,155 @@
+<div class="section">
+  <div class="box">
+    <div id="tab1" class="tab1" data-toggle="switchable">
+      <ul class="switchable-nav">
+        <{foreach from=$package_tags item=item name=pname}>
+        <li data-pid='<{$item.package_id}>' <{if $env.foreach.pname.first}> class="active" <{/if}> title="<{$item.name}>" ><{$item.name}></li>
+        <{/foreach}>
+      </ul>
+      <div class="switchable-content">
+        <{foreach from=$data item=item1 name=pname1}>
+        <div class="switchable-panel white-space" <{if $env.foreach.pname1.first}> style="display: block;" <{else}> style="display: none;" <{/if}> >
+          <div class="discount-group" data-pid='<{$item1.package_id}>'>
+            <div class="group-list">
+              <div class="group-list-wrap" data-pid='<{$item1.package_id}>'>
+                <ul>
+                  <{foreach from=$item1.items item=goods}>
+                  <li>
+                    <a href="<{url action=topc_ctl_item@index item_id=$goods.item_id}>" class="thumbnail"><img src="<{$goods.image_default_id|storager:'t'}>" alt="<{$goods.title}>" title="<{$goods.title}>"></a>
+                    <a href="#" class="pro-title"><{$goods.title}></a>
+                  </li>
+                  <{/foreach}>
+                </ul>
+              </div>
+            </div>
+            <div class="group-info" data-pid='<{$item1.package_id}>'>
+              <div class="group-name"><{$item1.package_name}></div>
+              <div class="group-price">组合价：<span><{$item1.package_total_price|cur}></span>元</div>
+              <div class="old-price">原价：<{$item1.old_total_price|cur}></div>
+              <div>节省：<{$item1.cut_total_price|cur}></div>
+              <div class="get-group">
+                <a href="javascript:void(0);" class="btn btn-import btn-sm btn_buynow" data-src="<{url action=topc_ctl_item@getPackageItemSpec package_id=$item1.package_id}>"><span><span>加入购物车</span></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <{/foreach}>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="goods_dialog" class="popup-container mini-cart-dialog col-lg-12 goods-dialog" tabindex="0" style="display: none;">
+</div>
+<div class="full-bg"></div>
+<script>
+$('.btn_buynow').on('click', function() {
+  var url = $(this).attr('data-src');
+  $.get(url, function(rs) {
+    $('#goods_dialog').html(rs);
+    $('#goods_dialog').fadeIn();
+    $('.full-bg').addClass('full-bg-show');
+    $('body').css('overflow', 'hidden');
+    $('#goods_dialog').css('margin-top',-parseInt($('#goods_dialog').css('height'))/2 + 'px');
+  });
+});
+
+$('.btn_nohead').on('click', function() {
+  $.dialog('#dialog', {
+    type: 'nohead',
+    width: 500
+  });
+});
+tabEval();
+function tabEval(url) {
+  var cur = 0;
+  var condition = $('#condition_form');
+
+  $('.evaluation-nav li').click(function(){
+    var that = $(this);
+    var data = that.attr('data-type');
+    var dataObj = {
+      'result': data
+    }
+    condition.find('input[name="result"]').val(data);
+
+    cur = that.index();
+    $(this).addClass('active').siblings().removeClass('active');
+    $('.evaluation-content>div').eq(cur).css('display','block').siblings().css('display','none');
+
+    if(!$('.evaluation-content>div').eq(cur).html()){
+      $.get(url,dataObj,function(data){
+        $('.evaluation-content>div').eq(cur).html(data);
+      })
+    }
+  });
+
+  $('.condition').change(function() {
+    if($(this).attr('type')=='checkbox'){
+      $(this).val($(this).prop('checked'));
+    }
+    // console.log($('.evaluation-content>div').eq(cur))
+    $('.evaluation-content>div').eq(cur).load(condition.attr('action'),condition.serialize());
+  });
+}
+$('#tab1').switchable({
+  events: ['click'],
+  effect: 'none'
+});
+
+(function(){
+  var scrollDom = $('.group-list-wrap');
+  var scrollItem = $('.group-list-wrap li');
+ 
+  var baseNum = 5;
+  var baseWidth = 150;
+  var turnLeft = false;
+  var turnRight = false;
+  scrollDom.each(function() {
+    if($(this).find('li').length > baseNum){
+       var scrollBtn = $('<div class="scrollBtn" data-pid="'+$(this).attr('data-pid')+'"><div><i class="icon icon-arrow-forward"></i><i class="icon icon-arrow-back"></i></div><div>');
+      $('.group-info[data-pid="'+$(this).attr('data-pid')+'"]').before(scrollBtn);
+    }
+  });
+  $('.group-list-wrap').each(function() {
+    var n = 0;
+    onPos($(this).attr('data-pid'));
+    if($(this).position().left <= 0){
+      var discountGroup = $('.discount-group[data-pid="'+$(this).attr('data-pid')+'"]');
+      discountGroup.on('click','.icon-arrow-forward',function(){
+        var packageId = $(this).parent().parent().attr('data-pid');
+        var groupListWrap = $('.group-list-wrap[data-pid="'+packageId+'"]');
+        if(n < groupListWrap.find('li').length - baseNum){
+          n++
+        }
+        $('.group-list-wrap[data-pid="'+packageId+'"]').css('left',-(n*baseWidth));
+        onPos(packageId);
+      });
+
+      discountGroup.on('click','.icon-arrow-back',function(){
+        var packageId = $(this).parent().parent().attr('data-pid');
+        var groupListWrap = $('.group-list-wrap[data-pid="'+packageId+'"]');
+        if(n < (groupListWrap.find('li').length - baseNum)+1 && n > 0){
+          n--
+        }
+        $('.group-list-wrap[data-pid="'+packageId+'"]').css('left',-(n*baseWidth));
+        onPos(packageId);
+      });
+    }
+  });
+  function onPos(packageId){
+    var currScrollDom = $('.group-list-wrap[data-pid="'+packageId+'"]');
+    var currScrollBtn = $('.scrollBtn[data-pid="'+packageId+'"]');
+    var left = currScrollDom.css('left') == 'auto' ? 0 : parseInt(currScrollDom.css('left'));
+    if(left == 0){
+      currScrollBtn.find('.icon-arrow-back').addClass('disabled');
+    }else{
+      currScrollBtn.find('.icon-arrow-back').removeClass('disabled');
+    };
+    if(left == -($(currScrollDom).find('li').length - baseNum)*baseWidth){
+      currScrollBtn.find('.icon-arrow-forward').addClass('disabled');
+    }else{
+      currScrollBtn.find('.icon-arrow-forward').removeClass('disabled');
+    };
+  }
+})();
+</script>

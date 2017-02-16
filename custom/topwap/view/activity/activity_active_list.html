@@ -1,0 +1,70 @@
+
+  <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title">活动列表</div>
+    <a href="#minimenu" class="header-right icon-func bbc-icon bbc-icon-more btn-mini-menu"></a>
+  </header>
+
+  <section class="section-white">
+    <div class="section-title">
+      <div class="title-txt font-red"><i class="bbc-icon bbc-icon-countdown"></i>&nbsp;正在抢购中...</div>
+      <div class="more-link"><a href="<{url action=topwap_ctl_activity@comming_list}>">开售预告</a><i class="bbc-icon bbc-icon-forward"></i></div>
+    </div>
+    <div class="content-horizontal-padded activity-list">
+      <{if $activity_list}>
+        <{foreach from=$activity_list item=group}>
+        <section>
+          <a href="<{url action=topwap_ctl_activity@detail id=$group.activity_id}>" class="thumbs" data-id="<{$group.activity_id}>">
+            <div class="page-banner"><img src="<{$group.slide_images|storager}>" alt=""></div>
+            <div class="activity-caption">
+              <p class="activity-title"><span class="tag"><{$group.discount_min/10}>折起</span><{$group.activity_name}></p>
+              <p class="fontS font-gray-20"><i class="bbc-icon bbc-icon-countdown"></i> 距离活动结束还有：<mark class="countdown-view" data-time="<{$group.end_time}>"></mark></p>
+            </div>
+          </a>
+        </section>
+        <{/foreach}>
+      <{else}>
+        <{include file="topwap/empty/activity_active.html"}>
+      <{/if}>
+    </div>
+  </section>
+
+  <!-- 右上角menu菜单 -->
+  <div id="minimenu" class="bbc-mini-menu shopex-popover">
+    <div class="shopex-popover-arrow"></div>
+    <div>
+      <ul class="shopex-table-view">
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i> 首页</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category-empty"></i> 分类</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i> 购物车</a>
+        </li>
+        <li class="shopex-table-view-cell">
+          <a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i> 我的商城</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+<script>
+shopex.init({
+  swipeBack: false,
+});
+
+var gallery = shopex("#slider");
+gallery.slider({
+  interval:5000//自动轮播周期，若为0则不自动播放，默认为0；
+});
+
+$('.thumbs').each(function(el,index){
+  countdown($(index).find('.countdown-view'),{
+    'start': $(index).find('.countdown-view').attr('data-time') - "<{$env.now}>",
+    'secondOnly': false,
+    'callback': null
+  });
+})
+</script>

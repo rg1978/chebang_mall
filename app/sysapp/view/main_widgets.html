@@ -1,0 +1,47 @@
+<!-- main container -->
+<form id="widgetsForm"  method="post" action="?app=sysapp&ctl=admin_widgets&act=save_widgets" class="tableform">
+    <input type="hidden" name="widgets_id" value="<{$widgets_id}>">
+    <input type="hidden" name="widget" value="<{$widget}>">
+    <{include file=$_PAGE_}>
+    <div class="table-action">
+        <{*button type="submit" id='widgets-form-submit' label="保存"|t:'syscategory'*}>
+    </div>
+
+    <{area inject='.mainFoot'}>
+    <table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody>
+        <tr valign="middle">
+          <td>
+            <{button label="保存并关闭窗口"|t:'sysshop' class="btn-primary" type="button"  onclick="submitForm(event,2)"}>
+            <{button label="关  闭"|t:'content' class="btn-secondary" type="button" isclosedialogbtn="1"}>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <{/area}>
+</form>
+
+<script>
+  var submitForm = function (event,sign){
+    var _form=$('widgetsForm');
+    switch (sign){
+      case 1:
+        var target={
+          onComplete:function(){
+                       location.reload();
+                     }};
+        break;
+      case 2:
+        var target={
+          onComplete:function(rs){
+                       if(rs&&!!JSON.decode(rs).success){
+                           window.finderGroup['<{$env.get.finder_id}>'].refresh();
+                           _form.getParent('.dialog').retrieve('instance').close();
+                       }
+                     }};
+        break;
+    }
+    _form.store('target',target);
+    _form.fireEvent('submit',new Event(event));
+  };
+</script>

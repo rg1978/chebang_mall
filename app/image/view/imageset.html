@@ -1,0 +1,37 @@
+
+<div class="tabs-wrap">
+  <ul>
+    <li class="tab current"><span><{t}>商品图片配置<{/t}></span></li>
+  </ul>
+</div>
+<div class="tableform notice">
+  <{t}>商品图片上传后，会自动生成四张图片<{/t}>
+</div>
+
+<form method="post" action="<{$this_url}>&act=imageset" id="imageset" class="tableform">
+  <{foreach from=$allsize key=size item=item}>
+  <h4><{t}><{$item.title}><input type="hidden" name="pic[<{$size}>][title]" value="<{$item.title}>">设定<{/t}></h4>
+  <div class="division">
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <th><{t}>默认图：<{/t}></th>
+        <td>
+          <div class="dft_image">
+            <{assign var="image_id" value=$image_set.$size.default_image|default:$item.default_image}>
+            <span class="lnk"><{input type="image" name="pic[{$size}][default_image]" value=$image_id width=$minsize['width'] height=$minsize['height']}></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th><{t}>尺寸：<{/t}></th>
+        <td><{t}>宽 <{/t}><{input id="pic[{$size}][width]" type="number" name="pic[{$size}][width]" value=$image_set.$size.width|default:$item.width size="6"}>&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;<{t}>高<{/t}> <{input id="pic[{$size}][height]" type="number" name="pic[{$size}][height]" value=$image_set.$size.height|default:$item.height size="6"}>
+        </td>
+      </tr>
+    </table>
+  </div>
+<{/foreach}>
+<div class="table-action">
+  <{button label="保存"|t:'image' class="btn-primary" type="submit"}>
+</div>
+</form>
+

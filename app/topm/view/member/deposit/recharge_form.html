@@ -1,0 +1,65 @@
+<div class="address-edit recharge-pay">
+  <header>
+    <div class="list-hd">
+      <div class="backto icon-back">
+        <input type="button" name="returnBcak" onclick="history.back()">
+      </div>
+      <div class="tit">预存款充值</div>
+    </div>
+  </header>
+  <div class="main" id="main">
+    <form action="<{url action=topm_ctl_member_deposit@rechargePay}>" method="post" id="ajaxForm" class="form-tip-horizontal">
+      <ul>
+        <li class="form-row">
+          <label for="" class="form-label">充值金额(元)：</label>
+          <span class="form-act">
+            <input class="input-ln" type="text" name="amount" value="" id="name" placeholder="请输入金额" required>
+          </span>
+        </li>
+      </ul>
+      <div class="error">
+        <span class="error-icon"><i class="icon-close"></i></span><span class="error-content"></span>
+      </div>
+    </form>
+    <div class="next">
+      <button type="button" class="btn-block ui-btn-warning btn-next">下一步</button>
+    </div>
+  </div>
+</div>
+<script>
+  $('input[name="amount"]').on('keyup', function() {
+    var val = $(this).val();
+    if(/^\d+\.?\d{0,2}$/.test(val)){
+      if(val.indexOf('.') > 0) {
+        if(val.split('.')[0].length > 7) {
+          $('.error').css('visibility', 'visible');
+          $('.error-content').html('金额整数位最多7位');
+          $(this).select();
+        }else {
+          $('.error').css('visibility', 'hidden');
+        }
+      }else if(val.length > 7) {
+        $('.error').css('visibility', 'visible');
+        $('.error-content').html('金额整数位最多7位');
+        $(this).select();
+      }else {
+        $('.error').css('visibility', 'hidden');
+      }
+    }else{
+      if($.trim(val) == "") {
+        $('.error-content').html('请输入金额');
+      }else
+      {
+        $(this).val($(this).val().substring(0,$(this).val().length-1));
+        $('.error-content').html('金额整数位最多7位，小数位最多2位');
+      }
+      $('.error').css('visibility', 'visible');
+      $(this).select();
+    }
+  });
+
+  $('.btn-next').tap(function(){
+    $('#ajaxForm').submit();
+  });
+
+</script>

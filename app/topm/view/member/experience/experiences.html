@@ -1,0 +1,11 @@
+        <{foreach from=$experiencedata item=experience}>
+        <li>
+          <div class="box">
+            <div><{$experience.modified_time|cdate}> </div>
+            <div><{$experience.behavior}></div>
+            <div><{if $experience.behavior_type == "obtain"}>+<{elseif $experience.behavior_type == "consume"}>-<{/if}><{$experience.experience}>
+            </div>
+            <div><{$experience.remark}></div>
+          </div>
+        </li>
+        <{/foreach}>

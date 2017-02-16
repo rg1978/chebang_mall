@@ -1,0 +1,56 @@
+<div class="tableform">
+  <form id="develop_form" name="develop_form" action="?app=sysopen&ctl=admin_develop&act=doCreate"  method="post">
+    <div class="division">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+          <tr>
+            <th><{t}>开发者名称：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="name"}></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody>
+        <tr valign="middle">
+          <td>
+            <{assign var="___c"  value='确定退出?'|t:'sysshop'}>
+
+            <{button label="创建账号"|t:'sysshop' class="btn-primary" type="button"  onclick="submitForm(event,2)"}>
+
+            <{button label="关  闭"|t:'content' class="btn-secondary" type="button" isclosedialogbtn="1"}>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+
+<script>
+  var submitForm = function (event,sign){
+    var _form=$('develop_form');
+    switch (sign){
+        case 1:
+            var target={
+              onComplete:function(){
+                location.reload();
+              }};
+              break;
+          case 2:
+              var target={
+                onComplete:function(rs){
+                  if(rs&&!!JSON.decode(rs).success){
+                    window.finderGroup['<{$env.get.finder_id}>'].refresh();
+                    _form.getParent('.dialog').retrieve('instance').close();
+                  }
+                }};
+                break;
+    }
+    _form.store('target',target);
+    if(confirm('确定创建?')) {
+      _form.fireEvent('submit',new Event(event));
+    }
+  };
+
+</script>

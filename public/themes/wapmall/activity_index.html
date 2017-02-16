@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <{header app=topm}>
+    <link rel="stylesheet" href="images/index.css">
+  </head>
+  <body class="main">
+    <{require file="block/header.html"}>
+
+    <div class="shop">
+      <header>
+        <div class="list-hd">
+          <div class="backto icon-back ">
+            <input type="button" name="returnBcak" onclick="history.back()">
+          </div>
+          <div class="tit">活动首页</div>
+          <div class="menu">
+            <button class="btn icon-more" id="menu"></button>
+          </div>
+        </div>
+      </header>
+      <script type="text/javascript">
+        $('#menu').dropmenu({
+          content:
+            [
+              {
+                text: '首页',
+                icon: 'home',
+                href: '<{url action=topm_ctl_default@index}>'
+              },
+
+              {
+                text: '商品类目',
+                icon: 'catalog',
+                href: '<{url action=topm_ctl_category@index}>'
+              },
+
+              {
+                text: '购物车',
+                icon: 'barrow',
+                href: '<{url action=topm_ctl_cart@index}>'
+              },
+
+              {
+                text: '会员中心',
+                icon: 'man',
+                href: '<{url action=topm_ctl_member@index}>'
+              },
+            ]
+        });
+
+        $(window).scroll(function(){
+          if(! $('.ui-dropmenu.ui-in').length == 0 ){
+            $('.ui-dropmenu').removeClass('ui-in');
+          }
+        });
+
+      </script>
+
+      <div id="slider" class="ui-slider">
+        <{widgets id="wap_activity_slider"}>
+      </div>
+      <div class="team-buying-head-ad">
+        <div class="ad-item"><{widgets id="wap_tg_ag_01"}></div>
+        <div class="ad-item"><{widgets id="wap_tg_ag_02"}></div>
+      </div>
+    </div>
+    <{main}>
+    <{require file="block/footer.html"}>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<div class="callout callout-info">
+  <h4><i class="fa fa-info"></i> API说明:</h4>
+  <p>API查看和API测试工具支持超级管理员访问</p>
+  <p>系统API是系统本身之间联通的API，可以通过Prims开放</p>
+  <p>topapi是提供给APP调用的聚合API：
+  errorcode为0则代表请求正确，其他值则有报错，msg为报错提示信息，data为数据主体</p>
+</div>
+<div class="panel panel-info">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><h4>接口参数</h4></div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>字段</th>
+          <th width="10%">数据类型</th>
+          <th width="15%">验证条件</th>
+          <th width="20%">示例值</th>
+          <th width="40%">描述</th>
+        </tr>
+      </thead>
+      <tbody>
+        <{foreach from=$system_params item="column" key="columnName"}>
+        <tr>
+          <td><{$column.field}></td>
+          <td><{$column.type}></td>
+          <td><{$column.validate}></td>
+          <td style="word-break:break-all"><{$column.example}></td>
+          <td><{$column.desc}></td>
+        </tr>
+        <{/foreach}>
+        <{foreach from=$params item="column" key="columnName"}>
+        <tr>
+          <td><{$column.field}></td>
+          <td><{$column.type}></td>
+          <td><{$column.validate}></td>
+          <td style="word-break:break-all"><{$column.example}></td>
+          <td><{$column.desc}></td>
+        </tr>
+        <{/foreach}>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p class="lead">
+  <a href="<{url action=topdev_ctl_apis@testView method=$method apitype=$apitype}>" class="btn btn-outline-inverse btn-lg btn-primary">API测试工具</a>
+</p>
+
+<div class="panel panel-success">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><h4>返回结果</h4></div>
+  <div class="panel-body">
+    <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+      <ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" <{if !$returnJson}>class="active"<{/if}>><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">表格字段</a></li>
+        <li role="presentation" <{if $returnJson}>class="active"<{/if}>><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">JSON结构</a></li>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div role="tabpanel" class="tab-pane fade <{if !$returnJson}>active in<{/if}>" id="home" aria-labelledby="home-tab">
+          <table class="table table-striped" >
+            <thead>
+              <tr><th>返回字段</th><th>类型</th><th width="70%">说明</th></tr>
+            </thead>
+            <tbody>
+              <{foreach from=$response item="rcolumn" key="rcolumnName"}>
+              <tr>
+                <td><{$rcolumn[1]}></td>
+                <td><{$rcolumn[0]}></td>
+                <td><{$rcolumn[2]}></td>
+              </tr>
+              <{/foreach}>
+            </tbody>
+          </table>
+        </div>
+        <div role="tabpanel" class="tab-pane fade <{if $returnJson}>active in<{/if}>" id="profile" aria-labelledby="profile-tab">
+          <br>
+          <pre><code id="json-output">未定义返回的JSON数据结构</code></pre>
+          <{if $returnJson}>
+          <script>
+            var obj = <{$returnJson}>;
+            var str = JSON.stringify(obj, undefined, 2);
+            document.getElementById('json-output').innerHTML = str;
+          </script>
+          <{/if}>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

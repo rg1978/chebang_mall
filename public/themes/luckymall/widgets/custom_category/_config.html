@@ -1,0 +1,158 @@
+<style>
+#setSelectCatTable .tableform .cate1v1 {background:gray;text-align:center;vertical-align:middle;font-weight:600;font-size:14px;color:#FFF}
+</style>
+
+<div class="tableform">
+  <h4>基础设置：</h4>
+  <div class="widgetconfig division">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<!--       <tr>
+        <th width="20%">显示品牌：</th>
+        <td width="30%">
+          <input type="radio" name="showbrand" value="on" <{if $setting.showbrand!="off"}> checked="checked"<{/if}>>&nbsp;是&nbsp;&nbsp;
+          <input type="radio" name="showbrand" value="off" <{if $setting.showbrand=="off"}> checked="checked"<{/if}>>&nbsp;否&nbsp;&nbsp;&nbsp;显示：&nbsp;
+          <input type="text" name="maxbrands" value="<{$setting.maxbrands|default:'8'}>"  class="inputstyle" style="width:60px;">&nbsp;条
+        </td>
+        <th width="20%">品牌列表宽度：</th>
+        <td width="30%"><input type="text" class="x-input"  name="brands_box_width" value="<{$setting.brands_box_width}>" /> px</td>
+      </tr> -->
+      <tr>
+        <th width="20%">弹出分类宽度：</th>
+        <td width="30%">
+          <input type="text" class="x-input"  name="sub_category_width" value="<{$setting.sub_category_width}>" /> px
+        </td>
+        <th width="20%">分类链接在新窗口打开？：</th>
+        <td width="30%">
+          <input type="checkbox" name="target_blank" value="1" <{if $setting.target_blank}> checked <{/if}> />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span>默认显示一级分类？：</span> <input type="checkbox" name="target_blank" value="1" <{if $setting.target_blank}> checked <{/if}> /></td>
+      </tr>
+      <tr>
+        <th width="20%">品牌logo宽度：</th>
+        <td width="30%">
+          <input type="text" class="x-input"  name="brand_width" value="<{$setting.brand_width}>" /> px
+        </td>
+        <th width="20%">品牌logo高度：</th>
+        <td width="30%"><input type="text" class="x-input"  name="brand_height" value="<{$setting.brand_height}>" /> px</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div id="setSelectCatTable">
+    <div class="tableform">
+      <h4>分类设置：</h4>
+      <{foreach from=$data.cats item=parent key=key}>
+      <{assign var=parent_id value=$parent.cat_id}>
+      <div class="widgetconfig division piccontent">
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <th style="width:10%;" class="cate1v1"><input type="checkbox" name='resetcat[<{$parent_id}>][show]' value='1' <{if $setting.resetcat.$parent_id.show=="1"}> checked="checked"<{/if}>> <{$parent.cat_name}></th>
+            <td style="width:95%">
+                <table border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <th width="10%">一级分类图标</th>
+                    <td width="40%">
+                      <input name='resetcat[<{$parent_id}>][logo]' class="imgsrc" id="resetcat[<{$parent_id}>][logo]"  value="<{$setting.resetcat.$parent_id.logo}>">
+                      <input type=button value=上传图片 class="uploadbtn">
+                    </td>
+                    <th width="10%">一级分类链接<br />重定向</th>
+                    <td width="40%"><input type="text" name="resetcat[<{$parent_id}>][link]" value="<{$setting.resetcat.$parent_id.link}>" class="inputstyle" style="width:85%;" placeholder="修改原有一级分类链接，留空则不改"/></td>
+                  </tr>
+                  <tr>
+                    <th width="10%">推荐二级分类标题</th>
+                    <td width="40%"><input type="text" name="resetcat[<{$parent_id}>][recommend_lv2_title]" value="<{$setting.resetcat.$parent_id.recommend_lv2_title}>" class="inputstyle" style="width:85%;" placeholder="有则请填写推荐二级分类标题"/></td>
+                    <th width="10%">对应三级分类链接标签</th>
+                    <td width="40%"><textarea name="resetcat[<{$parent_id}>][recommend_lv2_sub_links]" row="3" placeholder="请输入推荐二级分类对应的三级分类<a>标签" style="width:100%;height:60px;line-height:20px;"><{$setting.resetcat.$parent_id.recommend_lv2_sub_links}></textarea></td>
+                  </tr>
+                  <tr>
+                      <th width="10%">推荐链接1标题</th>
+                      <td width="40%"><input type="text" name="resetcat[<{$parent_id}>][rec1_title]" value="<{$setting.resetcat.$parent_id.rec1_title}>" class="inputstyle" placeholder="填写标题"></td>
+                      <th width="10%">链接</th>
+                      <td width="40%"><input type="text" name="resetcat[<{$parent_id}>][rec1_link]" class="inputstyle" style="width:90%" value="<{$setting.resetcat.$parent_id.rec1_link}>"></td>
+                  </tr>
+                  <tr>
+                      <th width="10%">推荐链接2标题</th>
+                      <td width="40%"><input type="text" name="resetcat[<{$parent_id}>][rec2_title]" value="<{$setting.resetcat.$parent_id.rec2_title}>" class="inputstyle" placeholder="填写标题"></td>
+                      <th width="10%">链接</th>
+                      <td width="40%"><input type="text" name="resetcat[<{$parent_id}>][rec2_link]" class="inputstyle" style="width:90%" value="<{$setting.resetcat.$parent_id.rec2_link}>"></td>
+                  </tr>
+                </table>
+             </td>
+          </tr>
+        </table>
+      </div>
+      <{/foreach}>
+   </div>
+</div>
+
+<div class="tableform" style="display:none;">
+  <div class="clearfix" style="padding:5px 20px">
+    <{button label=$___topc="添加自定义分类栏目"|t:'topc' app="desktop" icon="btn_add.gif" id="add_ad_pic" onclick="addCustom();"}>  （用于分类不足时填充）
+    </div>
+    <div class="widgetconfig division" id="cat-custom-list">
+      <{if $setting.custom}>
+      <{foreach from=$setting.custom item=menu key=key}>
+          <div class="custom">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <th width="15%">标题：</th>
+                <td width="25%"><input type="text" name="custom[<{$menu.i}>][cat_name]" value="<{$menu.cat_name}>" class="inputstyle" style="width:90%" /></td>
+                <th width="15%">链接：</th>
+                <td width="40%"><input type="text" name="custom[<{$menu.i}>][url]" value="<{$menu.url}>" class="inputstyle" style="width:90%"></td>
+                <td width="5%"><span onclick="delLink(this)" class="opt"><{img src="bundle/delecate.gif" style="cursor:pointer;" title="删除" app="desktop"}></span></td>
+              </tr>
+            </table>
+            <input type="hidden" name="custom[<{$menu.i}>][i]" value="<{$menu.i}>">
+          </div>
+      <{/foreach}>
+      <{/if}>
+    </div>
+</div>
+
+<script>
+  (function(){
+    var tag_type='table',tag_class='pic_items';
+
+
+    $$(".piccontent .uploadbtn").addEvent('click',function(e){bindevent(this)});
+    $$(".small_piccontent .uploadbtn").addEvent('click',function(e){bindevent(this)});
+
+    function bindevent(el){
+      console.log(el);
+      var target=$(el).getParent(tag_type).getElement('.imgsrc');
+      var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+      var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;  
+      Ex_Loader('modedialog',function(){
+        return new imgDialog(url,{onCallback:function(image_id,image_src){
+          target.value=image_src;
+        }});
+      });
+    }
+
+  })();
+
+/*加自定义分类*/
+var d=new Date();
+function addCustom(){
+  var content,i=d.getTime();
+  content='\
+    <div class="custom" style="margin-top:5px;">\
+      <table width="100%" cellpadding="0" cellspacing="0">\
+        <tr>\
+        <th width="15%">标题：</th>\
+        <td width="25%"><input type="text" name="custom['+i+'][cat_name]" class="inputstyle" style="width:90%"></td>\
+        <th width="15%">链接：</th>\
+        <td width="40%"><input type="text" name="custom['+i+'][url]" class="inputstyle" style="width:90%"></td>\
+        <td width="5%"><span onclick="delLink(this)" class="opt"><{img src="bundle/delecate.gif" style="cursor:pointer;" title="删除" app="desktop"}></span</td>\
+        </tr>\
+      </table>\
+      <input type="hidden" name="custom['+i+'][i]" value="'+i+'">\
+    </div>\
+  ';
+  $('cat-custom-list').adopt(new Element('div').set('html',content).getFirst());
+}
+delLink=function(o){
+  $(o).getParent('.custom').remove();
+}
+
+</script>

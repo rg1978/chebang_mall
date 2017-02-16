@@ -1,0 +1,23 @@
+<section class="widgets-category-nav section-white">
+  <div class="section-title">
+    <div class="title-txt"><{$setting.block_name}></div>
+    <div class="more-link"><a href="<{url action=topwap_ctl_category@index}>">查看更多<i class="bbc-icon bbc-icon-forward"></i></a></div>
+  </div>
+  <ul class="category-nav-list">
+    <{foreach from=$data.pic item=item}>
+    <li>
+        <div class="nav-items">
+          <div class="category-nav-txt">
+            <div>
+              <p class="category-name"><{$item.categoryname}></p>
+              <p class="category-sub-des"><{$item.categorydes}></p>
+            </div>
+          </div>
+          <div class="category-thumb-img"><a href="<{url to=$item.linktarget}>"><img src="<{$item.link|storager}>" alt="<{$item.title}>"></a></div>
+        </div>
+    </li>
+    <{/foreach}>
+  </ul>
+</section>
+
+

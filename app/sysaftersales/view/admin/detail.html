@@ -1,0 +1,179 @@
+<h4>退换货基本信息</h4>
+<div class="tableform">
+  <table class="multi-cols">
+    <tr>
+      <th><{t}>退换货编号:<{/t}></th>
+      <td><{t}><{$data.aftersales_bn}><{/t}></td>
+      <th ><{t}>申请时间：<{/t}></th>
+      <td><{$data.created_time}></td>
+    </tr>
+    <tr>
+      <th><{t}>处理进度：<{/t}></th>
+      <td>
+        <{t}>
+        <{if $data.progress == '0'}>
+        等待商家处理
+        <{elseif $data.progress == '1'}>
+        接受申请，待回寄
+        <{elseif $data.progress == '2'}>
+        等待收货确认
+        <{elseif $data.progress == '3'}>
+        商家已驳回
+        <{elseif $data.progress == '4'}>
+        商家已处理
+        <{elseif $data.progress == '5'}>
+        商家已收货
+        <{elseif $data.progress == '8'}>
+        等待平台处理
+        <{elseif $data.progress == '6'}>
+        平台已驳回
+        <{elseif $data.progress == '7'}>
+        平台已处理
+        <{/if}>
+        <{/t}>
+      </td>
+      <th><{t}>售后服务类型：<{/t}></th>
+      <td>
+        <{t}>
+        <{if $data.aftersales_type == 'ONLY_REFUND'}>
+        仅退款
+        <{elseif $data.aftersales_type == 'REFUND_GOODS'}>
+        退货退款
+        <{elseif $data.aftersales_type == 'EXCHANGING_GOODS'}>
+        换货
+        <{/if}>
+        <{/t}>
+      </td>
+    </tr>
+    <tr>
+      <th><{t}>订单编号:<{/t}></th>
+      <td><{t}><{$data.tid}><{/t}></td>
+      <th ><{t}>所属商家：<{/t}></th>
+      <td><{$data.shop_id|shopname}></td>
+    </tr>
+
+    <tr>
+      <th ><{t}>申请售后原因：<{/t}></th>
+      <td><{$data.reason}></td>
+      <th><{t}>申请描述：<{/t}></th>
+      <td><{$data.description}></td>
+    </tr>
+    <tr>
+      <th><{t}>图片凭证信息：<{/t}></th>
+      <td colspan="3">
+        <{if $data.evidence_pic}>
+        <{foreach from=$data.evidence_pic item=pic}>
+        <span class="goods pull-left show-pics">
+          <a href="<{$pic|storager}>" target="_blank">
+            <img src="<{$pic|storager:t}>" alt="" class="img-position-adjust">
+          </a>
+        </span>
+        <{/foreach}>
+        <{else}>
+        <span class="align-adjust-2">无图片信息</span>
+        <{/if}>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h4>退换货订单商品信息</h4>
+<div class="tableform">
+  <table class="table table-primary table-hover table-goods">
+    <thead>
+      <tr>
+        <td>订单号</td>
+        <td>商品</td>
+        <td>单价（元）</td>
+        <td>数量</td>
+        <td>总金额</td>
+      </tr>
+    </thead>
+    <tbody id="">
+      <tr>
+        <td><{$trade.tid}></td>
+        <td>
+            <a href="<{url action=topc_ctl_item@index item_id=$trade.item_id}>" target="_blank">
+              <{if $trade.pic_path}>
+              <img src="<{$trade.pic_path|storager:t}>" alt="" width="100" height="100">
+              <{/if}>
+              <{$trade.title}></a>
+        </td>
+        <td>
+          <{$trade.price|cur}>
+        </td>
+        <td>
+          <{$trade.num}>
+        </td>
+        <td>
+          <span class="text-orange">
+            <{$trade.payment|cur}>
+          </span>
+        </td>
+      </tr>
+      <{if $data.gift_data}>
+      <{foreach from=$data.gift_data item=giftdata}>
+      <tr>
+        <td><{$trade.tid}></td>
+        <td>
+            <a href="<{url action=topc_ctl_item@index item_id=$giftdata.item_id}>" target="_blank">
+              <{if $giftdata.image_default_id}>
+              <img src="<{$giftdata.image_default_id|storager:t}>" alt="" width="100" height="100">
+              <{/if}>
+              <em class="red">【 赠品】</em><{$giftdata.title}>
+            </a>
+        </td>
+        <td>
+          <{$giftdata.price|cur}>
+        </td>
+        <td>
+          <{$giftdata.gift_num}>
+        </td>
+        <td>
+          <span class="text-orange">
+            <{0|cur}>
+          </span>
+        </td>
+      </tr>
+      <{/foreach}>
+      <{/if}>
+    </tbody>
+  </table>
+</div>
+<h4>处理结果信息</h4>
+<div class="tableform">
+  <table border="0" cellpadding="0" style="margin-top:10px" cellspacing="0" class="orderdetails_basic">
+    <tr>
+      <td>
+        <h5 align="center" style=" margin-top:10px;"><{t}>会员退换货处理结果<{/t}></h5>
+        <table class="multi-cols">
+          <tr>
+            <th ><{t}>审核状态：<{/t}></th>
+            <td><{if $data.progress == '3'}>
+              商家驳回售后申请
+              <{else}>
+              商家同意售后申请
+              <{/if}></td>
+          </tr>
+          <tr>
+            <th><{t}>商家处理申请说明：<{/t}></th>
+            <td><{$data.shop_explanation}></td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <h5 align="center" style=" margin-top:10px;"><{t}>退款处理<{/t}></h5>
+        <table class="multi-cols">
+          <tr>
+            <th ><{t}>退款金额：<{/t}></th>
+            <td><{$refunds.total_price|cur}></td>
+          </tr>
+          <tr>
+            <th><{t}>退款状态：<{/t}></th>
+            <td><{if $data.progress == '8'}>等待平台处理退款<{else}>退款完成<{/if}></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>

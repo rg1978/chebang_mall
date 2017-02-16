@@ -1,0 +1,76 @@
+<div class="panel-heading">
+  <div class="clearfix">
+    <div class="pull-left">
+      <h2 class="panel-title">选择商品</h2>
+    </div>
+    <div class="pull-right">
+      <button id="choose_goods" type="button" class="btn btn-primary action-save">确定</button>
+      <button type="button" class="btn btn-default action-cancel" data-dismiss="modal">取消</button>
+    </div>
+  </div>
+</div>
+<div class="panel-body">
+  <div class="goods-condition clearfix">
+    <!-- 排序：
+    <span class="time active" data-order="last_modified" data-sort="desc"><i class="glyphicon glyphicon-arrow-down"></i>时间</span>
+    <span data-order="image_name asc"><i class="glyphicon glyphicon-sort-by-alphabet"></i>名称</span> -->
+    <div id="goods_category" class="goods-category filter-option">
+      <span class="filter-name">分类</span> <i class="fa fa-sort-desc"></i>
+      <div class="filters-list">
+        <div class="arrow"></div>
+        <ul>
+          <{foreach from=$shopCatList item=catlist}>
+          <li data-val="<{$catlist.cat_id}>" >
+            <span><{$catlist.cat_name}> <{if $catlist.lv2}> <i class="fa fa-chevron-right"></i><{/if}></span>
+            <{if $catlist.lv2}>
+            <div class="child-list">
+              <ul>
+                <{foreach from=$catlist.lv2 item=lv2list}>
+                <li data-val="<{$lv2list.cat_id}>">
+                  <span><{$lv2list.cat_name}> <{if $lv2list.lv3}><i class="fa fa-chevron-right"></i><{/if}></span>
+                  <{if $lv2list.lv3}>
+                  <div class="child-list">
+                    <ul>
+                      <{foreach from=$lv2list.lv3 item=lv3list}>
+                        <li data-val="<{$lv3list.cat_id}>"><span><{$lv3list.cat_name}></span></li>
+                      <{/foreach}>
+                    </ul>
+                  </div>
+                  <{/if}>
+                </li>
+                <{/foreach}>
+              </ul>
+            </div>
+            <{/if}>
+          </li>
+          <{/foreach}>
+        </ul>
+      </div>
+    </div>
+    <{*
+    <div id="goods_brand" class="goods-brands" data-remote="<{url action=topshop_ctl_selector_item@getBrandList}>">
+      <span class="filter-name">品牌</span> <i class="fa fa-sort-desc"></i>
+      <div class="filters-list">
+        <div class="arrow"></div>
+        <ul id="brand_list" class="clearfix">
+          <{foreach from=$brandlist item=item}>
+          <li data-val="<{$item.brand_id}>"><{$item.brand_name}></li>
+          <{/foreach}>
+        </ul>
+      </div>
+    </div>
+    *}>
+    <div class="goods-search"><input type="text" name="item_title" value="" id="goods-search-key" class="form-control input-sm goods-search-key" placeholder="名称"></div>
+    <div class="goods-search"><input type="text" name="item_bn" value="" id="goods-search-bn" class="form-control input-sm goods-search-bn" placeholder="商品货号"></div>
+    <div class="goods-search"><input type="text" name="item_brand" value="" id="goods-search-brand" class="form-control input-sm goods-search-brand" placeholder="品牌名称"></div>
+    <button id="search_goods" type="button" class="btn btn-warning btn-sm" data-remote="<{url action=topshop_ctl_selector_item@searchItem}>">搜索</button>
+    <button id="check_all" type="button" class="btn btn-info btn-sm">全选当前页</button>
+    <div>&nbsp; <a id="uncheck_all" href="#">清空当前页</a>
+    <!-- &nbsp; <a id="clear_brand" href="#">清空品牌</a> -->
+    &nbsp; <a id="clear_filter" href="#">清空筛选条件</a></div>
+  </div>
+  <div class="row goods-list">
+    <div id="goods_list">
+    </div>
+  </div>
+</div>

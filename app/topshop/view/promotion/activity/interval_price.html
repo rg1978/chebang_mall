@@ -1,0 +1,6 @@
+<div>
+  <input type="number" name="item_activity_price[<{$item.item_id}>]" value="<{$item.datavalue.activity_price}>" >
+  <span>
+    参考范围:<{$item.price*$item.discount_min|cur}>~<{$item.price*$item.discount_max|cur}>
+  </span>
+</div>

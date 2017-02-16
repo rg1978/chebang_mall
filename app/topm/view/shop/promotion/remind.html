@@ -1,0 +1,35 @@
+<div class="shop">
+  <div class="ui-mask"></div>
+  <{include file="topm/common/top.html"}>
+  <div class="main" id="main">
+    <form action="<{url action=topm_ctl_activity@saleRemind}>" class="group-subscription" method="post">
+      <input type="hidden" name="remind[activity_id]" value="<{$activity.activity_id}>">
+      <{if $activity.remind_way == 'email'}>
+      <div class="form-input">
+        <label for="">电子邮箱：</label>
+        <div class="input-box"><input type="text" name="remind[email]" placeholder="请输入电子邮箱"></div>
+      </div>
+      <div class="form-action"><button type="submit" class="btn-block ui-btn ui-btn-warning"><span><span>订阅</span></span></button></div>
+      <{/if}>
+      <{if $activity.remind_way == 'mobile'}>
+      <{if $remind_residue <= 0}>
+      <div>
+        根据您的设置，在开团前通过手机短信通知您本次团购消息。<br>
+        （您今天可订阅的机会已经用完）
+      </div>
+      <{else}>
+      <div>
+        根据您的设置，在开团前通过手机短信通知您本次团购消息。<br>
+        （每天最多定制<{$remind_total.mobile_num}>条，今日您还可以定制<{$remind_residue}>条短信）
+      </div>
+      <div class="form-input">
+        <label for="">手机号码：</label>
+        <div class="input-box"><input type="text" name="remind[mobile]" placeholder="请输入手机号"></div>
+      </div>
+      <div class="form-action"><button type="submit" class="btn-block ui-btn ui-btn-warning"><span><span>订阅</span></span></button></div>
+      <{/if}>
+      <{/if}>
+    </form>
+  </div>
+</div>
+

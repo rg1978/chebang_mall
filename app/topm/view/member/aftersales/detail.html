@@ -1,0 +1,179 @@
+<div class="order-status shop">
+  <{include file="topm/common/top.html"}>
+  <div class="main aftersale">
+    <div class="status-list">
+      <ul>
+        <li>
+          <{if $info.aftersales_type == 'ONLY_REFUND'}>
+          <i class="icon icon-refund"></i>
+          <span>仅退款</span>
+          <{elseif $info.aftersales_type == 'REFUND_GOODS'}>
+          <i class="icon icon-found"></i>
+          <span>退货退款</span>
+          <{elseif $info.aftersales_type == 'EXCHANGING_GOODS'}>
+          <i class="icon icon-return"></i>
+          <span>申请换货</span>
+          <{/if}>
+        </li>
+        <li>
+          售后状态：
+          <span>
+            <{if $info.status == '0'}>
+            等待商家处理
+            <{elseif $info.status == '1'}>
+            售后处理中
+            <{elseif $info.status == '2'}>
+            售后成功
+            <{elseif $info.status == '3'}>
+            售后驳回
+            <{/if}>
+          </span>
+        </li>
+        <li>
+          申请时间：<span><{$info.created_time|cdate:'FDATE_FTIME'}></span>
+        </li>
+        <li>
+          售后编号：<span><{$info.aftersales_bn}></span>
+        </li>
+        <li>
+          申请理由：<span><{$info.reason}></span>
+        </li>
+        <li>
+          详细描述：<span class="txt"><{$info.description|default:"无详细描述"}></span>
+        </li>
+        <{if $info.evidence_pic}>
+        <li clas="regoods">
+          <span class="txt">
+            <{foreach from=$info.evidence_pic item=pic}>
+            <img width="64" height="64" src="<{$pic|storager:t}>">
+            <{/foreach}>
+          </span>
+        </li>
+        <{/if}>
+        <{if $info.shop_explanation || $info.admin_explanation }>
+        <{if $info.admin_explanation}>
+        <li>
+          平台处理说明
+          <span class="txt"><{$info.admin_explanation}><span>
+            </li>
+            <{/if}>
+            <{if $info.shop_explanation}>
+            <li>
+              商家处理说明
+              <span class="txt"><{$info.shop_explanation}></span>
+            </li>
+            <{/if}>
+            <{/if}>
+          </ul>
+        </div>
+
+        <{if $info.aftersales_type != 'ONLY_REFUND' && $info.sendback_data && $info.progress >= '2' }>
+        <div class="logistics">
+          <div class="waybill-info">
+            <i class="icon icon-flow"></i>
+            <div class="info-txt">
+              <span>寄送的物流信息</span>
+              <div>
+                物流公司：<{$info.sendback_data.logi_name}><br>
+                运单号码：<{$info.sendback_data.logi_no}>
+                <{if $tracking && $tracking =='true' }>
+                <span id="click_get_track_back" class="sp-see">查看物流跟踪 &gt;</span>
+                <{/if}>
+              </div>
+            </div>
+          </div>
+          <{imwap type='tradeInfo' shop_id=$trade.shop_id user_id=$trade.user_id content="<a href='#' style='float:right;'><i class='icon icon-dialog contact-icon'></i>联系卖家</a>" note='订单id：'.$trade.tid}>
+          <a href="#" class="btn-contact"><i class="icon-dialog contact-icon"></i>联系卖家</a>
+          <div id="send_back_track"> </div>
+        </div>
+        <{/if}>
+
+        <{if $info.aftersales_type == 'EXCHANGING_GOODS' && $info.sendconfirm_data}>
+        <div class="logistics">
+          <div class="waybill-info">
+            <i class="icon icon-flow"></i>
+            <div class="info-txt">
+              <span>商家寄送物流信息</span>
+              <{if $info.sendconfirm_data.logi_name}>
+              <div>
+                物流公司：<{$info.sendconfirm_data.logi_name}><br>
+                运单号码：<{$info.sendconfirm_data.logi_no}>
+                <{if $tracking && $tracking =='true' }>
+                <span id="click_get_track" class="sp-see">查看物流跟踪</span>
+                <{/if}>
+              </div>
+              <{elseif $info.sendconfirm_data.return_trade_info}>
+              <div>
+                <{$info.sendconfirm_data.return_trade_info}>，
+                <{t}>您可将换货的订单号告知商家，由商家客服为您查找物流信息。<{/t}>
+              </div>
+              <{/if}>
+            </div>
+          </div>
+          <div id="send_track"> </div>
+        </div>
+        <{/if}>
+      </div>
+    </div>
+
+    <!--如果是退货退款，商家同意则填写回寄商品-->
+    <{if $info.progress == '1'}>
+    <div class="send-back-info">
+      <div class="form-title">请填写回寄物流信息</div>
+      <{include file="topm/member/aftersales/sendback.html"}>
+    </div>
+    <{/if}>
+
+    <{if $info.sku.complaints_status == 'NOT_COMPLAINTS' && $info.sku.aftersales_status == 'SELLER_REFUSE_BUYER'}>
+    <div class="buy-action btn-center-box">
+      <a href="<{url action=topm_ctl_member_complaints@complaintsView oid=$info.sku.oid}>">
+      <button type="button" class="ui-btn-warning">投诉商家</button>
+      </a>
+    </div>
+    <{/if}>
+  </div>
+
+  <!--返回顶部-->
+  <div id="gotop"></div>
+
+  <script>
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady(){
+      var mytopbar = document.getElementById("topFix");
+      var myfixhd = document.getElementById("fixhd");
+      WeixinJSBridge.call('hideToolbar');
+      mytopbar.style.display="none";
+      myfixhd.style.margin="0";
+    });
+
+    var flag = false;
+    $('.logistics li:first-child').tap(function(){
+      $(this).siblings('li').toggle();
+      if(flag==false){
+        $(this).parent().parent().find('.icon-down').addClass('list-open');
+        flag = true;
+      }else{
+        $(this).parent().parent().find('.icon-down').removeClass('list-open');
+        flag = false;
+      }
+      console.log(flag);
+    })
+
+    $('#click_get_track_back').click(function(e){
+      $('#send_back_track').html("加载中...");
+      $.post('<{url action=topm_ctl_member_aftersales@ajaxGetTrack}>',{'logi_no':'<{$info.sendback_data.logi_no}>','corp_code':'<{$info.sendback_data.corp_code}>'},function(rs){
+        if(rs.error){
+          return alert(rs.message);
+        }
+        $('#send_back_track').html(rs);
+      });
+    });
+    $('#click_get_track').click(function(e){
+      $('#send_track').html("加载中...");
+      $.post('<{url action=topm_ctl_member_aftersales@ajaxGetTrack}>',{'logi_no':'<{$info.sendconfirm_data.logi_no}>','corp_code':'<{$info.sendconfirm_data.corp_code}>'},function(rs){
+        if(rs.error){
+          return alert(rs.message);
+        }
+        $('#send_track').html(rs);
+      });
+    });
+  </script>

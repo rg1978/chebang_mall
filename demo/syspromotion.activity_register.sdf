@@ -1,0 +1,3 @@
+a:7:{s:2:"id";i:1;s:7:"shop_id";i:3;s:11:"activity_id";i:2;s:13:"verify_status";s:5:"agree";s:12:"valid_status";i:1;s:13:"refuse_reason";s:0:"";s:13:"modified_time";i:1453802035;}
+a:7:{s:2:"id";i:2;s:7:"shop_id";i:3;s:11:"activity_id";i:3;s:13:"verify_status";s:5:"agree";s:12:"valid_status";i:1;s:13:"refuse_reason";s:0:"";s:13:"modified_time";i:1453802925;}
+a:7:{s:2:"id";i:3;s:7:"shop_id";i:1;s:11:"activity_id";i:1;s:13:"verify_status";s:5:"agree";s:12:"valid_status";i:1;s:13:"refuse_reason";s:0:"";s:13:"modified_time";i:1453878824;}

@@ -1,0 +1,39 @@
+
+<table class="table table-bordered table-shopcat">
+  <colgroup>
+    <col class="col-md-2">
+    <col class="col-md-1">
+    <col class="col-md-5">
+    <!-- <col class="col-md-2"> -->
+    <col class="col-md-1">
+  </colgroup>
+  <thead>
+    <tr>
+      <td>操作时间</td>
+      <td>用户名</td>
+      <td>操作内容</td>
+      <!-- <td>链接</td> -->
+      <td>IP</td>
+    </tr>
+  </thead>
+  <{if $data}>
+  <tbody>
+    <{foreach from=$data item=item}>
+    <tr>
+      <td><{$item.created_time|cdate}></td>
+      <td><{$item.seller_username}></td>
+      <td><{$item.memo}></td>
+      <!-- <td><{$item.router}></td> -->
+      <td><{$item.ip}></td>
+    </tr>
+    <{/foreach}>
+  </tbody>
+  <{else}>
+  <tbody id="none_cat">
+    <tr class="none-information">
+      <td colspan="6"><p class="text-muted well no-shadow text-center">暂无数据</p></td>
+    </tr>
+  </tbody>
+  <{/if}>
+</table>
+<{pagers data=$pagers}>

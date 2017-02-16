@@ -1,0 +1,88 @@
+<{if $error}>
+<{$error}>
+
+<{else}>
+<form action="?app=sysuser&ctl=admin_tag&act=setTag" method="post" id="tag_form" class="tableform">
+
+  <input type='hidden' name='userIds' value='<{$userIds}>'>
+  <div class="note">
+    <{t}>对选择的<{/t}><strong><{$userCount}></strong><{t}>个条目应用标签<{/t}>
+  </div>
+
+
+  <div class="clearfix tag-items division" id="tag_setter">
+
+    <{foreach from=$tags item=tag key=tid}>
+    <div class="span-auto item tag-item" style="line-height:28px; overflow:hidden; zoom:0">
+      <span>
+        <{if $tag.status == 0}>
+        <img src='<{$res_url}>/images/tag_none.gif'>
+        <{elseif $tag.status == 1}>
+        <img src='<{$res_url}>/images/tag_part.gif'>
+        <{elseif $tag.status == 2}>
+        <img src='<{$res_url}>/images/tag_all.gif'>
+        <{/if}>
+      </span>
+
+      <label class="tag-label" <{if $tag.tag_color}> style="background-color:<{$tag.tag_color}>"<{/if}>>
+        <{$tag.tag_name}>
+      </label>
+
+      <input class='tag-id' type="hidden" name="tags[<{$tag.tag_id}>][tag_id]" value="<{$tag.tag_id}>" />
+      <input class='tag-status' type="hidden" name="tags[<{$tag.tag_id}>][status]" value="<{$tag.status}>" />
+      <input class='tag-status-start' type="hidden" name="tags[<{$tag.tag_id}>][status-start]" value="<{$tag.status}>" />
+
+    </div>
+    <{/foreach}>
+
+  </div>
+
+  <div class="table-action">
+    <button class="btn btn-primary" type="submit"><span><span><{t}>确认<{/t}></span></span></button>
+  </div>
+
+</form>
+
+<script>
+  var allImgUrl = '<{$res_url}>/images/tag_all.gif';
+  var partImgUrl = '<{$res_url}>/images/tag_part.gif';
+  var noneImgUrl = '<{$res_url}>/images/tag_none.gif';
+
+
+  $$('.tag-item').addEvent('click', function(e){
+    var tagStatus = this.getElement('.tag-status').get('value');
+    var tagStatusStart = this.getElement('.tag-status-start').get('value');
+    switch(tagStatus){
+      case '0':
+        if(tagStatusStart == '1')
+        {
+          this.getElement('.tag-status').set('value','1');
+          this.getElement('img').set('src', partImgUrl);
+        }else{
+          this.getElement('.tag-status').set('value','2');
+          this.getElement('img').set('src', allImgUrl);
+        }
+        break;
+      case '1':
+        this.getElement('.tag-status').set('value','2');
+        this.getElement('img').set('src', allImgUrl);
+        break;
+      case '2':
+        this.getElement('.tag-status').set('value','0');
+        this.getElement('img').set('src', noneImgUrl);
+        break;
+    }
+  });
+
+$('tag_form').store('target',{onComplete:function(response){
+  try{
+    var _dialogIns = $('tag_form').getParent('.dialog').retrieve('instance');
+    response = JSON.decode(response);
+  }catch(e){}
+  if(_dialogIns){
+    if (response && response.error)	return;
+    _dialogIns.close();
+  }
+}});
+</script>
+<{/if}>

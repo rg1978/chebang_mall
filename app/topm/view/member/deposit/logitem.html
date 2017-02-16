@@ -1,0 +1,7 @@
+          <{foreach from=$deposit.list item=log}>
+          <tr>
+            <td><{$log.logtime|cdate}></td>
+            <{if $log.type=='expense'}><td class="minus">-<{$log.fee|cur}></td><{else}><td class="add">+<{$log.fee|cur}></td><{/if}>
+            <td><{$log.message}></td>
+          </tr>
+          <{/foreach}>

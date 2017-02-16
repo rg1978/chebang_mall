@@ -1,0 +1,17 @@
+<div id="offCanvasSideScroll" class="shopex-scroll-wrapper">
+  <div class="shopex-scroll">
+    <ul class="shopex-table-view shopex-table-view-chevron">
+      <li class="shopex-table-view-cell" data-link="<{url action=topwap_ctl_shop_list@index shop_id=$shopId}>">
+        <a href="#"> <{t}>全部商品<{/t}> </a>
+      </li>
+      <{foreach from=$shopcat item=catlist}>
+      <li class="shopex-table-view-cell" data-link="<{url action=topwap_ctl_shop_list@index shop_id=$shopId sc=$catlist.cat_id}>">
+        <a href="#">
+          <{$catlist.cat_name}>
+        </a>
+      </li>
+      <{/foreach}>
+    </ul>
+  </div>
+</div>
+

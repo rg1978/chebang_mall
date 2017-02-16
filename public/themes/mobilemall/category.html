@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <{header app=topwap}>
+    <style>
+      .shopex-row.shopex-fullscreen>[class*="shopex-col-"] {
+        height: 100%;
+      }
+      .shopex-col-xs-3,
+      .shopex-control-content {
+        overflow-y: auto;
+        height: 100%;
+      }
+      .shopex-segmented-control .shopex-control-item {
+        line-height: 3rem;
+        width: 100%;
+      }
+      .shopex-segmented-control.shopex-segmented-control-inverted .shopex-control-item.shopex-active {
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <{require file="block/header.html"}>
+    <{main}>
+    <footer class="navigation">
+      <ul class="nav-group">
+        <li><a href="<{url action=topwap_ctl_default@index}>"><i class="bbc-icon bbc-icon-home-empty"></i><span>首页</span></a></li>
+        <li class="active"><a href="<{url action=topwap_ctl_category@index}>"><i class="bbc-icon bbc-icon-category"></i><span>分类</span></a></li>
+        <li><a href="<{url action=topwap_ctl_cart@index}>"><i class="bbc-icon bbc-icon-cart-empty"></i><span>购物车</span></a></li>
+        <li><a href="<{url action=topwap_ctl_member@index}>"><i class="bbc-icon bbc-icon-user-empty"></i><span>会员</span></a></li>
+      </ul>
+    </footer>
+  </body>
+</html>

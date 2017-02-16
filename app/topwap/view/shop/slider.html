@@ -1,0 +1,27 @@
+<div class="shopex-slider-group shopex-slider-loop">
+  <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+    <div class="shopex-slider-item shopex-slider-item-duplicate">
+        <a href="<{$slider_last_image.link}>">
+            <img src="<{$slider_last_image.sliderImage|storager}>">
+        </a>
+    </div>
+
+    <{foreach from=$slider item=item}>
+    <div class="shopex-slider-item shopex-slider-item-duplicate">
+        <a href="<{$items.link}>">
+            <img src="<{$item.sliderImage|storager}>">
+        </a>
+    </div>
+    <{/foreach}>
+
+    <div class="shopex-slider-item shopex-slider-item-duplicate">
+        <a href="<{$slider_first_image.link}>">
+            <img src="<{$slider_first_image.sliderImage|storager}>">
+        </a>
+    </div>
+</div>
+<div class="shopex-slider-indicator">
+  <{foreach from=$slider item=item name=slidername}>
+    <div class="shopex-indicator <{if $env.foreach.slidername.first}>shopex-active<{/if}>"></div>
+    <{/foreach}>
+</div>

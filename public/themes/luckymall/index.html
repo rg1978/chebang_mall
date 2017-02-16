@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <{header app=topc}>
+    <link rel="stylesheet" href="images/index.css">
+  </head>
+
+  <body class="is-index">
+    <{require file="block/header.html"}>
+    <!-- 主内容区 -->
+    <div class="seaview">
+     <div class="wrap-lg">
+       <div class="module">
+         <div class="row cover-content">
+           <div class="col-lg-3 box cover-silder-gg">
+             <{widgets id="banners"}>
+           </div>
+         </div>
+       </div>
+     </div>
+      <div class="full-slider">
+        <{widgets id="main_focus"}>
+      </div>
+    </div>
+    <div id="main" class="main index">
+      <div class="wrap-lg">
+        <div class="module">
+          <{widgets id="groupbuying"}>
+        </div>
+        <div class="module">
+          <{widgets id="recommendshop"}>
+        </div>
+        <div class="module">
+          <{widgets id="activity"}>
+        </div>
+        <div class="module">
+          <{widgets id="hot_brand"}>
+        </div>
+        <div class="module">
+          <{widgets id="coupon"}>
+        </div>
+        <div class="module">
+          <{widgets id="floor_index_01"}>
+        </div>
+        <div class="module">
+          <div class="module-bd">
+            <{widgets id="ad_01"}>
+          </div>
+        </div>
+        <div class="module">
+          <{widgets id="floor_index_02"}>
+        </div>
+        <div class="module">
+          <div class="module-bd">
+            <{widgets id="ad_02"}>
+          </div>
+        </div>
+        <div class="module">
+          <{widgets id="floor_index_03"}>
+        </div>
+        <div class="module">
+          <{widgets id="relation_brand_01"}>
+        </div>
+        <div class="module">
+          <{widgets id="floor_index_04"}>
+        </div>
+        <div class="module">
+          <{widgets id="relation_brand_02"}>
+        </div>
+        <div class="module">
+          <{widgets id="floor_index_05"}>
+        </div>
+        <div class="module">
+          <{widgets id="ad_group"}>
+        </div>
+        <div class="module">
+          <{widgets id="goods_recommond"}>
+        </div>
+      </div>
+    </div>
+    <{require file="block/footer.html"}>
+  </body>
+  <script>
+  $(function(){
+    $("img.imglazyload").lazyload({
+         effect : "fadeIn"
+     });
+  });
+  </script>
+</html>

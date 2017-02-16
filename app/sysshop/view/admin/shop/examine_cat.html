@@ -1,0 +1,91 @@
+<form id="applyCat" action="?app=sysshop&ctl=admin_applycat&act=doExamine"  method="POST" >
+  <input type="hidden" name="apply[apply_id]" value="<{$apply_cat.apply_id}>">
+  <div class="tableform">
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>店铺名称：<{/t}></th>
+          <td><{t}><{$shop.shop_name}><{/t}></td>
+        </tr>
+        <tr>
+          <th><{t}>店铺类型：<{/t}></th>
+          <td><{if $shop.shop_type == "store"}><{t}>多品类店铺<{/t}><{/if}></td>
+        </tr>
+        <tr>
+          <th><{t}>商家已有权限的类目：<{/t}></th>
+          <td >
+            <{foreach from=$oldcat item=old_cat}>
+            <{$old_cat.cat_name}> 、
+            <{/foreach}>
+          </td>
+        </tr>
+        <tr>
+          <th><{t}>店铺新申请的类目：<{/t}></th>
+          <td >
+            <{$newcat.cat_name}>
+          </td>
+        </tr>
+        <tr>
+          <th><{t}>商家申请原因：<{/t}></th>
+          <td ><{t}><{$apply_cat.apply_reason}><{/t}></td>
+        </tr>
+        <tr>
+          <th><{t}>审核结果：<{/t}></th>
+          <td>
+            <input class="act-status" type="radio" name="apply[check_status]" value="adopt" >同意
+            <input class="act-status" type="radio" name="apply[check_status]" value="reject" checked>拒绝
+            <div class="apply-result">
+              <{input class="reason" type="textarea" value=$checkbrand name="apply[check_fail_reason]" cols="50" rows="5" maxlength="200" vtype="required" }>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="table-action">
+    <{button type="submit" id='apply-form-submit' label="提交"|t:'sysshop'}>
+  </div>
+</form>
+
+<script>
+  (function(){
+    var _form = $('applyCat');
+    var btn =$('apply-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+    $$('.act-status').addEvent('click', function(e){
+      if(this.value == 'reject') {
+        $$('.apply-result').show();
+      }
+      else {
+        $$('.apply-result').hide();
+      }
+    });
+
+  })();
+
+
+</script>
+
+

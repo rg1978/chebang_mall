@@ -1,0 +1,30 @@
+<form class="form-container" action="<{url action=topwap_ctl_passport@settingPwd}>" method="post" id="form_forget">
+  <input type="hidden" name="userid" value="<{$data.user_id}>">
+  <input type="hidden" name="key" value="<{$data.key}>">
+  <input type="hidden" name="account" value="<{$account}>">
+  <section class="shopex-input-group">
+    <div class="shopex-input-row">
+      <label>设置新密码：</label>
+      <input type="password" name="password" class="shopex-input-password" placeholder="6-20个字符" required minlength="6" maxlength="20" data-caution="请填写密码，6-20个字符&&输入不正确，最少6个字符">
+    </div>
+    <div class="shopex-input-row">
+      <label>确认新密码：</label>
+      <input type="password" name="confirmpwd" class="shopex-input-password" required data-equalto="password" placeholder="请重新输入新密码" data-caution="请再次输入新密码">
+    </div>
+  </section>
+  <div class="content-padded font-gray-20 fontS">6-22个字符，至少包含数字、大写英文、小写英文中的两种</div>
+  <section class="shopex-content-padded form-op-section">
+    <button type="submit" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" >完成</button>
+  </section>
+</form>
+
+<script>
+  $('#form_forget').find('button[type=submit]').data('ajaxConfig', {
+    callback: function(rs) {
+      if(rs.error) {
+        
+      }
+    }
+  });
+</script>
+

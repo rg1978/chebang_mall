@@ -1,0 +1,51 @@
+<div id="channel_category_handle">
+  <div class="channel_category" id="category_box" >
+    <div class="category-big-title"><hr><span><{$data.topics_cat_title}></span></div>
+    <ul class="category-primary">
+
+      <{foreach from=$data.topics_catlist.lv2 item=lv2item key=lv2key}>
+        <li>
+          <div class="category-relative">
+            <a href="<{url action=topc_ctl_topics@index cat_id=$lv2item.cat_id}>">
+              <div class="category-title"><{$lv2item.cat_name}></div>
+            </a>
+            <div class="category-item">
+              <{foreach from=$lv2item.lv3 item=lv3item key=lv3key}>
+
+              <{if in_array($lv3item.cat_id, $setting.rec_cat_id[$lv2key])}>
+              <a href="<{url action=topc_ctl_list@index cat_id=$lv3item.cat_id}>" <{if $setting.target_blank=='1'}>target="_blank"<{/if}>><{$lv3item.cat_name}></a>
+              <{/if}>
+              <{/foreach}>
+            </div>
+          </div>
+          <div class="category-sub">
+            <div class="category-sub-item">
+              <div class="category-sub-title">全部分类</div>
+              <ul>
+                <{foreach from=$lv2item.lv3 item=lv3item key=lv3key}>
+                <li><a href="<{url action=topc_ctl_list@index cat_id=$lv3item.cat_id}>" <{if $setting.target_blank=='1'}>target="_blank"<{/if}>><{$lv3item.cat_name}></a></li>
+                <{/foreach}>
+              </ul>
+            </div>
+          </div>
+        </li>
+      <{/foreach}>
+    </ul>
+  </div>
+</div>
+<script>
+<{if !$data.isindex}>
+  var category = $('#category_box');
+  $('#category_handle').on('mouseover', function(e){
+      category.css('visibility','visible');
+  }).on('mouseout', function(e){
+      category.css('visibility','hidden');
+  });
+<{/if}>
+$('#channel_category_handle').on('mouseover', 'li', function(){
+  $(this).find('.category-primary-item').addClass('on');
+}).on('mouseout', 'li', function(){
+  $(this).find('.category-primary-item').removeClass('on');
+})
+
+</script>

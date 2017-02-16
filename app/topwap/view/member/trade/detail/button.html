@@ -1,0 +1,39 @@
+<{if $trade.is_buyer_rate }>
+<section class="action-bar">
+  <div class="section-init content-padded content-right">
+    <a href="<{url action=topwap_ctl_member_rate@createRate tid=$trade.tid}>" class="shopex-btn shopex-btn-warning bbc-btn-warning bbc-btn-lg">去评价</a>
+  </div>
+</section>
+<{/if}>
+
+<{if $trade.status == "WAIT_BUYER_PAY"}>
+<{if $trade.pay_type == "online" }>
+<section class="action-bar">
+  <div class="section-init content-padded content-right">
+    <a href="<{url action=topwap_ctl_member_trade@cancel tid=$trade.tid}>" class="shopex-btn shopex-btn-outlined shopex-btn-warning bbc-btn-outlined bbc-btn-lg">取消订单</a>
+    <a href="<{url action=topwap_ctl_paycenter@createPay}>" data-tid="<{$trade.tid}>" class="shopex-btn shopex-btn-warning bbc-btn-warning bbc-btn-lg trade-pay">去支付</a>
+  </div>
+</section>
+<{/if}>
+<{elseif $trade.status == "WAIT_SELLER_SEND_GOODS" && $trade.cancel_status == "NO_APPLY_CANCEL"}>
+<section class="action-bar">
+  <div class="section-init content-padded content-right">
+    <a href="<{url action=topwap_ctl_member_trade@cancel tid=$trade.tid}>" class="shopex-btn shopex-btn-outlined shopex-btn-warning bbc-btn-outlined bbc-btn-lg">取消订单</a>
+  </div>
+</section>
+<{elseif $trade.status == "WAIT_BUYER_CONFIRM_GOODS" && $trade.pay_type == "online"}>
+<section class="action-bar">
+  <div class="section-init content-padded content-right">
+    <a href="<{url action=topwap_ctl_member_trade@confirmReceipt}>" data-tid="<{$trade.tid}>" class="shopex-btn shopex-btn-warning bbc-btn-warning bbc-btn-lg trade-confirm">确认收货</a>
+  </div>
+</section>
+<{/if}>
+
+
+<{if $trade.cancel_status !="NO_APPLY_CANCEL" && $trade.cancel_status !="FAILS"}>
+<section class="action-bar">
+  <div class="section-init content-padded content-right">
+    <a href="<{url action=topwap_ctl_member_trade@gotoCanceledTradeDetail tid=$trade.tid}>" data-tid="<{$trade.tid}>" class="shopex-btn shopex-btn-outlined shopex-btn-warning bbc-btn-outlined bbc-btn-lg">查看取消详情</a>
+  </div>
+</section>
+<{/if}>

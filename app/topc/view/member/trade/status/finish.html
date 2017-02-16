@@ -1,0 +1,35 @@
+<div class="status-bar2 status-bar2-large">
+  <{if $trade.pay_type == "online"}>
+  <div class="first on">
+    <div class="bg"><span class="number">1</span></div>
+    <div class="txt">订单已生成<br/>等待您付款</div>
+  </div>
+  <div class="on">
+    <div class="bg"><span class="number">2</span></div>
+    <div class="txt">您已付款成功<br/>等待商家发货</div>
+  </div>
+  <div class="on">
+    <div class="bg"><span class="number">3</span></div>
+    <div class="txt">商家已经发货<br/>等待您确认收货</div>
+  </div>
+  <div class="last on">
+    <div class="bg"><span class="number">4</span></div>
+    <div class="txt">订单完成</div>
+  </div>
+  <{elseif $trade.pay_type == "offline"}>
+  <div class="first on">
+    <div class="bg"><span class="number">1</span></div>
+    <div class="txt">已生成货到付款订单<br/>等待商家发货</div>
+  </div>
+  <div class="on">
+    <div class="bg "><span class="number">2</span></div>
+    <div class="txt">商家已经发货<br/>等待您确认收货并完成货款支付</div>
+  </div>
+  <div class="last on">
+    <div class="bg"><span class="number">3</span></div>
+    <div class="txt">订单完成</div>
+  </div>
+  <{/if}>
+
+</div>
+

@@ -1,0 +1,96 @@
+<section class="container no-header">
+  <div class="user-header">
+    <a class="user-setting bbc-icon bbc-icon-setting" href="<{url action=topwap_ctl_member@setting}>"></a>
+    <{if $nologin == "false"}>
+    <div class="box-display user-login">
+      <a class="user-login-avatar bbc-icon bbc-icon-user-s" href="<{url action=topwap_ctl_passport@goLogin}>"></a><br>
+      <span><{t}>会员登录<{/t}></span>
+    </div>
+    <{else}>
+    <div class="box-display user-logined">
+      <a class="user-name" href="<{url action=topwap_ctl_member@detail}>"><{t}>您好，<{/t}><{$account}><i class="bbc-icon bbc-icon-forward"></i></a><br>
+      <span class="member-level"><i class="bbc-icon bbc-icon-member-level"></i> <{$userInfo.grade_name}></span>
+    </div>
+    <{/if}>
+  </div>
+  <section class="section-white">
+    <div class="section-title user-title">
+      <div class="title-txt"><i class="user-icon bbc-icon bbc-icon-list user-order"></i> <{t}>我的订单<{/t}></div>
+      <div class="more-link"><a href="<{url action=topwap_ctl_member_trade@tradeList}>"><{t}>查看全部订单<{/t}></a><i class="bbc-icon bbc-icon-forward"></i></div>
+    </div>
+    <div class="box-display content-vertical-padded user-orders fontS">
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@tradeList s=1}>"><i class="bbc-icon bbc-icon-pay"><{if $nupay}><span class="shopex-badge bbc-badge"><{$nupay}></span><{/if}></i><br><{t}>待付款<{/t}></a>
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@tradeList s=2}>"><i class="bbc-icon bbc-icon-package"><{if $nudelivery}><span class="shopex-badge bbc-badge"><{$nudelivery}></span><{/if}></i><br><{t}>待发货<{/t}></a>
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@tradeList s=3}>"><i class="bbc-icon bbc-icon-logistics"><{if $nuconfirm}><span class="shopex-badge bbc-badge"><{$nuconfirm}></span><{/if}></i><br><{t}>待收货<{/t}></a>
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@tradeList s=4}>"><i class="bbc-icon bbc-icon-message-gap"><{if $nurate}><span class="shopex-badge bbc-badge"><{$nurate}></span><{/if}></i><br><{t}>待评价<{/t}></a>
+      <a class="box-item-flex1 content-center" href="<{url action=topwap_ctl_member_trade@canceledTradeList}>"><i class="bbc-icon bbc-icon-history-gap"><{if $canceled}><span class="shopex-badge bbc-badge"><{$canceled}></span><{/if}></i><br><{t}>已取消<{/t}></a>
+    </div>
+  </section>
+  <section class="section-white">
+    <div class="section-title user-title">
+      <div class="title-txt"><i class="user-icon bbc-icon bbc-icon-assets user-assets"></i> <{t}>我的资产<{/t}></div>
+      <div class="checkin">
+      <{if $isCheckin}>
+        <{if !$checkin_status}>
+        <button type="button" class="shopex-btn shopex-btn-warning bbc-btn-warning bbc-btn-sm checkin" data-pointnum="<{$checkinPointNum}>">今日签到</button>
+        <button type="button" class="shopex-btn bbc-btn-sm checkedin font-red" style="display:none;">已签到</button>
+        <{else}>
+          <button type="button" class="shopex-btn bbc-btn-sm checkedin font-red">已签到</button>
+        <{/if}>
+      <{/if}>
+      </div>
+    </div>
+    <div class="box-display content-vertical-padded user-">
+      <a class="box-item-flex1 content-center shopex-col-xs-4" href="<{url action=topwap_ctl_member_deposit@index}>"><em class="deposit-amount"><{$deposit.deposit|default:0|cur}></em><br><span class="font-gray-20 fontS"><{t}>预存款<{/t}></span></a>
+      <a class="box-item-flex1 content-center shopex-col-xs-4" href="<{url action=topwap_ctl_member_coupon@index}>"><em><{$coupon.count}></em>张<br><span class="font-gray-20 fontS"><{t}>优惠券<{/t}></span></a>
+      <a class="box-item-flex1 content-center shopex-col-xs-4" href="<{url action=topwap_ctl_member_point@point}>"><em><{$userInfo.point|default:0}></em><br><span class="font-gray-20 fontS"><{t}>积分<{/t}></span></a>
+    </div>
+  </section>
+  <section class="section-white">
+    <ul class="shopex-table-view">
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_aftersales@aftersalesList}>"><i class="user-icon bbc-icon bbc-icon-history user-returns"></i> <{t}>退换货记录<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member@security}>"><i class="user-icon bbc-icon bbc-icon-password user-safe"></i> <{t}>安全中心<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_favorite@index}>"><i class="user-icon bbc-icon bbc-icon-star-empty user-favorite"></i> <{t}>我的收藏<{/t}></a>
+      </li>
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_rate@index}>"><i class="user-icon bbc-icon bbc-icon-rate-empty user-rate"></i> <{t}>我的评价<{/t}></a>
+      </li>
+       <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href="<{url action=topwap_ctl_member_complaints@complaintsList}>"><i class="user-icon bbc-icon bbc-icon-communication user-complain"></i> <{t}>我的投诉<{/t}></a>
+      </li>
+      <!--
+      <li class="shopex-table-view-cell">
+        <a class="shopex-navigate-right" href=""><i class="user-icon bbc-icon bbc-icon-info user-feedback"></i> <{t}>帮助与反馈<{/t}></a>
+      </li>
+      -->
+    </ul>
+  </section>
+</section>
+
+<script>
+
+//会员签到
+var flag = true;
+$('.checkin').on('tap',function(){
+  if (flag) {
+    flag = false;//改变flag状态，防止重复提交
+    var url = "<{url action=topwap_ctl_member@checkin}>";
+    var that = $(this);
+    $.post(url,function(rs){
+      if(rs.success){
+          $('.checkedin').show();
+          that.hide();
+          shopex.alert(rs.message + "，成功领取" + that.attr('data-pointnum') + "积分" );
+      }
+    });
+  }
+});
+$('.checkedin').on('tap', function(e) {
+  shopex.alert("您今天已经签到过了");
+});
+</script>

@@ -1,0 +1,46 @@
+<form method="post" action="<{$form_url}>" id="search-form">
+	<input type="hidden" name="issearch" value="1" />
+	<div class="gridlist-action">
+		<label>账单开始时间：</label> 
+		<{input type="date" value="$time_start" name="time_start"}> &nbsp;至&nbsp; <{input type="date" value="$time_end" name="time_end"}> 
+		<label>&nbsp;&nbsp;商家选择：</label>
+		<{html_options name='shop_id' options=$options selected=$shop_id}> 
+		<label>&nbsp;&nbsp;结算状态：</label>
+		<{html_options name='settlement_status' options=$settlement_type selected=$settlement_status}>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<{button type="button" id="search" app="desktop" label="检索"|t:'sysclearing'}>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<{button type="button" id="export" app="desktop" label="导出"|t:'sysclearing' onclick="exportFunc()"}>
+	</div>
+</form>
+<script>
+var search = $("search");
+var form = $("search-form");
+search.addEvent('click',function(){
+	var href = form.get('action');
+	var isSearch,timeStart,timeEnd,shopId,settStatus;
+	isSearch = $$("input[name='issearch']").get('value');
+	timeStart = $$("input[name='time_start']").get('value');
+	timeEnd = $$("input[name='time_end']").get('value');
+	shopId = $$("select[name='shop_id']").get('value');
+	settStatus = $$("select[name='settlement_status']").get('value');
+	var locationUrl = href+'&issearch='+isSearch+'&time_start='+timeStart+'&time_end='+timeEnd+'&shop_id='+shopId+'&settlement_status='+settStatus;
+	W.page(locationUrl);
+});
+
+//导出 by Xdc
+function exportFunc()
+{
+	var exportFilter = <{$export_filter}>;
+	var dia = new Dialog('?app=importexport&ctl=admin_export&act=export_view&_params[mdl]=sysclearing_mdl_settlement',
+			{
+				title:'导出',
+				width:400,
+				height:170,
+				ajaxoptions:{
+					method:'post',
+					data:exportFilter
+				}
+			})
+}
+</script>

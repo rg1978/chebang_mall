@@ -1,0 +1,61 @@
+<div class="tableform">
+  <form id="cash_compelete_form" name="cash_compelete_form" action="?app=sysuser&ctl=admin_user&act=cashCompelete"  method="post">
+    <input type='hidden' name='cash_id' value='<{$cashId}>'>
+    <div class="division">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+          <tr>
+            <th><{t}>交易流水号：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="serial_id"}></td>
+          </tr>
+          <tr>
+            <th><{t}>转账执行人：<{/t}></th>
+            <td><{input type="text" vtype="required"  name="executor"}></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody>
+        <tr valign="middle">
+          <td>
+            <{assign var="___c"  value='确定退出?'|t:'sysshop'}>
+
+            <{button label="完成提现"|t:'sysshop' class="btn-primary" type="button"  onclick="submitForm(event,2)"}>
+
+            <{button label="关  闭"|t:'content' class="btn-secondary" type="button" isclosedialogbtn="1"}>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+
+<script>
+  var submitForm = function (event,sign){
+    var _form=$('cash_compelete_form');
+    switch (sign){
+        case 1:
+            var target={
+              onComplete:function(){
+                location.reload();
+              }};
+              break;
+          case 2:
+              var target={
+                onComplete:function(rs){
+                  if(rs&&!!JSON.decode(rs).success){
+                    window.finderGroup['<{$env.get.finder_id}>'].refresh();
+                    _form.getParent('.dialog').retrieve('instance').close();
+                  }
+                }};
+                break;
+    }
+    _form.store('target',target);
+    if(confirm('确定完成提现吗?完成后将不能修改')) {
+      _form.fireEvent('submit',new Event(event));
+    }
+  };
+
+</script>

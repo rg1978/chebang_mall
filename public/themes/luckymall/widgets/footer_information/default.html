@@ -1,0 +1,8 @@
+<div class="helpinfo-item">
+  <div class="helpinfo-title"><{$setting.contenttag}>&nbsp;</div>
+  <ul>
+    <{foreach from=$data.indexs item=item}>
+    <li><a href="<{url action=topc_ctl_content@getContentInfo article_id=$item.article_id}>" title=<{$item.title}>><{$item.title}></a></li>
+    <{/foreach}>
+  </ul>
+</div>

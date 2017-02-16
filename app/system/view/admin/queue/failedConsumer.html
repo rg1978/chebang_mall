@@ -1,0 +1,18 @@
+<a href="javascript:void(0);" onclick="consumer(<{$id}>)">手动执行失败队列</a>
+
+<script>
+  var consumer=function(id){
+    var request=new Request({
+      url:'?app=system&ctl=admin_queueFailed&act=exec&id=' + id,
+      method:'get',
+      onSuccess:function(rs){
+        rs = JSON.decode(rs);
+        if( rs.success ) {
+          return MessageBox.success(rs.success);
+        } else {
+          return MessageBox.error(rs.error);
+        }
+      }
+    }).send();
+  }
+</script>

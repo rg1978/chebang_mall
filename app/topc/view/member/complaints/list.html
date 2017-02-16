@@ -1,0 +1,60 @@
+<div class="membercenter-box">
+  <div class="membercenter-box-hd">
+    <div class="membercenter-box-left">我的投诉</div>
+    <div class="membercenter-box-right">
+    <span class="num">共<em><{$count}></em>条记录</span>
+    <{pagers data=$pagers type="mini"}>
+  </div>
+  </div>
+  <div class="membercenter-box-bd nogap">
+    <table class="item-table table-address" width="100%">
+      <thead>
+        <tr>
+          <td>投诉单号</td>
+          <td>投诉类型</td>
+          <td>订单号</td>
+          <td>投诉状态</td>
+          <td>投诉时间</td>
+          <td width="48">操作</td>
+        </tr>
+      </thead>
+      <tbody>
+        <{if !$count }>
+        <tr><td colspan="6" class="no-content">暂无投诉记录哦</td></tr>
+        <{else}>
+        <{foreach from=$complaintsList item=item}>
+        <tr>
+          <td>
+            <{$item.oid}>
+          </td>
+          <td>
+            <{$item.complaints_type}>
+          </td>
+          <td>
+            <{$item.tid}>
+          </td>
+          <td>
+          	<{if $item.status == 'WAIT_SYS_AGREE'}>
+          	等待处理
+          	<{elseif $item.status == 'FINISHED'}>
+          	投诉成功
+          	<{elseif $item.status == 'BUYER_CLOSED'}>
+          	买家撤销投诉
+          	<{else}>
+          	平台关闭投诉
+          	<{/if}>
+          </td>
+          <td>
+            <{$item.created_time|cdate}>
+          </td>
+          <td>
+            <a href="<{url action=topc_ctl_member_complaints@detail complaintsid=$item.complaints_id}>">查看详情</a>
+          </td>
+        </tr>
+        <{/foreach}>
+        <{/if}>
+      </tbody>
+    </table>
+  </div>
+  <{pagers data=$pagers}>
+</div>

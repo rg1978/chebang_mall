@@ -1,0 +1,61 @@
+<desktop>
+
+    <permissions>
+        <permission id="operatingSurvey" display='true' parent='0' workground='sysstat.wrokground.analysis'>经营概况</permission>
+        <permission id="transactionData" display='true' parent='0' workground='sysstat.wrokground.analysis'>销售情况</permission>
+        <permission id="collectlist" display='true' parent='0' workground='sysstat.wrokground.analysis'>收藏情况</permission>
+        <permission id="userlist" display='true' parent='0' workground='sysstat.wrokground.analysis'>会员排行</permission>
+    </permissions>
+
+    <workground name="报表" id="sysstat.wrokground.analysis" controller="admin_tradeData" action="dataAnalysis" order="60">
+        <menugroup name="经营概况">
+            <menu controller='admin_operating' action='index' permission='operatingSurvey' display='true' order='10'>经营概况</menu>
+            <menu controller='admin_operating' action='analysis' permission='operatingSurvey' display='false' order='10'>经营概况报表</menu>
+            <menu controller='admin_operating' action='ajaxData' permission='operatingSurvey' display='false' order='10'>经营概况异步请求获取的数据</menu>
+            <menu controller='admin_operating' action='ajaxTimeData' permission='operatingSurvey' display='false' order='10'>经营概况异步请求时间获取的数据</menu>
+        </menugroup>
+
+        <menugroup name="销售情况">
+            <menu controller='admin_tradeData' action='dataAnalysis' permission='transactionData' display='true' order='10'>交易数据统计</menu>
+            <menu controller='admin_tradeData' action='index' permission='transactionData' display='false' order='20'>浏览原始数据</menu>
+            <menu controller='admin_tradeData' action='analysis' permission='transactionData' display='false' order='20'>报表</menu>
+            <menu controller='admin_tradeData' action='commonAnalysis' permission='transactionData' display='false' order='20'>运营平台首页报表的显示</menu>
+            <menu controller='admin_tradeData' action='ajaxData' permission='transactionData' display='false' order='20'>交易数据统计异步请求获取的数据</menu>
+            <menu controller='admin_tradeData' action='ajaxTimeData' permission='transactionData' display='false' order='20'>交易数据统计异步请求时间获取的数据</menu>
+
+            <menu controller='admin_storelist' action='index' permission='transactionData' display='true' order='10'>店铺数据统计</menu>
+            <menu controller='admin_storelist' action='dataShow' permission='transactionData' display='false' order='20'>店铺统计原始数据</menu>
+            <menu controller='admin_storelist' action='storeListAnalysis' permission='transactionData' display='false' order='20'>店铺统计报表</menu>
+            <menu controller='admin_storelist' action='ajaxData' permission='transactionData' display='false' order='20'>店铺统计异步请求获取的数据</menu>
+            <menu controller='admin_storelist' action='ajaxTimeData' permission='transactionData' display='false' order='20'>店铺统计异步请求时间获取的数据</menu>
+
+            <menu controller='admin_goodslist' action='index' permission='transactionData' display='true' order='10'>商品数据统计</menu>
+             <menu controller='admin_goodslist' action='dataShow' permission='transactionData' display='false' order='20'>商品统计浏览原始数据</menu>
+             <menu controller='admin_goodslist' action='ajaxData' permission='transactionData' display='false' order='20'>商品统计异步请求获取的数据</menu>
+             <menu controller='admin_goodslist' action='ajaxTimeData' permission='transactionData' display='false' order='20'>商品统计异步请求时间获取的数据</menu>
+        </menugroup>
+
+        <menugroup name="收藏情况">
+            <menu controller='admin_collectionitem' action='index' permission='collectlist' display='true' order='10'>商品收藏统计</menu>
+            <menu controller='admin_collectionitem' action='dataShow' permission='collectlist' display='false' order='20'>商品收藏原始数据</menu>
+            <menu controller='admin_collectionitem' action='collectItemAnalysis' permission='collectlist' display='false' order='20'>商品数据显示</menu>
+            <menu controller='admin_collectionitem' action='ajaxData' permission='collectlist' display='false' order='20'>商品收藏异步请求获取的数据</menu>
+            <menu controller='admin_collectionitem' action='ajaxTimeData' permission='collectlist' display='false' order='20'>商品收藏异步请求时间获取的数据</menu>
+
+            <menu controller='admin_collectionshop' action='index' permission='collectlist' display='true' order='10'>店铺收藏统计</menu>
+            <menu controller='admin_collectionshop' action='dataShow' permission='collectlist' display='false' order='20'>店铺数据显示</menu>
+            <menu controller='admin_collectionshop' action='collectShopAnalysis' permission='collectlist' display='false' order='20'>店铺收藏原始数据</menu>
+            <menu controller='admin_collectionshop' action='ajaxData' permission='collectlist' display='false' order='20'>店铺收藏异步请求获取的数据</menu>
+            <menu controller='admin_collectionshop' action='ajaxTimeData' permission='collectlist' display='false' order='20'>店铺收藏异步请求时间获取的数据</menu>
+        </menugroup>
+
+        <menugroup name="会员情况">
+            <menu controller='admin_userlist' action='index' permission='userlist' display='true' order='10'>会员排行</menu>
+            <menu controller='admin_userlist' action='dataShow' permission='userlist' display='false' order='20'>浏览原始数据</menu>
+            <menu controller='admin_userlist' action='userListAnalysis' permission='userlist' display='false' order='20'>会员排行报表数据</menu>
+            <menu controller='admin_userlist' action='ajaxData' permission='userlist' display='false' order='20'>会员排行异步请求获取的数据</menu>
+            <menu controller='admin_userlist' action='ajaxTimeData' permission='userlist' display='false' order='20'>会员排行异步请求时间获取的数据</menu>
+        </menugroup>
+
+    </workground>
+</desktop>

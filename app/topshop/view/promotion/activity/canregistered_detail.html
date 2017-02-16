@@ -1,0 +1,39 @@
+<div class="panel panel-default form-horizontal activity-info clearfix">
+  <div class="panel-heading">活动信息</div>
+  <{include file="topshop/promotion/activity/detail.html"}>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="result">
+      <div class="item-filter-title clearfix">
+        <h5 class="pull-left">参加活动的商品</h5>
+      </div>
+
+      <table wdith="100%" class="table table-primary table-hover table-goods">
+        <{foreach from=$itemsList item=itemslist}>
+        <tr>
+          <td>
+            <div class="goods">
+              <a href="<{url action=topc_ctl_item@index item_id=$itemslist.item_id}>" target="_blank">
+                <img src="<{$itemslist.item_default_image|default:$image_default_id.S.default_image|storager:t}>" alt="">
+                <{$itemslist.title}>
+              </a>
+            </div>
+          </td>
+          <td>
+            原价:<{$itemslist.price|cur}>
+          </td>
+          <td>
+            促销价:<{$itemslist.activity_price|cur}>
+          </td>
+        </tr>
+        <{/foreach}>
+        
+      </table>
+      <{pagers data=$pagers}>
+	  <{if $total > 0 }>
+	  <span class="page-number">共&nbsp;<em class="text-aqua"><{$total}></em>&nbsp;条记录</span>
+	  <{/if}>
+    </div>
+  </div>
+</div>

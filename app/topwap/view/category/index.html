@@ -1,0 +1,36 @@
+<section class="container shopex-row shopex-fullscreen category-nav has-footer">
+  <div class="shopex-col-xs-3">
+    <div id="segmentedControls" class="shopex-segmented-control shopex-segmented-control-inverted shopex-segmented-control-vertical">
+      <{foreach from=$data item=catlv1}>
+      <a class="shopex-control-item" href="#content<{$catlv1.cat_id}>"><{$catlv1.cat_name}></a>
+      <{/foreach}>
+    </div>
+  </div>
+  <div id="segmentedControlContents" class="shopex-col-xs-9 category-nav-content">
+    <{foreach from=$data item=catlv1 name=lv1cat}>
+    <div id="content<{$catlv1.cat_id}>" class="shopex-control-content <{if $env.foreach.lv1cat.first}>shopex-active<{/if}>">
+      <{foreach from=$catlv1.lv2 item=catlv2}>
+      <div class="category-nav-group">
+        <div class="category-nav-header"><{$catlv2.cat_name}></div>
+        <div class="category-nav-list">
+          <{foreach from=$catlv2.lv3 item=catlv3}>
+          <a class="category-nav-item" href="<{url action=topwap_ctl_item_list@index cat_id=$catlv3.cat_id}>"><{$catlv3.cat_name}></a>
+          <{/foreach}>
+        </div>
+      </div>
+      <{/foreach}>
+    </div>
+    <{/foreach}>
+  </div>
+</section>
+
+<script>
+  shopex.init({
+    swipeBack: true //启用右滑关闭功能
+  });
+  var controls = document.getElementById("segmentedControls");
+  var contents = document.getElementById("segmentedControlContents");
+
+  controls.querySelector('.shopex-control-item').classList.add('shopex-active');
+  contents.querySelector('.shopex-control-content').classList.add('shopex-active');
+</script>

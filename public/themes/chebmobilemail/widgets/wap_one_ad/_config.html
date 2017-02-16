@@ -1,0 +1,50 @@
+<h2 class="head-title">单图广告位</h2>
+<div class="tableform clearfix">
+  <div class=" fl item" style="margin-left: 30px;">
+    <div class="piccontent">
+      <div class="firsttag">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <th>上传图片: </th>
+              <td>
+                <input type='text' name="pic[link]" class="imgsrc" id="pict[link]" value="<{$setting.pic.link}>">
+                <input type="button" value="上传图片" class="uploadbtn"><span>（建议图片尺寸：750px*200px）</span>
+              </td>
+            </tr>
+            <tr>
+              <th>设置标题:</th>
+              <td>
+                <input type='text' name="pic[title]" value="<{$setting.pic.title}>">
+              </td>
+            </tr>
+            <tr>
+              <th>设置图片链接: </th>
+              <td>
+                <input type='text' name="pic[linktarget]" value="<{$setting.pic.linktarget}>">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  (function(){
+    var tag_type='tr';
+    $$(".piccontent .uploadbtn").addEvent('click',function(e){bindevent(this)});
+    function bindevent(el){
+      var target=$(el).getParent(tag_type).getElement('.imgsrc');
+      var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+      var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;  
+      Ex_Loader('modedialog',function(){
+        return new imgDialog(url,{onCallback:function(image_id,image_src){
+          target.value=image_src;
+        }});
+      });
+    }
+  })();
+</script>

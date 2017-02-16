@@ -1,0 +1,108 @@
+<div class="tabs-wrap">
+  <ul>
+    <li class="tab current"><span><{t}>App端轮播图片配置<{/t}></span></li>
+  </ul>
+</div>
+<div id="picAddress" class="tableform">
+    <div class="piccontent">
+        <{foreach from=$setting.pic item=data key=key}>
+        <table  width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <th><{t app="sysapp"}>图片地址:<{/t}></th>
+                <td>
+                    <input type=hidden name=pic[<{$data.id}>][id] value="<{$data.id}>">
+                    <input name='pic[<{$data.id}>][link]' class="imgsrc" id="pic[<{$data.id}>][link]"  value="<{$data.link}>">
+                    <input type=button value=上传图片 class="uploadbtn"><span>（建议图片尺寸：px*px）</span>
+                </td>
+                <th><{t app="sysapp"}>链接地址:<{/t}></th>
+                <td>
+                    <{input type="applink" name="pic[{$key}][linktarget]" value=$data.linktarget linktypename="pic[{$key}][linktype]" linktypevalue=$data.linktype }>
+                </td>
+            </tr>
+            <tr>
+                <th><{t app="sysapp"}>描述:<{/t}></th>
+                <td>
+                    <input name="pic[<{$data.id}>][linkinfo]" value="<{$data.linkinfo}>">
+                </td>
+                <th><{t app="sysapp"}>删除该图片及描述:<{/t}></th>
+                <td><span onclick="$(this).getParent('table').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___sysapp="删除"|t:'sysapp' title=$___sysapp="删除"|t:'sysapp' app="desktop"}></span></td>
+            </tr>
+        </table>
+        <{/foreach}>
+    </div>
+    <{button label=$___sysapp="添加图片"|t:'sysapp' class="addimage" app="desktop" icon="btn_add.gif"}>
+    <div id="small_pic" style="display:none;">
+        <h4>添加小图</h4>
+        <div class="small_piccontent">
+            <{foreach from=$setting.small_pic item=data key=key}>
+            <table  width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th><{t app="sysapp"}>图片地址:<{/t}></th>
+                    <td>
+                        <input type=hidden name=small_pic[<{$data.id}>][id] value="<{$data.id}>">
+                        <input name='small_pic[<{$data.id}>][link]' class="imgsrc" id="small_pic[<{$data.id}>][link]"  value="<{$data.link}>">
+                        <input type=button value=上传图片 class="uploadbtn">
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t app="sysapp"}>描述:<{/t}></th>
+                    <td>
+                        <input name="small_pic[<{$data.id}>][linkinfo]" value="<{$data.linkinfo}>">
+                    </td>
+                    <th><{t app="sysapp"}>删除该图片及描述:<{/t}></th>
+                    <td><span onclick="$(this).getParent('table').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___sysapp="删除"|t:'sysapp' title=$___sysapp="删除"|t:'sysapp' app="desktop"}></span></td>
+                </tr>
+            </table>
+            <{/foreach}>
+        </div>
+        <{button label=$___sysapp="添加图片"|t:'sysapp' class="addsmallimage" app="desktop" icon="btn_add.gif"}>
+    </div>
+</div>
+
+<script>
+    (function(){
+        var tag_type='table',tag_class='pic_items';
+
+        document.getElement(".addimage").addEvent('click',function(){
+
+            var i=new Date().getTime();
+
+            var tpl='\
+            <tr><th><{t app="sysapp"}>图片地址:<{/t}></th>\
+                <td><input type=hidden name=pic['+i+'][id] value="'+i+'"><input name="pic['+i+'][link]" class="imgsrc">\
+                    <input type=button value=<{t app="sysapp"}>上传图片<{/t}> class="uploadbtn" id="pic['+i+']"><span>（建议图片尺寸：px*px）</span></td>\
+                <th><{t app="sysapp"}>链接地址:<{/t}></th>\
+                <td><div id="linktarget_'+i+'"></div></td></tr>\
+            <tr><th><{t app="sysapp"}>描述:<{/t}></th>\
+                <td><input name="pic['+i+'][linkinfo]"></td>\
+                <th><{t app="sysapp"}>删除该图片及描述:<{/t}></th>\
+                <td><span onclick="$(this).getParent(\'table\').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___sysapp="删除"|t:'sysapp' title=$___sysapp="删除"|t:'sysapp' app="desktop"}></span></td>\
+            </tr>';
+
+            $('picAddress').getElement('.piccontent').adopt(new Element(tag_type,{'html':tpl,'width':'100%','class':tag_class}));
+            new Request.HTML({
+                method:'get',
+                update:$('linktarget_'+i),
+                url:'?app=sysapp&ctl=admin_utils&act=ajax_get_applink',
+                data:'name=pic['+i+'][linktarget]&linktypename=pic['+i+'][linktype]',
+                onRequest:function(){},
+                onComplete:function(nl){}
+            }).send();
+            $('pic['+i+']').addEvent('click',function(e){bindevent(this)});
+        });
+
+        $$(".piccontent .uploadbtn").addEvent('click',function(e){bindevent(this)});
+
+        function bindevent(el){
+            var target=$(el).getParent(tag_type).getElement('.imgsrc');
+            var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+            var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;
+            Ex_Loader('modedialog',function(){
+                return new imgDialog(url,{onCallback:function(image_id,image_src){
+                        target.value=image_src;
+                }});
+            });
+        }
+
+    })();
+    </script>

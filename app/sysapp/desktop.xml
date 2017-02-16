@@ -1,0 +1,16 @@
+<desktop>
+
+    <!--
+    <permissions>
+        <permission id="appmodule" display='true' parent='0' workground='site.wrokground.theme'>app模块配置</permission>
+    </permissions>
+    -->
+
+    <workground name="站点" id="site.wrokground.theme" controller="admin_theme_manage" action="index"  order="1">
+    <!--
+        <menugroup name="App配置">
+            <menu app='sysapp' controller='admin_tmpl' action='index' permission='appmodule' display='true' order='10'>模块配置</menu>
+        </menugroup>
+    -->
+    </workground>
+</desktop>

@@ -1,0 +1,13 @@
+<div class="brand">
+  <div class="brand-hd">
+    <em><{$setting.texttag}></em>
+  </div>
+  <div class="brand-list">
+    <{foreach from=$setting.pic item=item}>
+    <a href="<{$item.linktarget}>">
+      <{img width="122" height="64" src="loading_bg.png" app="topc" data-original=$item.link|storager class="imglazyload" alt=$item.linkinfo}>
+    </a>
+    <{/foreach}>
+  </div>
+</div>
+

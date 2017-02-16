@@ -1,0 +1,118 @@
+<style>
+.category .category-sub{
+    width: <{$setting.sub_category_width}>px;
+}
+</style>
+<div id="category_handle">
+  <div class="big-cate">
+    <a href="#"><center>新商品分类</center></a>
+  </div>
+  <div class="category is-display" id="category_box" <{if !$data.isindex}>style="visibility:hidden;"<{/if}>>
+    <ul class="category-primary">
+      <{foreach from=$data.data item=item key=key name=name}>
+      <{if $item.show==1}>
+      <li>
+        <div class="category-primary-item">
+            <!-- 挂件传的logo -->
+            <h2 class="clearfix">
+              <{if $item.newlogo}>
+              <img src="<{$item.newlogo}>" style="width:<{$data.brand_height|default:'24'}>px;height:<{$data.brand_width|default:'24'}>px;">
+              <{/if}>
+              <{if $item.newlink}>
+              <a href="<{$item.newlink}>" <{if $setting.target_blank=='1'}>target="_blank"<{/if}> ><{$item.cat_name}></a>
+              <{else}>
+              <a href="<{url action=topc_ctl_topics@index cat_id=$item.cat_id}>" <{if $setting.target_blank=='1'}>target="_blank"<{/if}> ><{$item.cat_name}></a>
+              <{/if}>
+            </h2>
+            <!-- 推荐的两个分类-start -->
+            <p>
+              <{if $item.rec1_link && $item.rec1_title}>
+              <a href="<{$item.rec1_link}>" <{if $setting.target_blank=='1'}>target="_blank"<{/if}> ><{$item.rec1_title}></a>
+              <{/if}>
+              <{if $item.rec2_link && $item.rec2_title}>
+              <a href="<{$item.rec2_link}>" <{if $setting.target_blank=='1'}>target="_blank"<{/if}> ><{$item.rec2_title}></a>
+              <{/if}>
+            </p>
+            <!-- 推荐的两个分类-end -->
+        </div>
+        <!-- 二级分类-start -->
+        <div class="category-sub clearfix">
+          <{foreach from=$item.lv2 item=lv2item key=lv2key}>
+          <div class="category-sub-item">
+            <a href="<{url action=topc_ctl_topics@index cat_id=$lv2item.cat_id}>">
+              <div class="category-sub-title"><{$lv2item.cat_name}></div>
+            </a>
+            <hr>
+            <!-- 三级分类-start -->
+            <ul class="clearfix">
+              <{foreach from=$lv2item.lv3 item=lv3item key=lv3key}>
+              <li><a href="<{url action=topc_ctl_list@index cat_id=$lv3item.cat_id}>" <{if $setting.target_blank=='1'}>target="_blank"<{/if}> ><{$lv3item.cat_name}></a></li>
+              <{/foreach}>
+            </ul>
+            <!-- 三级分类-end -->
+          </div>
+          <{/foreach}>
+          <!-- 自定义的推荐二级三级分类-start -->
+          <div class="category-sub-item" style="display:none;">
+            <div class="category-sub-title"><{$item.recommend_lv2_title}></div>
+            <hr>
+            <ul class="clearfix">
+              <li><{$item.recommend_lv2_sub_links}></li>
+            </ul>
+          </div>
+          <!-- 自定义的推荐二级三级分类-end -->
+        </div>
+        <!-- 二级分类-end -->
+      </li>
+      <{/if}>
+      <{/foreach}>
+      <{foreach from=$data.custom item=customitem}>
+      <li style="display:none;">
+        <div class="category-primary-item">
+          <a href="<{$customitem.url}>" <{if $setting.target_blank=='1'}>target="_blank"<{/if}> ><{$customitem.cat_name}></a>
+          <span class="icon icon-arrow-right"></span>
+        </div>
+        <div class="category-sub">
+        </div>
+      </li>
+      <{/foreach}>
+    </ul>
+  </div>
+</div>
+<script>
+<{if !$data.isindex}>
+var category = $('#category_box');
+$('#category_handle').on('mouseover', function(e){
+    category.css('visibility','visible');
+}).on('mouseout', function(e){
+    category.css('visibility','hidden');
+});
+<{/if}>
+
+$('.category-primary > li').each(
+  function(e){
+    var i= -e*30;
+    $(this).find('i').css('background-position', '0 ' + i +'px');
+  })
+
+//全部商品分类hover时sub category的定位
+$('.category-primary li').hover(
+  function(){
+    var subCate = $(this).find('.category-sub');
+    var primCate = $(this).parent('.category-primary');
+
+    var subCateHeight = $(subCate).height();
+    var primCateHeight = $(primCate).height();
+
+    var subCateTop = $(subCate).offset().top;
+    var primCateTop = $(primCate).offset().top;
+
+    var subCateY = subCateTop+subCateHeight;
+    var primCateY = primCateTop+primCateHeight;
+
+    if(subCateY>primCateY){
+      $(this).css('position','static');
+    }
+  }
+);
+</script>

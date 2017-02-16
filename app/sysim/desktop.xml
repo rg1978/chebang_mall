@@ -1,0 +1,18 @@
+<desktop>
+
+    <permissions>
+        <permission id="shopimlist" display='true' parent="0" workground='sysshop.workground.shoptype'>客服管理</permission>
+        <permission id="imWebcall" display='true' parent="shopimlist"  workground='sysshop.workground.shoptype'>365webcall</permission>
+        <permission id="imConfig" display='true'  parent="shopimlist"  workground='sysshop.workground.shoptype'>im配置</permission>
+    </permissions>
+
+
+    <workground name="商家" id="sysshop.workground.shoptype" controller="webcall" action="index" order='90'>
+        <menugroup name="im工具管理">
+            <menu controller='config' action='configPage' permission='imConfig' display='true' order="100">im配置</menu>
+            <menu controller='webcall' action='index' permission='imWebcall' display='true' order="110">365webcall</menu>
+        </menugroup>
+    </workground>
+
+
+</desktop>

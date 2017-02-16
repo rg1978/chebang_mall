@@ -1,0 +1,47 @@
+<div class="order-pay recharge-pay-type address-edit">
+  <header>
+    <div class="list-hd">
+      <div class="backto icon-back">
+        <input type="button" name="returnBcak" onclick="history.back()">
+      </div>
+      <div class="tit">选择支付方式</div>
+    </div>
+  </header>
+  <div class="main" id="main">
+    <div class="pay-amount">
+      <div class="tit">充值金额：</div>
+      <div class="total"><{$amount|cur}></div>
+    </div>
+    <form action="<{url action=topm_ctl_member_deposit@doRecharge}>" method="post" id="ajaxForm" class="form-tip-horizontal">
+      <input type='hidden' name='amount' value="<{$amount}>">
+      <input type='hidden' name='pay_app_id' value='' id='input_pay_app_id'>
+      <input type="hidden" name="openid" value="<{$openid}>">
+      <div class="ui-btn-group">
+        <ul>
+          <{foreach from=$payments item=payment}>
+            <li class="form-row clearfix" pay_app_id='<{$payment.app_id}>'>
+              <span class="ui-btn-text"><{$payment.app_display_name}></span>
+              <span class="choose"></span>
+            </li>
+          <{/foreach}>
+        </ul>
+      </div>
+    </form>
+    <div class="confirm-btn">
+      <button type="button" class="ui-btn-warning btn-next">确认支付</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.recharge-pay-type').on('click', 'li', function() {
+    $(this).find('.choose').addClass('chosen');
+    $(this).siblings('li').find('.choose').removeClass('chosen');
+    $('#input_pay_app_id').val($(this).attr('pay_app_id'));
+    //$('#input_pay_app_id').val($(this).val(''));
+  });
+
+  $('.btn-next').tap(function(){
+    $('#ajaxForm').submit();
+  });
+</script>

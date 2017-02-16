@@ -1,0 +1,76 @@
+<!-- 无预存款时添加样式“no-deposit”，否则不添加 -->
+<div<{if $noDeposit}> class="no-deposit"<{/if}>>
+  <div class="col-lg-6 txt-list assets">
+    <div>我的资产</div>
+    <ul class="inlist">
+      <li class="redpacket">
+        <a href="<{url action=topc_ctl_member_hongbao@index}>">
+          <i class="icon-redpacket deposit"></i>
+          <br /><span class="deposit">红包</span>
+          <span style="text-align:center;display:block"><{$hongbao_total|cur}></span>
+        </a>
+      </li>
+      <li class="integral">
+        <a href="<{url action=topc_ctl_member_point@point}>">
+        <i class="icon-integral deposit"></i>
+        <br /><span class="deposit">积分</span>
+        <span style="text-align:center;display:block"><{$userInfo.point|default:0}></span>
+        </a>
+      </li>
+      <li class="coupons">
+        <a href="<{url action=topc_ctl_member_coupon@couponList}>">
+        <i class="icon-coupons deposit"></i>
+        <br/> <span class="deposit">优惠券</span>
+        <span style="text-align:center;display:block"><{$coupon.count|default:0}></span>
+        </a>
+      </li>
+      <{if !$noDeposit}>
+      <li class="deposit">
+        <a href="<{url action=topc_ctl_member_deposit@view}>">
+        <i class="icon-cash deposit"></i>
+        <br/> <span class="deposit">预存款</span>
+        <span style="text-align:center;display:block"><{$deposit.deposit|cur}></span>
+        </a>
+      </li>
+      <{/if}>
+    </ul>
+  </div>
+  <div class="col-lg-6 txt-list safe-center">
+    <div class="inlist">
+      <div class="con-title">安全中心</div>
+      <div class="set-item">
+        <{if $userInfo.mobile}>
+        <span class="title">手机</span>
+        <span>
+          <{$userInfo.mobile}><a href="<{url action=topc_ctl_member@verify verifyType=mobile type=update}>">修改</a><span class="status">(已绑定)</span>
+        </span>
+        <{else}>
+        <span class="title">手机</span>
+        <span>
+          <a href="<{url action=topc_ctl_member@verify verifyType=mobile}>">验证</a><span class="status">(未绑定)</span>
+        </span>
+        <{/if}>
+      </div>
+      <div class="set-item">
+        <{if $userInfo.email && $userInfo.email_verify}>
+        <span class="title">邮箱</span>
+        <span>
+          <{$userInfo.email}><a href="<{url action=topc_ctl_member@verify verifyType=email type=update}>">修改</a><span class="status">(已绑定)</span>
+        </span>
+        <{else}>
+        <span class="title">邮箱</span>
+        <span>
+          <{$userInfo.email}>
+          <a href="<{url action=topc_ctl_member@verify verifyType=email}>">验证</a>
+          <{if $userInfo.email}>
+          | <a href="<{url action=topc_ctl_member@verify verifyType=email type=update}>">修改</a>
+          <{/if}>
+          <span class="status">(未绑定)</span>
+        </span>
+        <{/if}>
+      </div>
+    </div>
+    <div class="set"><a href="<{url action=topc_ctl_member@security}>">安全设置</a></div>
+  </div>
+</div>
+

@@ -1,0 +1,7 @@
+<{if $track.tracker}>
+<{foreach from=$track.tracker item=tracker}>
+<div><{$tracker.AcceptTime}>&nbsp;<{$tracker.AcceptStation}></div>
+<{/foreach}>
+<{else}>
+<{$track.logmsg}>
+<{/if}>

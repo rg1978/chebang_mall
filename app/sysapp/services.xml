@@ -1,0 +1,9 @@
+<services>
+
+    <service id="desktop_finder.sysapp_mdl_widgets_instance">
+        <class>sysapp_finder_widgets_instance</class>
+    </service>
+    <service id="html_input">
+        <class>sysapp_view_input</class>
+    </service>
+</services>

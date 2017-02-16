@@ -1,0 +1,71 @@
+<{include file="topwap/content/content_header.html"}>
+  <section class="container">
+      <div id="pullrefresh" class="shopex-scroll-wrapper bbc-pullrefresh-top">
+        <div class="shopex-scroll">
+          <ul class="shopex-table-view content-list section-white">
+            <{include file="topwap/content/list.html"}>
+          </ul>
+        </div>
+      </div>
+  </section>
+  
+  <script>
+  // 总页数
+  var count = 1;
+  var totalpage = "<{$total}>";
+  var nodeId = "<{$node_id}>";
+  var listwrapper = document.body.querySelector('.content-list');
+
+  shopex.init({
+        swipeBack: false,
+        pullRefresh: {
+            container: '#pullrefresh',
+            down: {
+                callback: pulldownRefresh
+            },
+            up: {
+                contentrefresh: '正在加载...',
+                callback: pullupRefresh
+            }
+        }
+    });
+    /**
+     * 下拉刷新具体业务实现
+     */
+    function pulldownRefresh() {
+        count = 1;
+        setTimeout(function() {
+          getList(count,function(rs){
+            $(listwrapper).html(rs.html);
+            shopex('#pullrefresh').pullRefresh().endPulldownToRefresh()
+            shopex('#pullrefresh').pullRefresh().enablePullupToRefresh(); //refresh completed
+          })
+        }, 1500);
+    }
+    /**
+     * 上拉加载具体业务实现
+     */
+    function pullupRefresh() {
+      setTimeout(function() {
+          shopex('#pullrefresh').pullRefresh().endPullupToRefresh((++count > totalpage)); //参数为true代表没有更多数据了。
+          if(!(count > totalpage)) {
+            getList(count,function(rs){
+              $(listwrapper).append(rs.html);
+            })
+          }
+      }, 1500);
+  }
+
+  function getList(count,callback){
+    $.ajax({
+      url: '<{url action=topwap_ctl_content@ajaxContentList}>',
+      type: 'post',
+      dataType: 'json',
+      data: {
+        'pages': count,
+        'node_id': nodeId
+      },
+      success: callback
+    });
+  };
+  </script>

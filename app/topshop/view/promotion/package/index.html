@@ -1,0 +1,169 @@
+<div class="info"><span>营销方式说明：</span>店铺级的促销方式，【特定】商品捆绑销售的话，【特定】会员可享受【特定】金额优惠；该促销方式与优惠券不互斥与其他互斥  且 只能捆绑购买时才生效。</div>
+<p>
+    <a class="btn btn-default text-blue act-addcat" href="<{url action=topshop_ctl_promotion_package@edit_package}>">
+        <i class="glyphicon glyphicon-plus"></i>
+        添加组合促销
+    </a>
+</p>
+<div class="box box-primary">
+    <div class="box-body">
+        <table class="table table-bordered table-hover">
+            <colgroup>
+                <col class="col-md-1">
+                <col class="col-md-2">
+                <col class="col-md-2">
+                <col class="col-md-2">
+                <col class="col-md-1">
+                <col class="col-md-2">
+                <col class="col-md-2">
+                <col class="col-md-2">
+            </colgroup>
+            <thead>
+            <tr>
+                <td class="text-center" style="white-space:nowarp;">操作</td>
+                <td class="text-center">状态</td>
+                <td class="text-center">组合促销促销名称</td>
+                <td class="text-center">组合价</td>
+                <td class="text-center">使用平台</td>
+                <td class="text-center">适用会员</td>
+                <td class="text-center">有效期</td>
+            </tr>
+            </thead>
+            <tbody>
+                <{foreach from=$packageList item=item}>
+                <tr class="<{if $item.package_status=='refuse' || $item.package_status=='cancel'}>due<{/if}>">
+                    <td class="text-center">
+                        <{if $examine_setting}>
+                        <{if $item.package_status == 'non-reviewed' || $item.package_status =='refuse'}>
+                        <a class="action-submit-approve" href="javascript:void(0);" data-delete-url="<{url action=topshop_ctl_promotion_package@submit_approve package_id=$item.package_id shop_id=$item.shop_id status='pending'}>">提交审核</a><br>
+                        <a href="<{url action=topshop_ctl_promotion_package@edit_package package_id=$item.package_id }>">编辑</a><br>
+                        <a class="action-delete-package" href="javascript:void(0);" data-delete-url="<{url action=topshop_ctl_promotion_package@delete_package package_id=$item.package_id }>">删除</a><br>
+                        <{else}>
+                        <a href="<{url action=topshop_ctl_promotion_package@show_package package_id=$item.package_id ac='show'}>">查看</a><br>
+                        <{/if}>
+
+                        <{if $item.package_status == 'pending'}>
+                        <a class="action-delete-package" href="javascript:void(0);" data-delete-url="<{url action=topshop_ctl_promotion_package@delete_package package_id=$item.package_id }>">删除</a><br>
+                        <{/if}>
+
+                        <{if $item.package_status == 'agree'}>
+                        <a class="action-cancel-package" href="javascript:void(0);" data-delete-url="<{url action=topshop_ctl_promotion_package@cancel_package package_id=$item.package_id}>">取消</a><br>
+                        <{/if}>
+                    <{else}>
+                        <{if $item.package_status == 'refuse'}>
+                            <a href="<{url action=topshop_ctl_promotion_package@show_package package_id=$item.package_id  ac='show'}>">查看</a><br>
+                        <{else}>
+                            <{if $item.start_time > $now}>
+                             <a href="<{url action=topshop_ctl_promotion_package@edit_package package_id=$item.package_id }>">编辑</a><br>
+                            <a class="action-delete-package" href="javascript:void(0);" data-delete-url="<{url action=topshop_ctl_promotion_package@delete_package package_id=$item.package_id }>">删除</a><br>
+                            <{else}>
+                             <a href="<{url action=topshop_ctl_promotion_package@show_package package_id=$item.package_id  ac='show'}>">查看</a><br>
+                            <{/if}>
+                            <{if $item.package_status!='cancel' && $item.package_status!='refuse' && $item.end_time > $now && $item.start_time < $now}>
+                            <a class="action-cancel-package" href="javascript:void(0);" data-delete-url="<{url action=topshop_ctl_promotion_package@cancel_package package_id=$item.package_id}>">取消</a>
+                            <{/if}>
+                        <{/if}>
+                    <{/if}>
+                    </td>
+                    <td class="text-center">
+                        <{if $item.package_status=='pending'}><span class="label label-primary">待审核</span><{/if}>
+                        <{if $item.package_status=='non-reviewed'}><span class="label label-primary">未审核</span><{/if}>
+                        <{if $item.package_status=='refuse'}><button type="button" class="btn btn-none" data-toggle="tooltip" data-placement="bottom" title="<{$item.reason}>"><span class="label label-default">审核拒绝</span></button><{/if}>
+                        <{if $item.package_status=='agree'}>
+                            <{if $now < $item.start_time}><span class="label label-primary">待开始</span><{/if}>
+                            <{if $now < $item.end_time && $now >$item.start_time}><span class="label label-success">活动中</span><{/if}>
+                            <{if $now > $item.end_time}><span class="label label-default">已结束</span><{/if}>
+                        <{/if}>
+                        <{if $item.package_status=='cancel'}><span class="label label-default">已取消</span><{/if}>
+                    </td>
+                    <td class="text-center"><{$item.package_name}></td>
+                    <td class="text-center">
+                        <{$item.package_total_price|cur}>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-none" data-toggle="tooltip" data-placement="bottom" title="使用平台">
+                            <{$item.used_platform|json2value:'{"0":"pc+wap","1":"pc","2":"wap"}'}>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-none" data-toggle="tooltip" data-placement="bottom" title="<{$item.valid_grade_name}>">
+                            <{$item.valid_grade_name}>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <{$item.start_time|cdate:'FDATE_STIME'}>
+                        <br />&nbsp;~&nbsp;<br />
+                        <{$item.end_time|cdate:'FDATE_STIME'}>
+                    </td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="text-right">
+    <{pagers data=$pagers}>
+    <{if $total > 0}>
+    <span class="page-number">共&nbsp;<em class="text-aqua"><{$total}></em>&nbsp;条记录</span>
+    <{/if}>
+</div>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+
+        $('.action-delete-package').on('click',function(){
+            var url = $(this).attr('data-delete-url');
+            Modal.confirm({msg: '确定删除此条组合促销吗？'}).on(function(e) {
+                if(e==true) {
+                    $.post(url,'',function(rs){
+                        if(rs.success) {
+                            $('#messagebox').message(rs.message, 'success');
+                            setTimeout(function(){location.reload();}, 500);
+                        }
+                        if(rs.error) {
+                            $('#messagebox').message(rs.message);
+                            return;
+                        }
+                    });
+                }
+            });
+        });
+
+        $('.action-cancel-package').on('click',function(){
+            var url = $(this).attr('data-delete-url');
+            Modal.confirm({msg: '确定取消此条组合促销吗？取消后则不能恢复'}).on(function(e) {
+                if(e==true) {
+                    $.post(url,'',function(rs){
+                        if(rs.success) {
+                            $('#messagebox').message(rs.message, 'success');
+                            setTimeout(function(){location.reload();}, 500);
+                        }
+                        if(rs.error) {
+                            $('#messagebox').message(rs.message);
+                            return;
+                        }
+                    });
+                }
+            });
+        });
+
+        $('.action-submit-approve').on('click',function(){
+            var url = $(this).attr('data-delete-url');
+            Modal.confirm({msg: '确定提交此条组合促销促销吗？提交后则不能编辑'}).on(function(e) {
+                if(e==true) {
+                    $.post(url,'',function(rs){
+                        if(rs.success) {
+                            $('#messagebox').message(rs.message, 'success');
+                            setTimeout(function(){location.reload();}, 500);
+                        }
+                        if(rs.error) {
+                            $('#messagebox').message(rs.message);
+                            return;
+                        }
+                    });
+                }
+            });
+        });
+
+    })
+</script>

@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>charts</title>
+  <meta name="description" content="Highcharts" />
+    <{css src="jquery.datetimepicker.css" app="sysstat"}>
+    <{css src="sysstat-analysis.css" app="sysstat"}>
+    <{script src="jquery.js" app="sysstat"}>
+    <{script src="jquery.datetimepicker.js" app="sysstat"}>
+</head>
+
+<body>
+    <div class="gridlist-action data-action" id="dataAction">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td <{if $report_type}>align="right"<{/if}> nowrap="nowrap">
+            <label><{t}>时间范围:<{/t}></label>
+            <input class="x-input cal datetimepicker" readonly="readonly" type="text" value="<{$time_start}>" id="time_from" name="time_from">
+             至
+            <input class="x-input cal datetimepicker" type="text" value="<{$time_end}>" id="time_end" name="time_end">
+           <button id="confirmBtn" type="button" ><span><span>确定</span></span></button>
+           <button class="btn dataBtn  btn-fourthly" value="yesterday" type="button"><span><span>昨日</span></span></button>
+           <button class="btn dataBtn  btn-fourthly" value="beforeday" type="button"><span><span>前日</span></span></button>
+           <button class="btn dataBtn btn-fourthly"  value="week" type="button"><span><span>最近七天</span></span></button>
+           <button class="btn dataBtn btn-fourthly"  value="month" type="button"><span><span>最近30天</span></span></button>
+           <select id="storeListFrom" class="trade-select">
+            <option value="5">前五名</option>
+            <option value="10">前十名</option>
+            <option value="20">前二十名</option>
+           </select>
+           <select id="catName" class="trade-select">
+                <option value="all">所有</option>
+            <{foreach from=$catListData item=catList}>
+                <option value="<{$catList.cat_id}>"><{$catList.cat_name}></option>
+            <{/foreach}>
+           </select>
+          </td>
+          <td class="txt-right w90"><div class="browse-old-data"><a href="?app=sysstat&ctl=admin_goodslist&act=dataShow" target="_parent" class="btn old-data">浏览原始数据</a><span>»</span></div></td>
+        </tr>
+      </table>
+    </div>
+    <script type="text/javascript">
+    $('.datetimepicker').datetimepicker({
+        lang:"ch",
+        format:"Y-m-d"
+    });
+    </script>
+    <div class="data-tabs">
+        <ul>
+            <li class="current"><a href="javascript:void(0);" data-param="num" >销售量排行</a></li>
+            <li><a href="javascript:void(0);" data-param="money" >销售额排行</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div id="container" class="table-content">
+        <table>
+            <thead>
+                <tr>
+                    <th class="td-1">商品排名</th>
+                    <th>商品名称</th>
+                    <th>商品所属类目</th>
+                    <th>商品所属店铺</th>
+                    <!-- <th>商品销售额</th>
+                    <th>商品销售量</th> -->
+                    <{if $dataType=='money'}>
+                        <th data-type="type-<{$dataType}>">商品销售额</th>
+                    <{/if}>
+                    <{if $dataType=='num'}>
+                        <th data-type="type-<{$dataType}>">商品销售量</th>
+                    <{/if}>
+                </tr>
+            </thead>
+            <tbody id='sss' class="table-tbody">
+                <{if $goodsListData}>
+                    <{foreach from=$goodsListData item=goodsList}>
+                    <tr>
+                        <td class="td-1"><span><{assign var="i" value=$i+1}><{$i}></span></td>
+                        <td class="td-2">
+                            <div class="analysis-goods">
+                                <a href="<{url action=topc_ctl_item@index item_id=$goodsList.item_id}>" target="_blank">
+                                    <img src="<{$goodsList.pic_path}>" alt="">
+                                    <{$goodsList.title}>
+                                </a>
+                            </div>
+                        </td>
+                        <td class="td-3"><{$goodsList.cat_name}></td>
+                        <td class="td-4"><{$goodsList.shop_name}></td>
+                       <!--  <td><{$goodsList.amountprice}></td>
+                        <td><{$goodsList.amountnum}></td> -->
+                         <{if $dataType=='money'}>
+                            <td class="td-5 td-ranking"><div><i class="icon"></i><span class="ranking-bar"></span><span class="ranking-num"><{$goodsList.amountprice}></span></div></td>
+                        <{/if}>
+                        <{if $dataType=='num'}>
+                            <td class="td-5 td-ranking"><div><i class="icon"></i><span class="ranking-bar"></span><span class="ranking-num"><{$goodsList.amountnum}></span></div></td>
+                        <{/if}>
+                    </tr>
+                    <{/foreach}>
+                <{else}>
+                    <tr>
+                        <td colspan="5">
+                        暂无数据
+                        </td>
+                    </tr>
+                <{/if}>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script>
+    $(function () {
+
+        $('#confirmBtn').click(function(){
+            loadData();
+        });
+        $('.data-tabs li a').click(function() {
+            $(this).parent().addClass('current').siblings().removeClass('current');
+            loadData();
+        });
+        $('#storeListFrom').change(function() {
+            loadData();
+        });
+        $('#catName').change(function() {
+            loadData();
+        });
+
+
+        function loadData(){
+            var dataType = $('li.current').children('a').attr('data-param')?$('li.current').children('a').attr('data-param'):'num';
+            var timeFrom = $("#time_from").val()+' 00.00.00';
+            var timeEnd = $("#time_end").val()+' 23.59.59';
+            var storeLimit = $('#storeListFrom').val()?$('#storeListFrom').val():'5';
+            var catId = $('#catName').val()?$('#catName').val():'all';
+            
+            var htmlstr = '';
+
+            var url='?app=sysstat&ctl=admin_goodslist&act=ajaxData'
+            var postdata='time_start='+timeFrom+'&time_end='+timeEnd+'&dataType='+dataType+'&storeLimit='+storeLimit+'&catId='+catId;
+
+            $.post(url,postdata,function(data){
+                if(data.error)
+                {
+                    alert(data.error);
+                }
+                var dataType = $('th[data-type^="type"]');
+                if(data.dataType == "num") {
+                    dataType.text("商品销售量");
+                    dataType.attr("data-type", "type-num");
+                }else if(data.dataType == "money") {
+                    dataType.text("商品销售额");
+                    dataType.attr("data-type", "type-money")
+                }
+                var top_1 = 0;
+                var bar_width = 0;
+                for (var i = 0; i <= data.goodsListData.length - 1; i++)
+                {
+                    var isdisplay = '';
+                    if(data.dataType=='num')
+                    {
+                        top_1 = data.goodsListData[0].amountnum;
+                        isdisplay = data.goodsListData[i].amountnum;
+                    }
+                    else
+                    {
+                        top_1 = data.goodsListData[0].amountprice;
+                        isdisplay = data.goodsListData[i].amountprice;
+                    }
+                    bar_width = i > 0 ? (isdisplay/top_1)*100*0.8: 80;
+                    if(i < 3) {
+                        htmlstr+='<tr><td class="td-1"><span>'+(i+1)+'</span></td><td class="td-2"><div class="analysis-goods"><a href='+data.goodsListData[i].itemUrl+' target=_blank> <img src=\"'+data.goodsListData[i].pic_path+'\"/>'+data.goodsListData[i].title+'</a></div></td><td class="td-3">'+data.goodsListData[i].cat_name+'</td><td class="td-4">'+data.goodsListData[i].shop_name+'</td><td class="td-5 td-ranking"><div><i class="icon top"></i><span class="ranking-bar top" style="width:'+bar_width+'%;"></span><span class="ranking-num">'+ isdisplay +'</span></div></td></tr>';
+                    }else {
+                         htmlstr+='<tr><td class="td-1 top-default"><span>'+(i+1)+'</span></td><td class="td-2"><div class="analysis-goods"><a href='+data.goodsListData[i].itemUrl+' target=_blank> <img src=\"'+data.goodsListData[i].pic_path+'\"/>'+data.goodsListData[i].title+'</a></div></td><td class="td-3">'+data.goodsListData[i].cat_name+'</td><td class="td-4">'+data.goodsListData[i].shop_name+'</td><td class="td-5 td-ranking"><div><i class="icon"></i><span class="ranking-bar" style="width:'+bar_width+'%;"></span><span class="ranking-num">'+ isdisplay +'</span></div></td></tr>';
+                    }
+                };
+                if(data.goodsListData.length==0)
+                {
+                    htmlstr = '<tr><td colspan="5">暂无数据</td></tr>';
+                }
+                $('#container #sss').html(htmlstr);
+            });
+        }
+        $('.dataBtn').click(function(){
+            var dataType = $(this).attr('data-param')?$(this).attr('data-param'):'num';
+            var timeType = $(this).attr("value"); 
+            var storeLimit = $('#storeListFrom').val()?$('#storeListFrom').val():'5';
+            var catId = $('#catName').val()?$('#catName').val():'all';
+            var htmlstr = '';
+            var url='?app=sysstat&ctl=admin_goodslist&act=ajaxTimeData';
+            var postdata='timeType='+timeType+'&dataType='+dataType+'&storeLimit='+storeLimit+'&catId='+catId;
+
+            $.post(url,postdata,function(data){
+                if(data.error)
+                {
+                    alert(data.error);
+                }
+                $("#time_from").val(data.time_start);
+                $("#time_end").val(data.time_end);
+                var top_1 = 0;
+                var bar_width = 0;
+                for (var i = 0; i <= data.goodsListData.length - 1; i++)
+                {
+                    var dataType = $('th[data-type^="type"]');
+                    if(data.dataType == "num") {
+                        dataType.text("商品销售量");
+                        dataType.attr("data-type", "type-num");
+                    }else if(data.dataType == "money") {
+                        dataType.text("商品销售额");
+                        dataType.attr("data-type", "type-money")
+                    }
+                    var isdisplay = '';
+                    if(data.dataType=='num')
+                    {
+                        top_1 = data.goodsListData[0].amountnum;
+                        isdisplay = data.goodsListData[i].amountnum;
+                    }
+                    else
+                    {
+                        top_1 = data.goodsListData[0].amountprice;
+                        isdisplay = data.goodsListData[i].amountprice;
+                    }
+                    bar_width = i > 0 ? (isdisplay/top_1)*100*0.8: 80;
+                    if(i < 3) {
+                        htmlstr+='<tr><td class="td-1"><span>'+(i+1)+'</span></td><td class="td-2"><div class="analysis-goods"><a href='+data.goodsListData[i].itemUrl+' target=_blank> <img src=\"'+data.goodsListData[i].pic_path+'\"/>'+data.goodsListData[i].title+'</a></div></td><td class="td-3">'+data.goodsListData[i].cat_name+'</td><td class="td-4">'+data.goodsListData[i].shop_name+'</td><td class="td-5 td-ranking"><div><i class="icon top"></i><span class="ranking-bar top" style="width:'+bar_width+'%;"></span><span class="ranking-num">'+ isdisplay +'</span></div></td></tr>';
+                    }else {
+                         htmlstr+='<tr><td class="td-1 top-default"><span>'+(i+1)+'</span></td><td class="td-2"><div class="analysis-goods"><a href='+data.goodsListData[i].itemUrl+' target=_blank> <img src=\"'+data.goodsListData[i].pic_path+'\"/>'+data.goodsListData[i].title+'</a></div></td><td class="td-3">'+data.goodsListData[i].cat_name+'</td><td class="td-4">'+data.goodsListData[i].shop_name+'</td><td class="td-5 td-ranking"><div><i class="icon"></i><span class="ranking-bar" style="width:'+bar_width+'%;"></span><span class="ranking-num">'+ isdisplay +'</span></div></td></tr>';
+                    }
+                };
+                if(data.goodsListData.length==0)
+                {
+                    htmlstr = '<tr><td colspan="5">暂无数据</td></tr>';
+                }
+                $('#container').find('tbody').html(htmlstr);
+            })
+        })
+
+        //初始化数据列表中的统计样式
+        var td_ranking = $('.td-ranking');
+        var number_one = 0;
+        var ranking_bar_width = 0;
+        for(var i = 0; i <= td_ranking.length; i++) {
+            number_one = Number($(td_ranking[0]).find('.ranking-num').text());
+            ranking_bar_width = i > 0 ? (Number($(td_ranking[i]).find('.ranking-num').text())/number_one)*100*0.8: 80;
+            if(i < 3){
+                $(td_ranking[i]).find('.icon').addClass('top');
+                $(td_ranking[i]).find('.ranking-bar').addClass('top');
+            } else {
+                $(td_ranking[i]).siblings('.td-1').addClass('top-default');
+            }
+            $(td_ranking[i]).find('.ranking-bar').css('width', ranking_bar_width+"%");
+        }
+    });
+  </script>
+</html>

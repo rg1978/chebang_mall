@@ -1,0 +1,49 @@
+{
+    "title": "test1",
+    "slices": [
+         {
+            "module": "encoding.json.decode.ex"
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "permission",
+                "value": "${var.permission}"
+            }
+        },
+       
+        {
+            "module": "control.map",
+            "mapping": {
+                "data": "${var.other}",
+                "msg_id": "${var.msg_id}",
+                "permission": "${var.permission}"
+            }
+        },
+        {
+            "module": "script.lua",
+            "params": {
+                "script": "to_ome_aftersale_logi"
+            }
+        },
+        {
+            "module": "encoding.json.encode.ex"
+        },
+        {
+            "module": "cloud.erp.callback_ecos",
+            "params": {
+                "method": "POST",
+                "url": "${global.permission.to_url}",
+                "token": "${global.permission.to_token}"
+            }
+        },
+        {
+            "module": "encoding.json.decode.ex"
+        },
+        {"module": "script.lua", "params": {
+            "script": "test",
+            "prefix": "aftersale.logi erp 返回"
+            }}
+    ],
+    "log_level": 5
+}

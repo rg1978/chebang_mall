@@ -1,0 +1,93 @@
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <{if $shop_type =="store"}>
+  <div class="panel-heading">
+    <a href="<{url action=topshop_ctl_shop_applycat@goApplyCat response=html}>" class="btn btn-warning" data-toggle="modal" data-target="#goApplyCat">
+      <{t}>申请类目<{/t}>
+    </a>
+  </div>
+  <div class="panel-body">
+    <{if $applycat}>
+    <table class="table table-bordered table-dlytmpl">
+      <thead>
+        <tr>
+          <td class="text-center">类目名称</td>
+          <td class="text-center">提交时间</td>
+          <td class="text-center">申请原因</td>
+          <td class="text-center">审核状态</td>
+          <td class="text-center">失败原因</td>
+          <td class="text-center" style="white-space:nowarp;">操作</td>
+        </tr>
+      </thead>
+      <tbody>
+        <{foreach from=$applycat item=apply}>
+        <tr class="">
+          <td class="text-center">
+            <{$apply.cat_name}>
+          </td>
+          <td class="text-center">
+            <{$apply.apply_time|cdate:"FDATE"}>
+          </td>
+          <td class="text-center" width="30%">
+            <{$apply.apply_reason}>
+          </td>
+          <td class="text-center">
+            <{if $apply.check_status == "pending"}>
+            待审核
+            <{elseif $apply.check_status == "adopt"}>
+            审核通过
+            <{elseif $apply.check_status == "reject"}>
+            审核失败
+            <{/if}>
+          </td>
+          <td class="text-center" width="30%">
+            <{$apply.check_fail_reason}>
+          </td>
+          <td class="text-center">
+            <{if $apply.check_status == "adopt"}>
+            --
+            <{else}>
+            <button class="btn btn-primary btn-sm action-remove" data-id="<{$apply.apply_id}>" data-page="<{$page}>">删除</button>
+            <{/if}>
+          </td>
+        </tr>
+        <{/foreach}>
+      </tbody>
+    </table>
+    <{pagers data=$pagers}>
+    <{if $count > 0 }>
+    <span class="page-number">共&nbsp;<em class="text-aqua"><{$count}></em>&nbsp;条记录</span>
+    <{/if}>
+    <{else}>
+    <{t}>暂无申请<{/t}>
+    <{/if}>
+  </div>
+  <{else}>
+  <{t}>该店铺类型暂不支持该功能<{/t}>
+  <{/if}>
+</div>
+
+<div class="modal fade" id="goApplyCat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.action-remove').click(function(){
+    var id = $(this).data('id');
+    var url = "<{url action=topshop_ctl_shop_applycat@removeApplyCat}>";
+    $.post(url, {'apply_id': id}, function(rs){
+      if(rs.success && rs.success == true){
+        $('#messagebox').message(rs.message, 'success');
+      }else{
+        $('#messagebox').message(rs.message);
+      }
+      if(rs.redirect) {
+        location.href = rs.redirect;
+      }
+    })
+  })
+</script>
+

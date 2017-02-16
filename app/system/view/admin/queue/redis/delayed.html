@@ -1,0 +1,49 @@
+<table class='gridlist'>
+  <thead>
+    <tr>
+      <th style='width:10%'>队列ID</th>
+      <th style='width:5%'>队列标识</th>
+      <th style='width:5%'>重试次数</th>
+      <th style='width:20%'>执行任务类</th>
+      <th style='width:15%'>进入队列时间</th>
+      <th style='width:15%'>延时执行时间</th>
+      <th style='width:30%'>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  <{if $queueData.delayed}>
+  <{foreach from=$queueData.delayed key=key item=row}>
+  <tr style="height:40px">
+    <td><{$row.id}></td>
+    <td><{$row.queue_name}></td>
+    <td><{$row.attempts}></td>
+    <td><{$row.worker}></td>
+    <td><{$row.create_time|cdate}></td>
+    <td><{$row.delayed_time|cdate}></td>
+    <td>
+      <div class="clearfix">
+        <div class="span-auto">&nbsp;</div>
+        <div class="span-auto">
+          <span class="opt" onClick="new Dialog('?app=system&ctl=admin_queue&act=showRedisQueueParams&p[0]=<{$row.params|json_encode|urlencode}>&p[1]=<{$row.id}>', {title:'<{t}>详细参数<{/t}>', width:680, height:450})">
+            <{img src="bundle/showcate.gif" border="0" alt="详细参数"|t:'system' app='desktop'}>
+            <{t}>详细参数<{/t}>
+          </span>
+        </div>
+        <div class="span-auto">&nbsp;</div>
+        <div class="span-auto last">
+          <span class="opt" onclick="deleteRow('?app=system&ctl=admin_queue&act=delRedisQueue&p[0]=delayed&p[1]=<{$row|json_encode|urlencode}>',event)">
+            <{img src="bundle/delecate.gif" border="0" alt="删除"|t:'system' app='desktop'}>
+            <{t}>删除<{/t}>
+          </span>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <{/foreach}>
+  <{else}>
+  <tr>
+    <td colspan=7>无延时队列</td>
+  <tr>
+  <{/if}>
+  </tbody>
+</table>

@@ -1,0 +1,115 @@
+<{if $list}>
+<div class="data-list">
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <th>订单号</th>
+      <th>处理进度</th>
+      <th style="width:40%">商品</th>
+      <th>需退款金额</th>
+      <th>发起人</th>
+      <th>申请时间</th>
+      <th>操作</th>
+    </tr>
+    <{foreach from=$list item=row }>
+    <tr>
+      <td style="vertical-align:middle"><{$row.tid}></td>
+      <td style="vertical-align:middle">
+        <{if $row.refunds_status == 'WAIT_CHECK'}>
+        <span class="label label-primary">等待审核</span>
+        <{elseif $row.refunds_status == 'WAIT_REFUND'}>
+        <span class="label label-primary">等待退款</span>
+        <{elseif $row.refunds_status == 'SHOP_CHECK_FAILS'}>
+        <span class="label label-danger">取消失败</span>
+        <{elseif $row.refunds_status == 'SUCCESS'}>
+        <span class="label label-success">取消成功</span>
+        <{/if}>
+      </td>
+      <td>
+        <{foreach from=$row.order item=item}>
+        <div class="goods2">
+          <div class="left">
+            <{if $item.pic_path}>
+            <img src="<{$item.pic_path|storager:t}>" alt="">
+            <{else}>
+            <img src="<{$image_default_id.S.default_image|storager:t}>" alt="<{$giftdata.title}>">
+            <{/if}>
+          </div>
+          <div class="right">
+          <a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>" target="_blank">
+            <{$item.title}>&nbsp;&nbsp;<{$item.spec_nature_info}>
+            <span class="badge bg-green">×<{$item.num}></span>
+          </a>
+          </div>
+        </div>
+
+        <{if $item.gift_data}>
+        <{foreach from=$item.gift_data item=giftdata}>
+          <div class="goods2">
+          <div class="left">
+            <{if $giftdata.image_default_id}>
+            <img src="<{$giftdata.image_default_id|storager:t}>" alt="">
+            <{else}>
+            <img src="<{$image_default_id.S.default_image|storager:t}>" alt="<{$giftdata.title}>">
+            <{/if}>
+          </div>
+          <div class="right">
+          <a href="<{url action=topc_ctl_item@index item_id=$giftdata.item_id}>" target="_blank">
+            <span class="badge bg-red">赠品</span><{$giftdata.title}>&nbsp;&nbsp;<{$giftdata.spec_info}>
+            <span class="badge bg-green">×<{$giftdata.gift_num}></span>
+          </a>
+          </div>
+        </div>
+        <{/foreach}>
+        <{/if}>
+        <{/foreach}>
+      </td>
+      <td style="vertical-align:middle">
+        <{if $row.pay_type == 'offline'}>
+        <span class="badge bg-green">货到付款</span>
+        <{else}>
+          <span class="badge bg-red"><{$row.payed_fee|cur}></span>
+        <{/if}>
+      </td>
+      <td style="vertical-align:middle">
+        <{if $row.cancel_from == 'buyer'}>
+        <b>用户</b>
+        <{elseif $row.cancel_from == 'shop'}>
+        <b>商家</b>
+        <{else}>
+        <b>平台</b>
+        <{/if}>
+      </td>
+
+      <td style="vertical-align:middle"><{$row.created_time|cdate:'FDATE_FTIME'}></td>
+      <td style="vertical-align:middle">
+        <!--div>
+          <a  class="btn btn-primary btn-flat" href="<{url action=topshop_ctl_aftersales@detail bn=$row.aftersales_bn}>">审核</a>
+        </div-->
+        <div>
+          <a href="<{url action=topshop_ctl_trade_cancel@detail cancel_id=$row.cancel_id}>">查看详情</a>
+        </div>
+      </td>
+    </tr>
+    <{/foreach}>
+  </tbody>
+</table>
+<{pagers data=$pagers}>
+<{if $count > 0}>
+<span class="page-number">共&nbsp;<em class="text-aqua"><{$count}></em>&nbsp;条记录</span>
+<{/if}>
+
+</div>
+<{else}>
+<p class="text-muted well no-shadow text-center">暂无数据</p>
+<{/if}>
+<script>
+  $('.pagination li a').click(function(e){
+    e.preventDefault();
+    if( $(this).parent().hasClass('disabled') ){
+      return;
+    }
+    var urlData = $(this).attr('href');
+    $(this).parents('.data-list').empty().load(urlData)
+  })
+</script>

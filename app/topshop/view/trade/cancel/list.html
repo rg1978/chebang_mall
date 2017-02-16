@@ -1,0 +1,63 @@
+<div class="panel panel-outter">
+  <{include file='topshop/trade/cancel/search.html'}>
+  <div class="panel-body">
+    <h4>取消订单列表</h4>
+    <div class="nav-tabs-custom" id="tabs">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="<{url action=topshop_ctl_trade_cancel@ajaxSearch}>#tab_all" data-toggle="tab" data-progress="all">全部</a></li>
+        <li><a href="<{url action=topshop_ctl_trade_cancel@ajaxSearch}>#tab_0" data-toggle="tab" data-progress="0">待审核</a></li>
+        <li><a href="<{url action=topshop_ctl_trade_cancel@ajaxSearch}>#tab_1" data-toggle="tab" data-progress="1">待退款</a></li>
+        <li><a href="<{url action=topshop_ctl_trade_cancel@ajaxSearch}>#tab_2" data-toggle="tab" data-progress="2">已取消</a></li>
+        <li><a href="<{url action=topshop_ctl_trade_cancel@ajaxSearch}>#tab_3" data-toggle="tab" data-progress="3">取消失败</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab_all">
+          <{include file='topshop/trade/cancel/item.html'}>
+        </div><!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_0"></div><!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_1"></div><!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_2"> </div><!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_3"> </div><!-- /.tab-pane -->
+
+      </div><!-- /.tab-content -->
+    </div>
+  </div>
+</div>
+<script>
+  $('.reservation').daterangepicker({
+    format: 'YYYY/MM/DD',
+    opens: 'right'
+  });
+
+$('#tabs a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+  var tabhref = $(this).attr('href');
+  var tab = tabhref.split("#")[1];
+  var progress = tab.split("_")[1];
+  $('#'+tab).load(tabhref,{'progress':progress});
+  $("form select[name=progress]").val(progress);
+}).eq($('#filter_progress').val()).trigger('click');
+
+function ajaxSuccess(e) {
+  e.preventDefault();
+  var form = e.target;
+  $(form).find('button[type=submit]').prop('disabled', false);
+  $.post(form.action, $(form).serialize(),function(rs){
+    var progress = $(form).find('select[name=progress]').val();
+    var tabs = $('#tabs a[data-toggle="tab"]');
+    tabs.each(function(){
+        if($(this).attr('data-progress') == progress) {
+            $(this).parent().addClass('active').siblings().removeClass('active');
+        }
+    });
+    $('#tabs .tab-pane.active').html(rs);
+  });
+}
+
+</script>
+
+<script>
+  $(document).ready(function() {
+    $(".sidebar .sidebar-menu li a i.glyphicon").eq(1).removeClass("glyphicon-list-alt").addClass("glyphicon-stats");
+  });
+</script>

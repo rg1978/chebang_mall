@@ -1,0 +1,52 @@
+<ul class="itemslist">
+  <{foreach from=$items item=item}>
+  <li>
+    <div class="item">
+      <div class="pic">
+        <a href="<{url action=topc_ctl_item@index item_id=$item.item_id}>">
+          <{if !$item.image_default_id}>
+          <{img src="loading_bg.png" app="topc" data-original=$image_default_id.M.default_image class="imglazyload" data-haszoom="700"}>
+          <{else}>
+          <{img src="loading_bg.png" app="topc" data-original=$item.image_default_id|storager:'m' class="imglazyload" data-haszoom="700"}>
+          <{/if}>
+        </a>
+        <div class="cart-mask action-get-cart" data-carturl='<{url action=topc_ctl_item@miniSpec item_id=$item.item_id}>'>加入购物车</div>
+      </div>
+      <div class="caption">
+        <a class="name" href="<{url action=topc_ctl_item@index item_id=$item.item_id}>"> <{if $item.activity.activity_tag}><span class="item-describe-tag"><{$item.activity.activity_tag}></span><{/if}><{$item.title}></a>
+        <div class="price">
+          <{if $item.activity.activity_tag}>
+          <del class="text-muted"><{$item.price|cur}></del>
+          <{$item.activity_price|cur}>
+          <{else}>
+          <{$item.price|cur}>
+          <{/if}>
+          <{if $item.promotion || $item.gift}><span class="discount-tag">惠</span><{/if}>
+        </div>
+      </div>
+    </div>
+  </li>
+  <{/foreach}>
+  <script>
+    $('.itemslist').on('click','.action-get-cart',function(){
+      var url = $(this).attr('data-carturl');
+      var _this = this;
+      var dialog = new Dialog(url, {
+          width: 500,
+          title:'加入购物车',
+          modal:true,
+          async: 'ajax',
+          locate: {
+            pos: 'fixed'
+          },
+          asyncOptions: {
+          type: 'get',
+          callback: function(){
+
+          }
+        }
+      });
+    })
+  </script>
+</ul>
+

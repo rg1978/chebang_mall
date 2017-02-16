@@ -1,0 +1,33 @@
+<div class="tableform">
+    <div class="widgetconfig">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tbody><tr>
+                    <th><{t app='b2c'}>二维码显示尺寸：<{/t}></th>
+                    <td><{t app='b2c'}>大小<{/t}>
+                      <input type="text" name="qrsize" value="<{$setting.qrsize|default:100}>" style="width:40px">px
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t app='b2c'}>二维码：<{/t}></th>
+                    <td>
+                        <input type=hidden name="arcode_pic" value="<{$setting.arcode_pic}>"><input name='qrcode_pic' class="imgsrc" id="qrcode_pic" value="<{$setting.qrcode_pic}>"><input type=button value="<{t app='topc'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic()">
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t app='b2c'}>二维码链接：<{/t}></th>
+                    <td><input type="text" name="ad_pic_link" value="<{$setting.ad_pic_link}>"></td>
+                </tr>
+        </tbody></table>
+    </div>
+</div>
+<script>
+    function addPic(){
+        var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+        var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;
+        Ex_Loader('modedialog',function(){
+            return new imgDialog(url,{onCallback:function(image_id,image_src){
+                    $('qrcode_pic').value=image_src;
+            }})	;
+        });
+    }
+</script>

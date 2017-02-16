@@ -1,0 +1,21 @@
+<app>
+    <name>实时通信系统</name>
+    <type>service</type>
+    <description>提供实时通信服务</description>
+
+    <author>
+        <name>shopex开发团队</name>
+        <email>dev@shopex.cn</email>
+        <url>http://www.shopex.cn</url>
+    </author>
+
+    <version>0.3</version>
+    <license>shopex license</license>
+
+    <parent_model_class>dbeav_model</parent_model_class>
+
+    <depends>
+        <app>desktop</app>
+    </depends>
+
+</app>

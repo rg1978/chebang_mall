@@ -1,0 +1,41 @@
+<{foreach from=$sysMenu item=item}>
+<li class="header"><{$item.name}></li>
+  <{foreach from=$item.menu item=menu name=name}>
+  <{if ! $menu.menu}>
+  <li <{if $topdevSysData.activeMenu == $menu.name}> class="active"<{/if}>><a href="<{$menu.href}>"><i class="<{$menu.icon}>"></i> <span><{$menu.name}></span></a></li>
+  <{else}>
+  <li class="treeview <{if $topdevSysData.activeMenu == $menu.name}> active <{/if}>">
+       <a href="<{$menu.href}>">
+         <i class="<{$menu.icon}>"></i>
+         <span><{$menu.name}></span>
+         <span class="pull-right-container">
+           <i class="fa fa-angle-left pull-right"></i>
+         </span>
+       </a>
+       <ul class="treeview-menu <{if $topdevSysData.activeMenu == $menu.name}> menu-open<{/if}>">
+         <{foreach from=$menu.menu item=tree name="foo"}>
+         <li>
+           <{if $env.foreach.foo.iteration % 3 == 0}>
+           <{assign var=color value='text-yellow'}>
+           <{assign var=small_bg value='bg-yellow'}>
+           <{elseif $env.foreach.foo.iteration % 3 == 1}>
+           <{assign var=color value='text-aqua'}>
+           <{assign var=small_bg value='bg-blue'}>
+           <{else}>
+           <{assign var=color value='text-red'}>
+           <{assign var=small_bg value='bg-red'}>
+           <{/if}>
+           <a href="<{$tree.href}>"><i class="fa fa-circle-o <{$color}>"></i> <span><{$tree.name}></span>
+             <span class="pull-right-container">
+               <small class="label pull-right <{$small_bg}>"><{$tree.tag}></small>
+             </span>
+           </a>
+         </li>
+         <{/foreach}>
+       </ul>
+     </li>
+  <{/if}>
+  <{/foreach}>
+<{/foreach}>
+<script>
+</script>

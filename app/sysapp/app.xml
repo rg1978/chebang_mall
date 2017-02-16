@@ -1,0 +1,17 @@
+<app>
+    <name>app</name>
+    <type>service</type>
+
+    <description>app站点配置</description>
+
+    <author>
+        <name>shopex开发团队</name>
+        <email>dev@shopex.cn</email>
+        <url>www.shopex.cn</url>
+    </author>
+
+    <version>1.0.0</version>
+
+    <license>Commercial</license>
+
+</app>

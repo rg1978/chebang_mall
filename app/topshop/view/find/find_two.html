@@ -1,0 +1,54 @@
+<div class="signup-state">
+    <div class="signup-flow-title"><{t}>找回密码流程<{/t}></div>
+    <ul class="signup-flow-list">
+    	<li class="on arrow-icon"><{t}>1选择找回方式<{/t}></li>
+        <li class="on arrow-icon"><{t}>2验证身份<{/t}></li>
+        <li class="on"><{t}>3设置新密码<{/t}><span class="arrow"></span></li>
+    </ul>
+</div>
+
+<div class="form-box signup-box" id="login-box">
+	<div class="signup-header">忘记密码-设置新密码</div>
+	<form action="<{url action=topshop_ctl_find@resetPassword}>" method="post" class="bg-white" role="form" data-validate-onsuccess="ajaxSubmit">
+    <input type="hidden" value="<{$type}>" name="type" />
+    <{if $type == 'mobile'}>
+    <input type="hidden" value="<{$mobile}>" name="mobile" />
+    <{/if}>
+    <{if $type == 'email'}>
+    <input type="hidden" value="<{$email}>" name="email" />
+    <{/if}>
+
+	<div class="body">
+	<div class="form-group mar-t70">
+        <label for="login_password" class="control-label">请设置新密码：</label>
+        <input type="password" name="login_password" id="login_password" class="form-control h42" placeholder="密码，6-20个字符，不能纯数字、字母" required maxlength="20" data-validate-length-min="6" pattern="^(?!\d+$|[a-zA-Z]+$)[^\u4e00-\u9fa5]*$" data-validate-regexp-message="不能纯数字、字母">
+    </div>
+    <div class="form-group">
+        <label for="psw_confirm" class="control-label">请确认新密码：</label>
+        <input type="password" name="psw_confirm" id="psw_confirm" class="form-control h42" placeholder="请再次输入密码" required maxlength="20" data-validate-equalto-field="login_password" data-validate-equalto-message="两次密码输入不一致">
+    </div>
+    <div class="btn-option">
+        <button type="submit" class="btn btn-block btn-lg">完成</button>
+        <!-- <a href="<{url action=topshop_ctl_passport@signin}>" class="text-center">返回登录</a> -->
+    </div>
+	</form>
+</div>
+<script type="text/javascript">
+	
+function ajaxSubmit(e) {
+    var form = e.target;
+    e.preventDefault();
+    $.post(form.action, $(form).serialize(), function(rs) {
+        if(rs.error) {
+            $('#messagebox').message(rs.message);
+            return;
+        }
+        if(rs.success) {
+            $('#messagebox').message(rs.message, 'success');
+        }
+        if(rs.redirect) {
+            setTimeout(function(){location.href=rs.redirect;}, 1000);
+        }
+    });
+}
+</script>

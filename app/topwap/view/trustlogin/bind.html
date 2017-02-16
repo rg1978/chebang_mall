@@ -1,0 +1,128 @@
+<div class="body-padding">
+  <header class="page-header">
+    <i class="header-left icon-func bbc-icon bbc-icon-back shopex-action-back"></i>
+    <div class="header-title">绑定账号</div>
+  </header>
+  <section class="container">
+    <form id="bind_acount_form" class="form-container" action="<{url action=topwap_ctl_trustlogin@bindExistsUser}>" method="post">
+      <input type="hidden" name="vcodekey" value="topwap_signin">
+      <input type="hidden" name="flag" value="<{$flag}>">
+      <div class="content-padded content-center">
+        <div class="trust-login-avatar"><img src="<{$avatar|storager}>" alt=""></div>
+        <div>Hi~
+          <{$realname}>，绑定已有账号</div>
+      </div>
+      <section class="shopex-input-group">
+        <div class="shopex-input-row">
+          <label>帐号：</label>
+          <input type="text" class="shopex-input-clear" name="uname" placeholder="请输入用户名或手机号" required data-caution="请输入用户名或手机号">
+        </div>
+        <div class="shopex-input-row">
+          <label>密码：</label>
+          <input type="password" class="shopex-input-password" name="password" placeholder="请输入密码" required data-caution="请输入密码">
+        </div>
+        <div class="form-inline" id="bind_vdode" style="display: none;">
+          <div class="shopex-input-row form-inline-adaptive">
+            <label>验证码：</label>
+            <input type="text" name="verifycode" class="" placeholder="请输入验证码" required data-caution="请输入验证码">
+          </div>
+          <div class="form-inline-unadaptive">
+            <img align="absmiddle" class="auto-change-verify-handle" src="<{url action=toputil_ctl_vcode@gen_vcode key=topwap_signin width=120 height=35}>" alt="" width="100" height="30">
+          </div>
+        </div>
+      </section>
+      <section class="content-horizontal-padded form-op-section">
+        <button type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" id="bind_acount_submit">完成</button>
+      </section>
+    </form>
+    <form id="new_acount_form" class="form-container" action="<{url action=topwap_ctl_trustlogin@bindSignupUser}>" style="display: none;" method="post">
+      <input type="hidden" name="vcodekey" value="topwap_signin">
+      <input type="hidden" name="flag" value="<{$flag}>">
+      <div class="content-padded content-center">
+        <div class="trust-login-avatar"><img src="<{$avatar|storager}>" alt=""></div>
+        <div>Hi~
+          <{$realname}>，您可以注册新账号</div>
+      </div>
+      <section class="shopex-input-group">
+        <div class="shopex-input-row">
+          <label>帐号：</label>
+          <input type="text" class="shopex-input-clear" name="pam_account[login_name]" placeholder="请输入用户名或手机号" required data-caution="请输入用户名或手机号">
+        </div>
+        <div class="shopex-input-row">
+          <label>设置密码：</label>
+          <input type="password" class="shopex-input-password" name="pam_account[login_password]" placeholder="请输入新密码，6~20位" required minlength="6" maxlength="20" data-caution="请填写密码，6-20个字符&&输入不正确，最少6个字符&&输入不正确，最多20个字符">
+        </div>
+        <div class="shopex-input-row">
+          <label>确认密码：</label>
+          <input type="password" class="shopex-input-password" name="pam_account[psw_confirm]" maxlength="20" placeholder="再次填写密码" required data-equalto="pam_account[login_password]" data-caution="密码与确认密码不相符，请重新填写">
+        </div>
+        <div class="form-inline">
+          <div class="shopex-input-row form-inline-adaptive">
+            <label>验证码：</label>
+            <input type="text" name="verifycode" class="" placeholder="请输入验证码" required data-caution="请输入验证码">
+          </div>
+          <div class="form-inline-unadaptive">
+            <img align="absmiddle" class="auto-change-verify-handle" src="<{url action=toputil_ctl_vcode@gen_vcode key=topwap_signin width=120 height=35}>" alt="" width="100" height="30">
+          </div>
+        </div>
+      </section>
+      <section class="content-horizontal-padded form-op-section">
+        <button type="button" class="shopex-btn shopex-btn-block shopex-btn-warning bbc-btn-warning" id="new_acount_button">完成</button>
+      </section>
+    </form>
+    <section class="action-bar content-horizontal-padded">
+      <button id="new_acount" type="button" class="shopex-btn shopex-btn-block box-item-flex1" onclick="return false;">成为新用户</button>
+      <button id="bind_acount" style="display: none" type="button" class="shopex-btn shopex-btn-block box-item-flex1" onclick="return false;">绑定老账号</button>
+    </section>
+  </section>
+</div>
+<script>
+$('#bind_acount').on('tap', function() {
+  $('#new_acount_form').hide();
+  $('#bind_acount_form').show();
+  $(this).hide();
+  $('#new_acount').show();
+})
+$('#new_acount').on('tap', function() {
+  $('#new_acount_form').show();
+  $('#bind_acount_form').hide();
+  $(this).hide();
+  $('#bind_acount').show();
+})
+
+var form = $('#bind_acount_form');
+$('#bind_acount_submit').on('tap', function() {
+  $.post(form.attr('action'), form.serialize(), function(rs) {
+    if (rs.error && rs.redirect == 'vcode_is_show') {
+      changeCode($('.auto-change-verify-handle'));
+    }
+
+    if (rs.error) {
+      shopex.alert(rs.message);
+    }
+
+    if (rs.redirect) {
+      if (rs.redirect == 'vcode_is_show') {
+        $('#bind_vdode').show();
+        return false;
+      } else {
+        location.href = rs.redirect;
+      }
+    }
+  })
+});
+
+var newform = $('#new_acount_form');
+$('#new_acount_button').on('tap',function(){
+  $.post(newform.attr('action'), newform.serialize(), function(rs) {
+    if (rs.error) {
+      shopex.alert(rs.message);
+      changeCode($('.auto-change-verify-handle'));
+    }
+
+    if (rs.redirect) {
+        location.href = rs.redirect;
+    }
+  })
+})
+</script>

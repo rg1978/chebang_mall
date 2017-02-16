@@ -1,0 +1,41 @@
+<div class="group team-buying">
+  <section class="activity-going-list">
+    <div class="going-list-title">
+      <div class="title-txt"><i class="icon icon-clock"></i> 正在抢购中</div>
+      <div class="ready-list-link"><a href="<{url action=topm_ctl_activity@activity_list}>">开售预告 <i class="icon icon-forward"></i></a></div>
+    </div>
+    <{if $activity_list}>
+    <{foreach from=$activity_list item=group}>
+    <a href="<{url action=topm_ctl_activity@activity_item_list id=$group.activity_id}>" class="thumbs" data-id="<{$group.activity_id}>">
+      <div class="thumbnail">
+        <img src="<{$group.slide_images|storager}>">
+        <div class="activity-img-cover">距活动结束：<span class="countdown-view" data-time="<{$group.end_time}>"></span></div>
+      </div>
+      <div class="caption">
+        <div class="activity-discount"><{$group.discount_min/10}>折起</div>
+        <div class="activity-title"><{$group.activity_name}></div>
+      </div>
+    </a>
+    <{/foreach}>
+    <{else}>
+
+      <{include file="topm/shop/promotion/empty.html"}>
+    <{/if}>
+  </section>
+  <div id="gotop"></div>
+</div>
+
+<script>
+//创建返回顶部组件
+$('#gotop').gotop();
+var now = "<{$now_time}>";
+
+$('.thumbs').each(function(el,index){
+  countdown($(index).find('.countdown-view'),{
+    'start': $(index).find('.countdown-view').attr('data-time') - now,
+    'secondOnly': false,
+    'callback': null
+  });
+})
+</script>
+

@@ -1,0 +1,11 @@
+{
+    "enabled": true,
+    "service": "httpd",
+    "title": "erp_bbc",
+    "pipe": "trade.shop.get",
+    "service_args": {
+        "path": "ecos.ome-bbc/store.trade.fullinfo.get/sync"
+    },
+    "pipe_params": {},
+    "input": null
+}

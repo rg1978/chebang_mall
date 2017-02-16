@@ -1,0 +1,148 @@
+<?php
+return  array(
+    'columns' => array(
+        'sku_id' => array(
+            'type' => 'number',
+            'autoincrement' => true,
+            'required' => true,
+            'comment' => app::get('sysitem')->_('sku_id'),
+        ),
+        'item_id' => array(
+            'type' => 'table:item',
+            'required' => true,
+            'comment' => app::get('sysitem')->_('商品id'),
+        ),
+        'title' => array(
+            'type' => 'string',
+            'length' => 90,
+            'required' => true,
+            'default'=>'',
+            'label' => app::get('sysitem')->_('商品标题'),
+            'comment' => app::get('sysitem')->_('商品标题'),
+            'is_title' => true,
+            'in_list' => true,
+            'default_in_list' => true,
+            'searchtype' => 'has',
+            'filtertype' => 'custom',
+            'filterdefault' => true,
+            'order' => 12,
+        ),
+        'bn' => array(
+            'type' => 'string',
+            'length' => 30,
+            'is_title'=>true,
+            'required' => true,
+            'comment' => app::get('sysitem')->_('商品编号'),
+         ),
+        'price' => array(
+            'type' => 'money',
+            'required' => true,
+            'comment' => app::get('sysitem')->_('商品价格'),
+        ),
+        'cost_price' =>array (
+            'type' => 'money',
+            'default' => '0',
+            'comment' => app::get('sysitem')->_('成本价'),
+        ),
+        'mkt_price' =>array (
+            'type' => 'money',
+            'default' => '0',
+            'comment' => app::get('sysitem')->_('原价'),
+        ),
+        'barcode' => array(
+            'type' => 'string',
+            'length' => 32,
+            'comment' => app::get('sysitem')->_('条形码'),
+        ),
+        'weight' => array(
+            'type' => 'decimal',
+            'precision' => 20,
+            'scale' =>3,
+            'required' => true,
+            'default' => 0,
+            'label' => app::get('sysitem')->_('商品重量'),
+            'comment' => app::get('sysitem')->_('商品重量'),
+            'in_list' => true,
+            'default_in_list' => false,
+        ),
+        'created_time' => array(
+            'type' => 'time',
+            'comment' => app::get('sysitem')->_('创建时间'),
+        ),
+        'modified_time' => array(
+            'type' => 'last_modify',
+            'comment' => app::get('sysitem')->_('最后更新时间'),
+        ),
+        'properties' => array(
+            'type' => 'text',
+            'comment' => app::get('sysitem')->_('sku销售属性'),
+        ),
+        'spec_info' => array (
+            'type' => 'text',
+            'comment' => app::get('sysitem')->_('物品描述'),
+        ),
+        'spec_desc' => array(
+          'type' => 'serialize',
+          'label' => app::get('sysitem')->_('规格值,序列化'),
+        ),
+        'status' => array(
+            'type' => array(
+                'normal' => '正常',
+                'delete' => '删除',
+            ),
+            'default' => 'normal',
+            'comment' => app::get('sysitem')->_('sku状态'),
+        ),
+        'outer_id' => array(
+            'type' => 'string',
+            'length' => 32,
+            'comment' => app::get('sysitem')->_('商家设置的外部id'),
+        ),
+        'shop_id' => array(
+            'type' => 'table:shop@sysshop',
+            'required' => true,
+            'default' => 0,
+            'comment' => app::get('sysitem')->_('店铺id'),
+            'order' => 11,
+        ),
+        'image_default_id' => array(
+            'type' => 'string',
+            'default' => '',
+            'comment' => app::get('sysitem')->_('商品默认图'),
+        ),
+        'cat_id' => array(
+            'type' => 'table:cat@syscategory',
+            'required' => true,
+            'default' => 0,
+            'comment' => app::get('sysitem')->_('商品类目ID'),
+            'order' => 13,
+        ),
+        'brand_id' => array(
+            'type' => 'table:brand@syscategory',
+            'required' => true,
+            'default' => 0,
+            'finder_filter_name'=>'brand_name',
+            'comment' => app::get('sysitem')->_('品牌'),
+            'order' => 14,
+        ),
+        'shop_cat_id' => array(
+            'type' => 'string',
+            'required' => true,
+            'default' => '',
+            'comment' => app::get('sysitem')->_('商家自定义分类id'),
+        ),
+    ),
+
+    'primary' => 'sku_id',
+    'index' => array(
+        'ind_item_id' => ['columns' => ['item_id']],
+        'ind_title' => ['columns' => ['title']],
+        'ind_bn' => ['columns' => ['bn']],
+        'ind_barcode' => ['columns' => ['barcode']],
+        'ind_cat_id' => ['columns' => ['cat_id']],
+        'ind_shop_id' => ['columns' => ['shop_id']],
+        'ind_brand_id' => ['columns' => ['brand_id']],
+        'ind_shop_cat_id' => ['columns' => ['shop_cat_id']],
+    ),
+    'comment' => app::get('sysitem')->_('货品表'),
+);

@@ -1,0 +1,379 @@
+<div class="col-lg-13 box">
+  <div class="membercenter-box aftersales-detail">
+    <div>
+      <div class="orderdtl-box">
+        <div class="orderdtl-hd-changed">退换货详情</div>
+        <div class="orderdtl-bd aftersales-detail-order-bd clearfix">
+          <div class="aftersales-detail-info">
+            <ul>
+              <li>
+                <div class="row">
+                  <div class="col-lg-1">处理状态</div>
+                  <div class="col-lg-4">
+                    <{if $info.status == '0'}>
+                    待处理
+                    <{elseif $info.status == '1'}>
+                    处理中
+                    <{elseif $info.status == '2'}>
+                    已处理
+                    <{elseif $info.status == '3'}>
+                    已驳回
+                    <{/if}>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-lg-1">退款金额</div>
+                  <div class="col-lg-4">
+                    <{if $info.aftersales_type == "EXCHANGING_GOODS"}>
+                    无退款
+                    <{else}>
+                    <{$info.refunds.refund_fee|cur}>
+                    <{/if}>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-lg-1">退换货编号</div>
+                  <div class="col-lg-4"><{$info.aftersales_bn}></div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-lg-1">申请时间</div>
+                  <div class="col-lg-4"><{$info.created_time|cdate:'FDATE_FTIME'}></div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-lg-1">退换货类型</div>
+                  <div class="col-lg-4">
+                    <{if $info.aftersales_type == 'ONLY_REFUND'}>
+                    仅退款
+                    <{elseif $info.aftersales_type == 'REFUND_GOODS'}>
+                    退货退款
+                    <{elseif $info.aftersales_type == 'EXCHANGING_GOODS'}>
+                    换货
+                    <{/if}>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="write-logistics">
+            <{if $info.progress == '1'}>
+            <!--<a href="#dialog" class="btn_dialog" data-toggle="dialog">填写物流信息</a>-->
+            <a href="#dialog" id="<{$info.aftersales_bn}>" class="btn btn-simple btn_dialog" data-toggle="dialog"><span><span>填写物流信息</span></span></a>
+            <{/if}>
+          </div>
+        </div>
+      </div>
+      <div class="orderdtl-box">
+        <div class="orderdtl-bd">
+          <{if $info.aftersales_type == "REFUND_GOODS"}>
+
+          <{if $info.progress == 0}>
+          <{include file="topc/member/aftersales/status/status_0.html"}>
+          <{elseif $info.progress == 1}>
+          <{include file="topc/member/aftersales/status/status_1.html"}>
+          <{elseif $info.progress == 2 || $info.progress == 8 || $info.progress == 5}>
+          <{include file="topc/member/aftersales/status/status_2.html"}>
+          <{elseif $info.progress == 3}>
+          <{include file="topc/member/aftersales/status/status_3.html"}>
+          <{elseif $info.progress == 7}>
+          <{include file="topc/member/aftersales/status/status_7.html"}>
+          <{/if}>
+
+          <{elseif $info.aftersales_type == "EXCHANGING_GOODS"}>
+
+          <{if $info.progress == 0}>
+          <{include file="topc/member/aftersales/status/status0.html"}>
+          <{elseif $info.progress == 1}>
+          <{include file="topc/member/aftersales/status/status1.html"}>
+          <{elseif $info.progress == 2 || $info.progress == 5 }>
+          <{include file="topc/member/aftersales/status/status2.html"}>
+          <{elseif $info.progress == 3}>
+          <{include file="topc/member/aftersales/status/status_3.html"}>
+          <{elseif $info.progress == 4}>
+          <{include file="topc/member/aftersales/status/status4.html"}>
+          <{/if}>
+
+          <{/if}>
+        </div>
+      </div>
+      <{assign var=count value=$info.gift_data|count}>
+      <div class="orderdtl-box">
+        <div class="orderdtl-hd">退换货商品</div>
+        <div class="orderdtl-bd">
+          <div>
+            <table class="item-table table-orderdtl">
+              <colgroup>
+                <col class="table-col-1">
+                <col class="table-col-2">
+                <col class="table-col-3">
+                <col class="table-col-4">
+              </colgroup>
+              <thead>
+                <tr>
+                  <td colspan="2">商品</td>
+                  <td>商品金额</td>
+                  <td>数量</td>
+                  <td>总金额</td>
+                  <td>退款金额</td>
+                  <td>积分抵钱</td>
+                  <td>抵扣积分</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a href="<{url action=topc_ctl_item@index item_id=$info.sku.item_id}>">
+                      <div class="table-goods-pic">
+                        <{if $info.sku.pic_path}>
+                        <img width="64" height="64" src="<{$info.sku.pic_path|storager:t}>">
+                        <{else}>
+                        <img width="64" height="64" src="<{$defaultImageId.T.default_image}>">
+                        <{/if}>
+                      </div>
+                    </a>
+                  </td>
+                  <td><a href="<{url action=topc_ctl_item@index item_id=$info.sku.item_id}>"><{$info.sku.title}><{$info.sku.spec_nature_info}></a></td>
+                  <td>
+                    <{$info.sku.price|cur}>
+                  </td>
+                  <td>
+                    <{$info.num}>
+                  </td>
+                  <td>
+                    <{$info.sku.payment|cur}>
+                  </td>
+                  <td rowspan="<{$count+1}>">
+                    <{if $info.aftersales_type == "EXCHANGING_GOODS"}>
+                    无退款
+                    <{else}>
+                    <{if $info.refunds.refund_fee*100|intval}>
+                    <{$info.refunds.refund_fee|cur}>
+                    <{else}>
+                    --
+                    <{/if}>
+                    <{/if}>
+                  </td>
+                  <td rowspan="<{$count+1}>">
+                    <{if $info.sku.points_fee*100|intval}><{$info.sku.points_fee|cur}><{else}> --<{/if}>
+                  </td>
+                  <td rowspan="<{$count+1}>">
+                    <{if $info.sku.consume_point_fee}><{$info.sku.consume_point_fee}><{else}> --<{/if}>
+                  </td>
+                </tr>
+
+                <{if $info.gift_data}>
+            <{foreach from=$info.gift_data item=giftdata}>
+            <tr>
+            <td>
+              <div class="table-goods-pic">
+                <{if $giftdata.image_default_id }>
+                <img width="64" height="64" src="<{$giftdata.image_default_id|storager:t}>">
+                <{else}>
+                <img width="64" height="64" src="<{$defaultImageId.T.default_image}>">
+                <{/if}>
+              </div>
+            </td>
+            <td><a href="<{url action=topc_ctl_item@index item_id=$giftdata.item_id}>"><sapn class="item-describe-tag">赠品</sapn><{$giftdata.title}></a><{$giftdata.spec_info}></td>
+            <td><{0|cur}></td>
+            <td class="nowrap"><{$giftdata.gift_num}></td>
+            <td><{0|cur}></td>
+            </tr>
+            <{/foreach}>
+            <{/if}>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="orderdtl-box">
+        <div class="orderdtl-bd">
+          <ul>
+            <li class="form-row">
+              <label for="" class="form-label"><b>订单编号：</b></label>
+              <span class="form-act">
+                <{$info.tid}>
+              </span>
+            </li>
+            <li class="form-row">
+              <label for="" class="form-label"><b>退换货理由：</b></label>
+              <span class="form-act">
+                <{$info.reason}>
+              </span>
+            </li>
+
+            <li class="form-row">
+              <label for="" class="form-label"><b>问题描述：</b></label>
+              <span class="form-act">
+                <{$info.description|default:"无详细描述"}>
+              </span>
+            </li>
+
+            <li class="form-row">
+              <label for="" class="form-label"><b>图片信息：</b></label>
+              <span class="form-act">
+                <{if $info.evidence_pic}>
+                <div class="show-pics clearfix">
+                  <{foreach from=$info.evidence_pic item=pic}>
+                  <a href="<{$pic|storager:l}>" target="_blank"><img width="64" height="64" src="<{$pic|storager:t}>"></a>
+                  <{/foreach}>
+                </div>
+                <{else}>
+                无图片信息
+                <{/if}>
+              </span>
+            </li>
+
+            <{if $info.shop_explanation || $info.admin_explanation }>
+            <li class="form-row">
+              <label for="" class="form-label"><b>退换货处理说明：</b></label>
+              <span class="form-act">
+                <!--div class="row">
+                <span class="col-lg-6">已经开始处理</span>
+                <span class="col-lg-3">2014-09-01 15:00:00</span>
+                </div-->
+                <{if $info.shop_explanation}>
+                <div class="row">
+                  <span class="col-lg-6"><{$info.shop_explanation}></span>
+                </div>
+                <{/if}>
+                <{if $info.admin_explanation}>
+                <div class="row">
+                  <span class="col-lg-6"><{$info.admin_explanation}></span>
+                </div>
+                <{/if}>
+              </span>
+            </li>
+            <{/if}>
+
+            <{if $info.aftersales_type != 'ONLY_REFUND' && $info.sendback_data  && $info.progress >= '2'}>
+            <li class="form-row">
+              <label for="" class="form-label"><b>您的收货信息：</b></label>
+              <span class="form-act">
+                <{$info.sendback_data.receiver_address}>&nbsp;&nbsp;<{$info.sendback_data.mobile}>
+              </span>
+            </li>
+            <li class="form-row">
+              <label for="" class="form-label"><b>您寄送的物流信息</b></label>
+              <span class="form-act">
+                <div class="row">
+                  <span class="col-lg-1">物流公司：</span>
+                  <span class="col-lg-7"><{$info.sendback_data.logi_name}></span>
+                </div>
+                <div class="row">
+                  <span class="col-lg-1">运单号码：</span>
+                  <span class="col-lg-7"><{$info.sendback_data.logi_no}></span>
+                </div>
+                <{if $tracking && $tracking =='true' }>
+                <div class="row">
+                  <span class="col-lg-1">物流跟踪：</span>
+                  <span class="col-lg-7" id="send_back_track">
+                    <span id="click_get_track_back" class="sp-see">点击查看</span>
+                  </span>
+                </div>
+                <{/if}>
+              </span>
+            </li>
+            <{/if}>
+
+            <{if $info.aftersales_type == 'EXCHANGING_GOODS' }>
+            <li class="form-row">
+              <label for="" class="form-label"><b>商家寄送物流信息</b></label>
+              <{if $info.sendconfirm_data.logi_name }>
+              <span class="form-act">
+                <div class="row">
+                  <span class="col-lg-1">物流公司：</span>
+                  <span class="col-lg-7"><{$info.sendconfirm_data.logi_name}></span>
+                </div>
+                <div class="row">
+                  <span class="col-lg-1">运单号码：</span>
+                  <span class="col-lg-7"><{$info.sendconfirm_data.logi_no}></span>
+                </div>
+                <{if $tracking && $tracking =='true' }>
+                <div class="row">
+                  <span class="col-lg-1">物流跟踪：</span>
+                  <span class="col-lg-7" id="send_track">
+                    <span id="click_get_track" class="sp-see">点击查看</span>
+                  </span>
+                </div>
+                <{/if}>
+              </span>
+              <{elseif $info.sendconfirm_data.return_trade_info}>
+              <span class="form-act">
+                <div class="row">
+                  <span class="col-lg-4">
+                    <{$info.sendconfirm_data.return_trade_info}>，
+                    <{t}>您可将换货的订单号告知商家，由商家客服为您查找物流信息。<{/t}>
+                  </span>
+                </div>
+              </span>
+              <{else}>
+              <span class="form-act">
+                <div class="row">
+                  <span class="col-lg-4">等待商家发货</span>
+                </div>
+              </span>
+              <{/if}>
+            </li>
+            <{/if}>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.btn_dialog').click(function(e){
+    var _this = this;
+    var dialog = new Dialog('<{url action="topc_ctl_member_aftersales@ajaxLogistics" id=$info.aftersales_bn}>', {
+      width: 500,
+        title:'填写物流',
+        modal:true,
+        async: 'ajax',
+        asyncOptions: {
+          type: 'get',
+        data: {tid: _this.id},
+        callback: function(){
+          $('#logi_select').change(function(e) {
+            if(this.value == 'other') {
+              $('#other').show().find('input')[0].required = true;
+            }
+            else {
+              $('#other').hide().find('input')[0].required = false;
+            }
+          });
+          dialog.content.find('.act-cancel').on('click', function(e){
+            dialog.hide();
+          });
+        }
+        }
+    });
+  });
+
+$('#click_get_track_back').click(function(e){
+  $('#send_back_track').html("加载中...");
+  $.post('<{url action=topc_ctl_member_trade@ajaxGetTrack}>',{'logi_no':'<{$info.sendback_data.logi_no}>','corp_code':'<{$info.sendback_data.corp_code}>'},function(rs){
+    if(rs.error){
+      return alert(rs.message);
+    }
+    $('#send_back_track').html(rs);
+  });
+});
+$('#click_get_track').click(function(e){
+  $('#send_track').html("加载中...");
+  $.post('<{url action=topc_ctl_member_trade@ajaxGetTrack}>',{'logi_no':'<{$info.sendconfirm_data.logi_no}>','corp_code':'<{$info.sendconfirm_data.corp_code}>'},function(rs){
+    if(rs.error){
+      return alert(rs.message);
+    }
+    $('#send_track').html(rs);
+  });
+});
+
+</script>

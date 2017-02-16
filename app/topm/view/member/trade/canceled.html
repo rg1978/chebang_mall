@@ -1,0 +1,59 @@
+<div class="shop">
+  <div class="ui-mask"></div>
+  <{include file="topm/common/top.html"}>
+  <div class="order-list main">
+    <div>
+      <div>
+        <div class="showarea ui-refresh">
+          <{if $list}>
+          <div class="data-list" id="content">
+            <{include file="topm/member/trade/canceled_list.html"}>
+          </div>
+          <div class="ui-refresh-handle">
+            <div class="ui-refresh-down"></div>
+          </div>
+          <{else}>
+          <div class="order-search shop store-empty">
+            <div class="main" id="main">
+              <div class="empty-area">
+                <i class="icon icon-order"></i>
+                <span class="empty-txt">暂无此状态的数据</span>
+              </div>
+            </div>
+          </div>
+          <{/if}>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--返回顶部-->
+  <div id="gotop"></div>
+</div>
+
+<script>
+  var pagers = <{$pagers|json_encode}>;
+  pagers.next = pagers.current + 1;
+  $('.ui-refresh').refresh({
+      init: function () {
+          if(pagers.current == pagers.total) {
+              this.disable();
+          }
+      },
+      load: function (dir, type) {
+          var self = this;
+          var $list = $('.data-list');
+          $.get('<{url action=topm_ctl_member_trade@ajaxTradeShow}>', location.search.slice(1) + '&pages=' + pagers.next, function (rs) {
+              if(rs.success) {
+                  pagers.next = +rs.pagers.current + 1;
+                  $list[dir == 'up' ? 'prepend' : 'append'](rs.html);
+              }
+              self.afterDataLoading();
+              if(rs.pagers.current == rs.pagers.total) {
+                  self.disable();
+              }
+          });
+      }
+  });
+</script>
+
+

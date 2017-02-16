@@ -1,0 +1,22 @@
+<!-- Modal -->
+<div class="modal fade" id="areaselect_modal" tabindex="-1" role="dialog">
+  <div class="panel panel-default modal-dialog">
+    <div class="panel-heading clearfix">
+      上传图片
+      <div class="pull-right">
+        <!-- <button type="button" class="btn btn-primary action-save">保存</button> -->
+        <button type="button" class="btn btn-default action-cancel" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+    <div class="panel-body text-center">
+      <div class="gallery-upload-icon">
+        <input type="file" class="action-file-input" style="display:none;" name="" data-ismodal="true"  data-size="<{$env.config.image.uploadedFileMaxSize}>"  multiple="multiple" data-remote="<{url action=toputil_ctl_image@uploadImages from=shop}>" accept="image/*">
+        <i class="glyphicon glyphicon-open action-upload"></i>
+      </div>
+      <hr>
+      <p>图片单张大小支持<{$env.config.image.uploadedFileMaxSize|format_filesize}>以下，超过<{$env.config.image.uploadedFileMaxSize|format_filesize}>则不能上传</p>
+      <p>支持图片格式：<{$env.config.image.image_support_filetype|implode:'、'}></p>
+      <p>建议图片尺寸：750px * 750px</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div id="applink_<{$domid}>" style="display:inline-block;vertical-align:top;">
+    <select class="x-select" id="<{$domid}>" name="<{$linktypename}>">
+        <option value="">请选择页面</option>
+        <option value="cat" <{if $linktypevalue=='cat'}> selected=true <{/if}>>分类商品页</option>
+        <option value="item" <{if $linktypevalue=='item'}> selected=true <{/if}>>商品详情页</option>
+        <option value="article" <{if $linktypevalue=='article'}> selected=true <{/if}>>文章详情页</option>
+        <option value="shop" <{if $linktypevalue=='shop'}> selected=true <{/if}>>店铺页</option>
+        <option value="activity" <{if $linktypevalue=='activity'}> selected=true <{/if}>>活动详情页</option>
+        <option value="promotions" <{if $linktypevalue=='promotions'}> selected=true <{/if}>>普通促销页</option>
+        <option value="coupon" <{if $linktypevalue=='coupon'}> selected=true <{/if}>>优惠券促销页</option>
+        <option value="h5" <{if $linktypevalue=='h5'}> selected=true <{/if}>>自定义h5页</option>
+    </select>
+    <div id="applinkobj_<{$domid}>"></div>
+    <div>
+    <input type="text" name=<{$name}> value=<{$value}>>
+    </div>
+</div>
+<script>
+function _callback_applink_<{$domid}>(rs, el){
+    $('applink_<{$domid}>').getElement('input[type=text]').value=JSON.decode(rs).id;
+}
+
+$('<{$domid}>').addEvent('change',function(){
+    var linktypevalue = this.value;
+    if(linktypevalue==''){
+        $('applinkobj_<{$domid}>').set('html','');
+    }else{
+        new Request.HTML({
+            method:'get',
+            update:$('applinkobj_<{$domid}>'),
+            url:'?app=sysapp&ctl=admin_utils&act=ajax_get_object',
+            data:'callback=_callback_applink_<{$domid}>&linktype='+linktypevalue+'&name=<{$name}>&value=<{$value}>',
+        }).send();
+    }
+});
+
+</script>

@@ -1,0 +1,68 @@
+<div class="tableform">
+  <form id="sysopen_form" name="sysopen_form" action="?app=sysopen&ctl=admin_chebang_appurl&act=updateUrl"  method="post">
+	<input type='hidden' name="chebang[url_id]" value='<{$chebang.url_id}>'> 
+    <div class="division">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tbody>
+          <tr>
+            <th><em class="red">链接信息</em></th>
+          </tr>
+          <tr>
+            <th><{t}>链接名：<{/t}></th>
+            <td><input type='text' vtype='required' name='chebang[url_name]' value='<{$chebang.url_name}>'></td>
+          </tr>
+          <tr>
+            <th><{t}>链接标识：<{/t}></th>
+            <td><input type='text' vtype='required' name='chebang[url_tag]' value='<{$chebang.url_tag}>'></td>
+          </tr>
+          <tr>
+            <th><{t}>链接地址：<{/t}></th>
+            <td><input type='text' vtype='required' name='chebang[url]' value='<{$chebang.url}>'></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody>
+        <tr valign="middle">
+          <td>
+            <{assign var="___c"  value='确定退出?'|t:'sysopen'}>
+
+            <{button label="保存并关闭窗口"|t:'sysopen' class="btn-primary" type="button"  onclick="submitForm(event,2)"}>
+
+            <{button label="关  闭"|t:'content' class="btn-secondary" type="button" isclosedialogbtn="1"}>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+
+<script>
+  var submitForm = function (event,sign){
+    var _form=$('sysopen_form');
+    switch (sign){
+      case 1:
+        var target={
+          onComplete:function(){
+                       location.reload();
+                     }};
+        break;
+      case 2:
+        var target={
+          onComplete:function(rs){
+                       if(rs&&!!JSON.decode(rs).success){
+                           window.finderGroup['<{$env.get.finder_id}>'].refresh();
+                           _form.getParent('.dialog').retrieve('instance').close();
+                       }
+                     }};
+        break;
+    }
+    _form.store('target',target);
+    if(confirm('是否保存?')) {
+      _form.fireEvent('submit',new Event(event));
+    }
+  };
+
+</script>

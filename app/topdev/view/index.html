@@ -1,0 +1,22 @@
+<div class="box box-solid">
+  <div class="box-header with-border">
+    <i class="fa fa-text-width"></i>
+    <h3 class="box-title">开发新API的一些约定</h3>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <blockquote>
+      <p>正确返回格式</p>
+      <small>data只要有返回值都要有键值，不允许data内直接返回数组</small>
+      <small>data为空：{"errorcode": 0,"msg": "","data": {}}</small>
+      <small>data为空{"errorcode": 0,"msg": "","data": null}</small>
+      <small>data不为空{"errorcode": 0,"msg": "","data": {"键":"值"}} data中有列表和翻页 {"errorcode": 0,"msg": "","data": {"list": [{},{}],"pagers": {"total": 3}}} list(列表主体数据)、pagers、total(总条数)都是关键字，要保持一致</small>
+      <p></p>
+      <p>错误返回格式</p>
+      <small>{"errorcode": 0,"msg": "","data": "true"}</small>
+      <small>{"errorcode": 0,"msg": "","data": [{},{}]}</small>
+      <small>{"errorcode": 0,"msg": "","data": [ ]}</small>
+    </blockquote>
+  </div>
+  <!-- /.box-body -->
+</div>

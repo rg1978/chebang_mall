@@ -1,0 +1,347 @@
+<style type="text/css">
+  .index-goods-config{background:#333333;border-collapse:separate;border-spacing:1px;}
+  .index-goods-config td{background:#FFFFFF;}
+  .choose-format {
+    margin-bottom: 15px;
+  }
+  .choose-format label {
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  .floor-format {
+    float: left;
+    width: 282px;
+    margin: 5px 10px;
+  }
+  .floor-format h3 {
+    font-size: 12px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #999;
+  }
+  .floor-format .thumbnail img {
+    width: 100%;
+  }
+  .floor-content {
+    margin-left: 300px;
+    overflow: auto;
+    height: 420px;
+  }
+  .floor-module > div {
+    float: left;
+  }
+  .floor-module .left {
+    margin-right: 1px;
+  }
+  .floor-module .left div {
+    width: 50px;
+    height: 54px;
+    background: #ddd;
+    margin-bottom: 1px;
+  }
+  .floor-module .left div:first-child {
+    height: 46px;
+  }
+  .floor-module .center {
+    width: 73px;
+    height: 101px;
+    background: #ddd;
+    margin-right: 1px;
+  }
+  .floor-module.floor-module-01 .right {
+    width: 157px;
+  }
+  .floor-module.floor-module-02 .right {
+    width: 230px;
+  }
+  .floor-module .right .area {
+    float: left;
+    margin-right: 1px;
+  }
+  .floor-module .right .area div {
+    width: 50px;
+    height: 50px;
+    background: #ddd;
+    margin-bottom: 1px;
+  }
+  .floor-module .right .area.big div {
+    height: 101px;
+  }
+  .floor-module.floor-module-01 .top div, .floor-module.floor-module-01 .foot div{
+    width: 51px;
+  }
+  .floor-module.floor-module-02 .top div, .floor-module.floor-module-02 .foot div{
+    width: 51px;
+  }
+  .floor-module .top div:last-child, .floor-module .foot div:last-child {
+    margin-right: 0;
+  }
+  .floor-module.floor-module-02 .top div:first-child {
+    width: 125px;
+  }
+  .floor-module.floor-module-02 .foot div:first-child {
+    width: 73px;
+  }
+  .floor-module .top div {
+    height: 75px;
+    margin-bottom: 1px
+  }
+  .floor-module .foot div {
+    height: 45px;
+  }
+  .clear {
+    clear: both;
+  }
+  #featured tbody {
+    border-top: 1px solid #dfdfdf;
+  }
+</style>
+<div class="widgetconfig" >
+  <div class="tableform">
+    <table width="100%">
+      <tr>
+        <th>版块名称：</th>
+        <td><input type="text" name="name" value="<{$setting.name}>"/></td>
+        <th>版块说明：</th>
+        <td><input type="text" name="desc" value="<{$setting.desc}>"/></td>
+      </tr>
+    </table>
+  </div>
+  <div class="floor-format">
+    <div class="tab-con">
+      <h3>区域示意</h3>
+      <div class="floor-module floor-module-01">
+        <div class="left">
+          <div class="select-area star-area"></div>
+          <div class="select-area slider-area"></div>
+        </div>
+        <div class="center select-area featured-area-01">
+        </div>
+        <div class="right">
+          <div class="area">
+            <div class="featured-area-02 select-area"></div>
+            <div class="featured-area-03 select-area"></div>
+          </div>
+          <div class="area big">
+            <div class="featured-area-04 select-area"></div>
+          </div>
+          <div class="area">
+            <div class="featured-area-05 select-area"></div>
+            <div class="featured-area-06 select-area"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <h3>示例图</h3>
+      <div class="thumbnail"><img src="images/icon.jpg" alt=""></div>
+    </div>
+  </div>
+  <div class="floor-content">
+    <div class="tableform" id="star">
+      <h5>楼层明星</h5>
+      <table width="100%">
+        <tr>
+          <th><{t app='topc'}>图片：<{/t}></th>
+          <td>
+            <input type="text" name='small_pic0' id="small_pic0" value="<{$setting.small_pic0}>" class="x-input">
+            <input type=button value="<{t app='topc'}>上传图片<{/t}>" onclick="addPic('small_pic0')">
+          </td>
+        </tr>
+        <tr>
+          <th><{t app='topc'}>图片描述：<{/t}></th>
+          <td><input type="text" name="small_pic0_txt" value="<{$setting.small_pic0_txt}>" class="x-input"></td>
+        </tr>
+        <tr>
+          <th><{t app='topc'}>图片链接：<{/t}></th>
+          <td><input type="text" name="small_pic0_link" value="<{$setting.small_pic0_link}>" class="x-input"></td>
+        </tr>
+      </table>
+    </div>
+    <div id="picAddress" class="tableform">
+      <h5>热门品牌</h5>
+        <div class="slider-type-con "<{if $setting.slider_type}>style="display: none;"<{/if}>>
+          <table  width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <th></th>
+              <td><{input type="object" object="brand" app="syscategory" select=checkbox multiple="true" value=$setting.brand textcol="brand_name" name="brand" breakpoint=1}></td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div id="featured" class="tableform">
+      <h5>楼层主推列表</h5>
+      <table width="100%">
+        <tbody id="featured-01">
+          <tr>
+            <th><{t app='topc'}>图片：<{/t}></th>
+            <td>
+              <input type="text" name='small_pic1' id="small_pic1" value="<{$setting.small_pic1}>" class="x-input">
+              <input type=button value="<{t app='topc'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('small_pic1')">
+            </td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片描述：<{/t}></th>
+            <td><input type="text" name="small_pic1_txt" value="<{$setting.small_pic1_txt}>" class="x-input"></td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片链接：<{/t}></th>
+            <td><input type="text" name="small_pic1_link" value="<{$setting.small_pic1_link}>" class="x-input"></td>
+          </tr>
+        </tbody>
+        <tbody id="featured-02">
+          <tr>
+            <th><{t app='topc'}>图片：<{/t}></th>
+            <td>
+              <input type="text" name='small_pic2' id="small_pic2" value="<{$setting.small_pic2}>" class="x-input"><input type=button value="<{t app='topc'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('small_pic2')">
+            </td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片描述：<{/t}></th>
+            <td><input type="text" name="small_pic2_txt" value="<{$setting.small_pic2_txt}>" class="x-input"></td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片链接：<{/t}></th>
+            <td><input type="text" name="small_pic2_link" value="<{$setting.small_pic2_link}>" class="x-input"></td>
+          </tr>
+        </tbody>
+        <tbody id="featured-03">
+          <tr>
+            <th><{t app='topc'}>图片：<{/t}></th>
+            <td>
+              <input type="text" name='small_pic3' id="small_pic3" value="<{$setting.small_pic3}>" class="x-input"><input type=button value="<{t app='topc'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('small_pic3')">
+            </td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片描述：<{/t}></th>
+            <td><input type="text" name="small_pic3_txt" value="<{$setting.small_pic3_txt}>" class="x-input"></td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片链接：<{/t}></th>
+            <td><input type="text" name="small_pic3_link" value="<{$setting.small_pic3_link}>" class="x-input"></td>
+          </tr>
+        </tbody>
+        <tbody id="featured-04">
+          <tr>
+            <th><{t app='topc'}>图片：<{/t}></th>
+            <td>
+              <input type="text" name='small_pic4' id="small_pic4" value="<{$setting.small_pic4}>" class="x-input"><input type=button value="<{t app='topc'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('small_pic4')">
+            </td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片描述：<{/t}></th>
+            <td><input type="text" name="small_pic4_txt" value="<{$setting.small_pic4_txt}>" class="x-input"></td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片链接：<{/t}></th>
+            <td><input type="text" name="small_pic4_link" value="<{$setting.small_pic4_link}>" class="x-input"></td>
+          </tr>
+        </tbody>
+        <tbody id="featured-05">
+          <tr>
+            <th><{t app='topc'}>图片：<{/t}></th>
+            <td>
+              <input type="text" name='small_pic5' id="small_pic5" value="<{$setting.small_pic5}>" class="x-input"><input type=button value="<{t app='topc'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('small_pic5')">
+            </td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片描述：<{/t}></th>
+            <td><input type="text" name="small_pic5_txt" value="<{$setting.small_pic5_txt}>" class="x-input"></td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片链接：<{/t}></th>
+            <td><input type="text" name="small_pic5_link" value="<{$setting.small_pic5_link}>" class="x-input"></td>
+          </tr>
+        </tbody>
+        <tbody id="featured-06">
+          <tr>
+            <th><{t app='topc'}>图片：<{/t}></th>
+            <td>
+              <input type="text" name='small_pic6' id="small_pic6" value="<{$setting.small_pic6}>" class="x-input"><input type=button value="<{t app='topc'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('small_pic6')">
+            </td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片描述：<{/t}></th>
+            <td><input type="text" name="small_pic6_txt" value="<{$setting.small_pic6_txt}>" class="x-input"></td>
+          </tr>
+          <tr>
+            <th><{t app='topc'}>图片链接：<{/t}></th>
+            <td><input type="text" name="small_pic6_link" value="<{$setting.small_pic6_link}>" class="x-input"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+  function addPic(eleid){
+    var goto_url=encodeURIComponent('<{url route="shopadmin" app="image" ctl="admin_manage" act="image_broswer" type="big"}>');
+    var url='<{url route="shopadmin" app="desktop" act="alertpages" goto=""}>'+goto_url;
+    Ex_Loader('modedialog',function(){
+      return new imgDialog(url,{onCallback:function(image_id,image_src){
+        $(eleid).value=image_src;
+      }})	;
+    });
+
+  }
+$$('#goods_exshow_config .goods-selector-handle input[type=radio]').addEvent('change',function(){
+  var radio  = this;
+  if(!radio.checked)return;
+  $$('#goods_exshow_config .goods-selector [data-extend]').each(function(item){
+
+    if(item.get('data-extend')!=radio.value){
+      item.hide();
+    }else{
+      item.show();
+    }
+  });
+});
+
+$('picAddress').addEvent('click',function(){
+  resetArea();
+  selectArea('.slider-area');
+})
+$('star').addEvent('click',function(){
+  resetArea();
+  selectArea('.star-area');
+})
+$('featured-01').addEvent('click',function(){
+  resetArea();
+  selectArea('.featured-area-01');
+})
+$('featured-02').addEvent('click',function(){
+  resetArea();
+  selectArea('.featured-area-02');
+})
+$('featured-03').addEvent('click',function(){
+  resetArea();
+  selectArea('.featured-area-03');
+})
+$('featured-04').addEvent('click',function(){
+  resetArea();
+  selectArea('.featured-area-04');
+})
+$('featured-05').addEvent('click',function(){
+  resetArea();
+  selectArea('.featured-area-05');
+})
+$('featured-06').addEvent('click',function(){
+  resetArea();
+  selectArea('.featured-area-06');
+})
+
+function resetArea(){
+  $$('.select-area').setStyle('background', '#ddd');
+}
+function selectArea(el){
+  $$(el).setStyle('background', '#e0457e');
+}
+
+$$('.floor-content .tableform').addEvent('click',function(){
+  $$('.floor-content .tableform').setStyle('border-color','#d9d9d9');
+  $(this).setStyle('border-color','#d15e82');
+})
+$$('#featured tbody').addEvent('click',function(){
+  $$('#featured tbody').setStyle('background','transparent');
+  $(this).setStyle('background','#fff');
+})
+</script>

@@ -1,0 +1,61 @@
+<div class="recharge-container">
+  <div class="recharge-header clearfix">
+    <div class="recharge-title">
+      预存款充值
+    </div>
+    <div class="recharge-steps">
+      <span class="current">1.填写充值金额</span>
+      <span>2.选择支付方式</span>
+      <span>3.充值成功</span>
+    </div>
+  </div>
+  <div class="recharge-content">
+    <form class="recharge-form" action="<{url action=topc_ctl_member_deposit@rechargePay}>" method="post">
+      <div class="form-title">填写充值金额</div>
+      <dl class="form-group">
+        <dt class="txt">充值账户:</dt>
+        <dd class="txt" id='user-name'></dd>
+      </dl>
+      <dl class="form-group group-amount">
+        <dt class="txt">充值金额</dt>
+        <dd><input type="text" name="amount" class="input-block" value="" placeholder="元"><div class="dv-error"><span class="icon icon-close-b"></span><span class="error-content">输入金额整数部位不得超过7位数</span></div></dd>
+      </dl>
+      <div class="form-action">
+        <button type="submit" class="btn btn-danger btn-block btn-sub"><span><span>下一步</span></span></button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  $('#user-name').html($.cookie('UNAME'));
+  $('input[name="amount"]').on('keyup', function() {
+    var val = $(this).val();
+    if(/^\d+\.?\d{0,2}$/.test(val)){
+      if(val.indexOf('.') > 0) {
+        if(val.split('.')[0].length > 7) {
+         checkNumber($(this), false);
+        }else {
+          checkNumber($(this), true);
+        }
+      }else if(val.length > 7) {
+        checkNumber($(this), false);
+      }else {
+        checkNumber($(this), true);
+      }
+    }else{
+      $(this).val($(this).val().substring(0,$(this).val().length-1));
+    }
+  });
+  function checkNumber(el, flag) {
+    if(!flag) {
+      $('.group-amount').addClass('amount-error');
+      $('.btn-sub').attr('disabled', 'disabled');
+      $(el).select();
+    }else {
+      if($('.group-amount').hasClass('amount-error')){
+        $('.group-amount').removeClass('amount-error');
+        $('.btn-sub').removeAttr('disabled');
+      }
+    }
+  }
+</script>

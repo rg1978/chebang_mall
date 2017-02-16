@@ -1,0 +1,11 @@
+<div class="footer-nav">
+ 	<{foreach from=$data item=sitemenu key=menukey}>
+	    <{if $sitemenu.url}>
+	    <a href="<{$sitemenu.url}>" ><{$sitemenu.title}></a>
+	    <{else}>
+	    <a href="#" ><{$sitemenu.title}></a>
+	    <{/if}>
+	  	<span>|</span>
+	<{/foreach}>
+</div>
+

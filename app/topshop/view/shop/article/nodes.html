@@ -1,0 +1,138 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+  	<div class="clearfix">
+  		<div class="pull-right">
+      		<a href="javascript:void(0);" class="btn btn-info node-edit" data-url="<{url action=topshop_ctl_shop_article@editNode}>" >添加分类</a>
+      		&nbsp;&nbsp;
+      		<a href="<{url action=topshop_ctl_shop_article@index}>" class="btn btn-warning btn-sm">查看文章</a>
+      	</div>
+      </div>
+  </div>
+  <div class="panel-body">
+    <table class="table table-primary table-hover table-goods text-center">
+	  <thead>
+	    <tr>
+	      <td class="col-name">分类名称</td>
+	      <td>分类排序</td>
+	      <td>更新时间</td>
+	      <td>操作</td>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  <{if $nodes.count>0}>
+	  	<{foreach from=$nodes.list item=val}>
+	  	<tr>
+	      <td><{$val.node_name}></td>
+	      <td><{$val.order_sort}></td>
+	      <td><{$val.modified|cdate}></td>
+	      <td><a class="node-edit" href="javascript:void(0);" data-url="<{url action=topshop_ctl_shop_article@editNode node_id=$val.node_id}>">编辑</a>&nbsp;|&nbsp;<a class="node-del" href="javascript:void(0);" data-nodeId="<{$val.node_id}>">删除</a></td>
+	    </tr>
+	  	<{/foreach}>
+	  	<{else}>
+	  	<tr>
+	  		<td algin="center" colspan="4"><{t}>还没分类哦<{/t}></td>
+	  	</tr>
+	  <{/if}>
+	  
+	  </tbody>
+	  </table>
+  </div>
+</div>
+<div class="modal fade" id="nodes-modal" tabindex="-1" role="dialog" aria-labelledby="nodesModalLabel">
+<form action="<{url action=topshop_ctl_shop_article@saveNode}>" method="post" class="form-horizontal" data-validate-onsuccess="ajaxSubmit" role="form">
+  <div class="modal-dialog edit-dialog" role="document">
+  </div>
+  </form>
+</div>
+
+<!-- 删除分类提示框 -->
+<div class="modal fade" id="del-node" tabindex="-1" role="dialog" aria-labelledby="delCatLabel">
+	<div class="modal-dialog modal-sm" role="document" aria-hidden="true">
+		<div class="modal-content del-node">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        				<h4 class="modal-title" id="gridSystemModalLabel">删除分类</h4>
+			</div>
+			<div class="modal-body">
+			        删除此分类，此分类下所属文章将变为未分类，确定删除吗？
+			      </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        				<button type="button" class="btn btn-primary" id="del-cat-sure">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+  // 删除分类
+	var delModal = $('.node-del');
+    var delUrl = '<{url action=topshop_ctl_shop_article@delNode}>';
+	delModal.each(function(){
+		var $this = $(this);
+		$this.on('click',function(){
+			$('#del-node').modal('show');
+			$('#del-cat-sure').on('click',function(){
+				$('#del-node').modal('hide');
+				var nodeId = $this.attr('data-nodeId');
+				$.post(delUrl,{node_id:nodeId},function(rs){
+					  if(rs.error) {
+				        $('#messagebox').message(rs.message);
+				        return;
+				      }
+				      if(rs.success) {
+				        $('#messagebox').message(rs.message, 'success');
+				      }
+				      if(rs.redirect) {
+				        setTimeout(function(){location.href=rs.redirect;}, 800);
+				      }
+				})
+			})
+		})
+	})
+	
+  // 编辑分类
+  var nodeEdit = $('.node-edit');
+  nodeEdit.each(function(){
+		var $this = $(this);
+		$this.on('click',function(){
+			var remoteUrl = $(this).attr('data-url');
+			$.ajax({
+				type:'GET',
+				url:remoteUrl,
+				dataType:'json',
+				success:function(rs){
+					if(rs.error) {
+				        $('#messagebox').message(rs.message);
+				        return;
+				      }
+				      if(rs.success) {
+				        $('.edit-dialog').html(rs.html);
+				        $('#nodes-modal').modal('toggle');
+				      }
+				      if(rs.redirect) {
+				        setTimeout(function(){location.href=rs.redirect;}, 800);
+				      }
+				}
+			});
+		});
+	});
+  
+  function ajaxSubmit (e) {
+	    var form = e.target;
+	    e.preventDefault();
+	    $.post(form.action, $(form).serialize(), function(rs) {
+	      if(rs.error) {
+	        $('#messagebox').message(rs.message);
+	        return;
+	      }
+	      if(rs.success) {
+	        $('#messagebox').message(rs.message, 'success');
+	      }
+	      if(rs.redirect) {
+	        setTimeout(function(){location.href=rs.redirect;}, 800);
+	      }
+	    });
+	  }
+</script>
+

@@ -1,0 +1,110 @@
+{
+    "title": "store.items.all.get",
+    "slices": [
+        {
+            "input": "${var.params}",
+            "module": "encoding.json.decode"
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "msg_id",
+                "value": "${var.msg_id}"
+            }
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "shopex_permission",
+                "value": "${var.permission}"
+            }
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "shopex_adapter",
+                "value": "${var.shopex_adapter}"
+            }
+        },
+        {
+            "module": "control.map",
+            "mapping": {
+                "format": "json",
+                "v": "v1",
+                "page_no": "${global.shopex_adapter.page_no}",
+                "page_size": "${global.shopex_adapter.page_size}",
+               
+                "fields": "store,item_id,bn,store,title,shop_cat_id,brand_id,image_default_id,barcode,cost_price,list_time,delist_time,approve_status,price,mkt_price,modified_time"
+            }
+        },
+        {
+            "module": "net.prism.post",
+            "params": {
+                "key": "${global.shopex_permission.bbc_appkey}",
+                "secret": "${global.shopex_permission.bbc_secret}",
+                "host": "${global.shopex_permission.api_url}",
+                "token": "${global.shopex_permission.bbc_access_token}",
+                "api": "api/sysitem?method=item.search",
+                "params": "${var}"
+            }
+        },
+        {
+            "module": "encoding.json.decode"
+        },
+        {
+            "mapping": {
+                "res": [
+                    {
+                        "mapping": {
+                            "data": "",
+                            "exception": "${var.error.exception}",
+                            "err_msg": "${var.error.message}",
+                            "msg_id": "${global.msg_id}",
+                            "res": "${var.error.code}",
+                            "rsp": "fail",
+                            "spider": "${var}"
+                        },
+                        "module": "control.map"
+                    },
+                    {
+                        "module": "control.assert",
+                        "params": {
+                            "assert": "is",
+                            "left": "${var.spider.error}",
+                            "right": ""
+                        }
+                    },
+                    {
+                        "input": "${var.spider.result}",
+                        "module": "control.eval"
+                    },
+                    {
+                        "module": "script.lua",
+                        "params": {
+                            "script": "to_ome_item_a"
+                        }
+                    },
+                    {
+                        "module": "encoding.json.encode.ex"
+                    },
+                    {
+                        "mapping": {
+                            "data": "${var}",
+                            "err_msg": "",
+                            "msg_id": "${global.msg_id}",
+                            "res": "",
+                            "rsp": "succ"
+                        },
+                        "module": "control.map"
+                    }
+                ]
+            },
+            "module": "control.map"
+        },
+        {
+            "input": "${var.res}",
+            "module": "encoding.json.encode"
+        }
+    ],
+    "log_level": 5
+}

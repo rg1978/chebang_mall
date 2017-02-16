@@ -1,0 +1,36 @@
+<app>
+    <name>app-api</name>
+    <type>site</type>
+    <description>为app提供对外api服务</description>
+
+    <author>
+        <name>shopex开发团队</name>
+        <email>dev@shopex.cn</email>
+        <url>http://www.shopex.cn</url>
+    </author>
+
+    <version>0.1</version>
+    <license>shopex license</license>
+
+    <depends>
+        <app>ectools</app>
+        <app>entermembercenter</app>
+        <app>search</app>
+        <app>site</app>
+        <app>sysaftersales</app>
+        <app>syscategory</app>
+        <app>sysclearing</app>
+        <app>sysconf</app>
+        <app>syscontent</app>
+        <app>sysdecorate</app>
+        <app>sysitem</app>
+        <app>syslogistics</app>
+        <app>syspromotion</app>
+        <app>sysrate</app>
+        <app>sysshop</app>
+        <app>system</app>
+        <app>systrade</app>
+        <app>sysuser</app>
+        <app>toputil</app>
+    </depends>
+</app>

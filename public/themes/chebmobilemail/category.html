@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <{header app=topwap}>
+    <style>
+      .shopex-row.shopex-fullscreen>[class*="shopex-col-"] {
+        height: 100%;
+      }
+      .shopex-col-xs-3,
+      .shopex-control-content {
+        overflow-y: auto;
+        height: 100%;
+      }
+      .shopex-segmented-control .shopex-control-item {
+        line-height: 3rem;
+        width: 100%;
+      }
+      .shopex-segmented-control.shopex-segmented-control-inverted .shopex-control-item.shopex-active {
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shopex-bar">
+      <header class="home-header store_header">
+        <div class="header_leftBox"><a class="shopex-action-back"><img src="images/prev_icon.png" /></a></div>
+        <div class="header_middleBox yellow">分类</div>
+      </header>
+    </div>
+    <{main}>
+  </body>
+</html>

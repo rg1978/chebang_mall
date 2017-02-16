@@ -1,0 +1,164 @@
+<form id="cancelForm" action="?app=sysaftersales&ctl=refunds&act=dorefund"  method="POST" class="tableform">
+  <input type='hidden' name='refundsData[aftersales_bn]' value='<{$data.aftersales_bn}>'>
+  <input type='hidden' name='data[refunds_id]' value='<{$data.refunds_id}>'>
+  <input type='hidden' name='refundsData[tid]' value='<{$data.tid}>'>
+  <input type='hidden' name='refundsData[oid]' value='<{$data.oid}>'>
+  <input type='hidden' name='refundsData[shop_id]' value='<{$data.shop_id}>'>
+  <input type='hidden' name='refundsData[user_id]' value='<{$data.user_id}>'>
+  <div class="division">
+    <h5>明细</h5>
+    <table width="100%">
+      <tr>
+        <th><{t}>退款类型：<{/t}></th>
+        <{if $data.refunds_type == '0' }>
+        <td>售后退款</td>
+        <{else}>
+        <td>取消订单退款</td>
+        <{/if}>
+        <{if $data.refunds_type == '0' }>
+        <th><{t}>售后单号：<{/t}></th>
+        <td><{$data.aftersales_bn}></td>
+        <{else}>
+        <th><{t}>取消订单号：<{/t}></th>
+        <td><{$data.tid}></td>
+        <{/if}>
+      </tr>
+      <tr>
+        <th><{t}>退款方式：<{/t}></th>
+        <td>线下退款</td>
+        <th><{t}>退款单所有商家：<{/t}></th>
+        <td><{$data.shop_id|shopname}></td>
+      </tr>
+      <tr>
+        <th><{t}>订单金额：<{/t}></th>
+        <td>
+          <em class="red"><{$data.order_price|cur}> (积分抵扣金额：<{$data.points_fee|cur}>)</em>
+        </td>
+        <th><{t}>商家退款：<{/t}></th>
+        <td>
+          <em class="red"><{$data.total_price|cur}> ( 包含积分抵钱：<{$data.points_fee|cur}>)</em>
+        </td>
+      </tr>
+      <tr>
+        <th><{t}>实需退款：<{/t}></th>
+        <td colspan="3">
+          <{if $data.hongbao_fee > 0 }>
+          <em class="red"><{$refundFee|cur}>(商家退款-红包支付-积分抵钱 [<{$data.total_price|cur}> - <{$data.hongbao_fee|cur}> - <{$data.points_fee|cur}>])</em>
+          <{else}>
+          <em class="red"><{$data.refund_fee|cur}>(商家退款-积分抵钱 [<{$data.total_price|cur}> - <{$data.points_fee|cur}>])</em>
+          <{/if}>
+        </tr>
+      </table>
+  </div>
+  <{if $data.hongbao_fee > 0 }>
+  <div class="division">
+    <h5>退红包</h5>
+    <table width="100%" class="refund_table">
+      <input type="hidden" name="refundsData[user_hongbao_id]" value=<{$data.user_hongbao_id}>>
+      <tr>
+        <th>退还红包</th>
+        <td  colspan="2">
+          <input type="radio" name="refundsData[is_refund_hongbao]" value="true" checked disabled=disabled> 是
+        </td>
+        <th>退还红包金额</th>
+        <td  colspan="2">
+          <em class="red"><{$data.hongbao_fee|cur}></em>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <{/if}>
+  <div class="division">
+    <h5>退款</h5>
+    <table width="100%" class="refund_table">
+      <tr>
+        <th>
+          实需退款：
+        </th>
+        <td colspan="2">
+          <em class="red"><{$refundFee|cur}></em>
+          <input type="hidden" value="<{$refundFee}>" name="refundsData[money]">
+          <input type="hidden" value="<{$data.total_price}>" name="refundsData[total_price]">
+        </td>
+      </tr>
+      <tr>
+        <th>
+          退款方式：
+        </th>
+        <td  colspan="2" >
+          <input type="radio" name="refundsData[rufund_type]" value="offline" id="offline_radio"checked>  线下退款
+          <input type="radio" name="refundsData[rufund_type]" value="deposit" id="deposit_radio">  退至预存款
+        </td>
+      </tr>
+    </table>
+
+    <table width="100%" id="refund_table" style="display:block">
+      <tr>
+        <th><{t}>退款银行：<{/t}></th>
+        <td ><em class="red">*</em><{input type='text' id='payBank' name='refundsData[refund_bank]' style=" margin-right:3px" value='' width="140" vtype="required"}></td>
+        <th><{t}>退款帐号：<{/t}></th>
+        <td><em class="red">*</em><{input type='text' name='refundsData[refund_account]' id='payAccount' value='' width="140" vtype="required"}></td>
+      </tr>
+      <tr>
+        <th><{t}>收款银行：<{/t}></th>
+        <td><em class="red">*</em><{input type='text' id='payBank' name='refundsData[receive_bank]' style=" margin-right:3px" value='' width="140" vtype="required"}></td>
+        <th><{t}>收款帐号：<{/t}></th>
+        <td><em class="red">*</em><{input type='text' name='refundsData[receive_account]' id='payAccount' value='' width="140" vtype="required"}></td>
+      </tr>
+      <tr>
+        <th><{t}>退款人：<{/t}></th>
+        <td><em class="red">*</em>
+        <{input type='text' id='refundPeopleName' name='refundsData[refund_people]' style=" margin-right:3px" value=$user.name width="140" vtype="required"}>(<{$user.name}>)
+        </td>
+        <th><{t}>收款人：<{/t}></th>
+        <td><em class="red">*</em>
+        <{input type='text' id='beneficiaryName' name='refundsData[beneficiary]' value=$data.user_name style=" margin-right:3px" width="140" vtype="required"}>(<{$data.user_name}>)
+        </td>
+      </tr>
+    </table>
+
+    <table width="100%" id="refund_table_deposit" style="display:none">
+      <tr>
+        <th><{t}>收款帐号：<{/t}></th>
+        <td><em class="red"><{$data.user_name}></em>
+          <input type='hidden' name='refundsData[receive_account_deposit]' value='<{$data.user_name}>'>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="table-action">
+    <{button type="submit" id='cancel-form-submit' label="确定"}>
+  </div>
+</form>
+
+<script>
+
+  $('cancelForm').store('target',{
+    onComplete:function(rs){
+      if(!rs) return;
+      rs = JSON.decode(rs);
+      if(rs.success){
+        if(window.finderGroup) window.finderGroup['<{$env.get.finder_id}>'].refresh();
+        if($('cancelForm').getParent('.dialog')){
+          var Dlg = $('cancelForm').getParent('.dialog').retrieve('instance');
+          if(Dlg.update){
+            Dlg.update.retrieve('instance').initContent();
+          }
+          Dlg.close();
+        }
+      }
+    }
+  });
+
+  $('offline_radio').addEvent('click',function(){
+    $('refund_table').setStyle('display', 'block');
+    $('refund_table_deposit').setStyle('display', 'none');
+  });
+
+  $('deposit_radio').addEvent('click',function(){
+    $('refund_table').setStyle('display', 'none');
+    $('refund_table_deposit').setStyle('display', 'block');
+  });
+
+</script>

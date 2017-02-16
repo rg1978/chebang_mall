@@ -1,0 +1,5 @@
+a:6:{s:8:"grade_id";i:1;s:10:"grade_name";s:12:"普通会员";s:10:"grade_logo";s:92:"http://images.bbc.shopex123.com/images/4c/33/d1/edf40abb6a51123105830097c500f77469c35140.png";s:10:"experience";i:0;s:13:"default_grade";i:1;s:8:"validity";i:0;}
+a:6:{s:8:"grade_id";i:2;s:10:"grade_name";s:12:"初级会员";s:10:"grade_logo";s:0:"";s:10:"experience";i:1000;s:13:"default_grade";i:0;s:8:"validity";i:0;}
+a:6:{s:8:"grade_id";i:3;s:10:"grade_name";s:12:"中级会员";s:10:"grade_logo";s:0:"";s:10:"experience";i:3000;s:13:"default_grade";i:0;s:8:"validity";i:0;}
+a:6:{s:8:"grade_id";i:4;s:10:"grade_name";s:12:"高级会员";s:10:"grade_logo";s:0:"";s:10:"experience";i:6000;s:13:"default_grade";i:0;s:8:"validity";i:0;}
+a:6:{s:8:"grade_id";i:5;s:10:"grade_name";s:12:"白金会员";s:10:"grade_logo";s:0:"";s:10:"experience";i:10000;s:13:"default_grade";i:0;s:8:"validity";i:0;}

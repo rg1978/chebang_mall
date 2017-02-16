@@ -1,0 +1,11 @@
+{
+    "enabled": true,
+    "service": "httpd",
+    "title": "erp_bbc",
+    "pipe": "store.trade.refund.add.async",
+    "service_args": {
+        "path": "ecos.ome-bbc/store.trade.refund.add/async"
+    },
+    "pipe_params": {},
+    "input": null
+}

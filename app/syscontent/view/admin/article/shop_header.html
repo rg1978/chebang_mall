@@ -1,0 +1,25 @@
+<form method="post" action="<{$form_url}>" id="search-form">
+	<div class="gridlist-action">
+		<label>&nbsp;&nbsp;文章标题：</label>
+		<input type="text" name="s_k" value="<{$keyword}>" />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<label>&nbsp;&nbsp;商家选择：</label>
+		<{html_options name='shop_id' options=$options selected=$shop_id}> 
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<{button type="button" id="search" app="desktop" label="检索"|t:'sysclearing'}>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+	</div>
+</form>
+<script>
+var search = $("search");
+var form = $("search-form");
+search.addEvent('click',function(){
+	var href = form.get('action');
+	var shopId,keyword;
+	shopId = $$("select[name='shop_id']").get('value');
+	keyword = $$("input[name='s_k']").get('value');
+	var locationUrl = href+'&keyword='+keyword+'&shop_id='+shopId;
+	W.page(locationUrl);
+});
+
+</script>

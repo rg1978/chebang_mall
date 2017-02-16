@@ -1,0 +1,105 @@
+<{if $setting.pic.1.tagname=='one'}>
+<section class="floor half floor-one">
+  <h3 class="floor-hd">
+    <span class="tit"><{$setting.pic.first.tagname}></span>
+  </h3>
+  <div class="floor-bd floor-col-2">
+    <div class="col-xs-6 lf-up">
+      <a href="<{url to=$data.pic.first.1.linktarget}>" class="fl-image">
+        <{img src="loading_bg.png" app="topm" data-echo=$data.pic.first.1.link alt=""}>
+      </a>
+    </div>
+    <div class="col-xs-6 lf-up">
+      <a href="<{url to=$data.pic.first.2.linktarget}>" class="fl-image">
+        <{img src="loading_bg.png" app="topm" data-echo=$data.pic.first.2.link alt=""}>
+      </a>
+    </div>
+  </div>
+  <div class="floor-more">
+    <a href="<{url to=$setting.pic.first.more}>" target="_blank">
+      <button class="ui-btn ui-btn-outlined ui-btn-warning">查看更多</button>
+    </a>
+  </div>
+</section>
+<{/if}>
+<{if $setting.pic.1.tagname=='three'}>
+<section class="floor floor-three">
+  <h3 class="floor-hd">
+    <span class="tit"><{$setting.pic.third.tagname}></span>
+  </h3>
+  <div class="floor-bd floor-col-2 bd-b">
+    <div class="col-xs-4">
+     <div class="rt-half bd-0">
+       <a href="<{url to=$data.pic.third.1.linktarget}>" class="fl-image">
+         <{img src="loading_bg.png" app="topm" data-echo=$data.pic.third.1.link alt=""}>
+       </a>
+     </div>
+    </div>
+    <div class="col-xs-8">
+      <div class="lf-up" >
+        <a href="<{url to=$data.pic.third.2.linktarget}>" class="fl-image">
+          <{img src="loading_bg.png" app="topm" data-echo=$data.pic.third.2.link alt=""}>
+        </a>
+      </div>
+      <div class="floor-col-2">
+        <div class="col-xs-6 lf-down">
+          <a href="<{url to=$data.pic.third.3.linktarget}>" class="fl-image">
+            <{img src="loading_bg.png" app="topm" data-echo=$data.pic.third.3.link alt=""}>
+          </a>
+        </div>   
+        <div class="col-xs-6 bfree lf-down">
+          <a href="<{url to=$data.pic.third.4.linktarget}>" class="fl-image">
+            <{img src="loading_bg.png" app="topm" data-echo=$data.pic.third.4.link alt=""}>
+          </a> 
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="floor-more">
+    <a href="<{url to=$setting.pic.third.more}>" target="_blank">
+      <button class="ui-btn ui-btn-outlined ui-btn-warning">查看更多</button>
+    </a>
+  </div>
+</section>
+<{/if}>
+
+<{if $setting.pic.1.tagname=='two'}>
+<section class="floor floor-two">
+  <h3 class="floor-hd">
+    <span class="tit"><{$setting.pic.second.tagname}></span>
+  </h3>
+  <div class="floor-bd floor-col-2 bd-b">
+    <div class="col-xs-8">
+      <div class="lf-up">
+        <a href="<{$data.pic.second.1.linktarget}>" class="fl-image" >
+          <{img src="loading_bg.png" app="topm" data-echo=$data.pic.second.1.link alt=""}>
+        </a>
+      </div>
+      <div class="floor-col-2">
+        <div class="col-xs-6 lf-down">
+          <a href="<{$data.pic.second.2.linktarget}>" class="fl-image">
+            <{img src="loading_bg.png" app="topm" data-echo=$data.pic.second.2.link alt=""}>
+          </a>
+        </div>   
+        <div class="col-xs-6 bfree lf-down">
+          <a href="<{$data.pic.second.3.linktarget}>" class="fl-image">
+            <{img src="loading_bg.png" app="topm" data-echo=$data.pic.second.3.link alt=""}>
+          </a>
+        </div> 
+      </div>
+    </div>
+    <div class="col-xs-4">
+      <div class="rt-half bd-0">
+       <a href="<{$data.pic.second.4.linktarget}>" class="fl-image">
+       <{img src="loading_bg.png" app="topm" data-echo=$data.pic.second.4.link alt=""}>
+       </a>
+      </div>
+    </div>
+  </div>
+  <div class="floor-more">
+    <a href="<{$setting.pic.second.more}>" target="_blank">
+      <button class="ui-btn ui-btn-outlined ui-btn-warning">查看更多</button>
+    </a>
+  </div>
+</section> 
+<{/if}>

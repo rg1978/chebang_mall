@@ -1,0 +1,65 @@
+<div class="tableform">
+  <style>
+    .cache,.cache th, .cache td {border:1px solid #ccc}
+    .cache th {text-align:left}
+  </style>
+
+  <h3><{t}>缓存管理<{/t}></h3>
+  <h4><{t}>缓存资源<{/t}></h4>
+  <div class="division">
+    <table class="cache">
+      <tr>
+        <th>资源名</th>
+        <th>支持缓存类型</th>
+        <th>配置</th>
+        <th>清除</th>
+      </tr>
+
+      <{foreach from=$storeResources item=storeResource}>
+      <tr>
+        <td>
+          <{$storeResource.name}>
+        </td>
+        <td>
+          <{foreach from=$storeResource.supports item=support name=supports}><{$support.title}>(<{$support.name}>)<{if not $env.foreach.supports.last}><br/><{/if}><{/foreach}>
+        </td>
+        <td><{foreach from=$storeResource.config key=configKey item=configValue}><{$configKey}> : <{$configValue}><br><{/foreach}></td>
+        <td>
+          <{if $nullResource !== $storeResource.name}> 
+          <{capture name="href"}><{url route="shopadmin" app="desktop" ctl="cachemgr" act="clean" resource=$storeResource.name}><{/capture}>
+          <{button type="button" href=$env.capture.href onclick="" label=$___desktop="清除"|t:'desktop'}>
+          <{/if}>
+        </td>
+      </tr>
+      <{/foreach}>
+    </table>    
+  </div>
+
+  <h4><{t}>缓存类型说明<{/t}></h4>
+  <div class="division">
+    <table class="cache">
+      <tr>
+        <th>类型标识</th>
+        <th>标题</th>
+        <th>详细说明</th>
+      </tr>
+
+      <{foreach from=$stores key=name item=store}>
+      <tr>
+        <td>
+          <{$name}>
+        </td>
+        <td>
+          <{$store.title}>
+        </td>
+        <td>
+          <{$store.memo}>
+        </td>
+      </tr>
+      <{/foreach}>
+    </table>    
+  </div>
+</div>
+<script>
+</script>
+

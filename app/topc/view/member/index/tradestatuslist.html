@@ -1,0 +1,59 @@
+<{foreach from=$trades item=tradeitem}>
+<li>
+  <div class="order-item-intro">
+    <span><{$tradeitem.created_time|cdate:"FDATE"}></span>
+    <span>订单编号：<{$tradeitem.tid}><{$tradeitem.subdomain}></span>
+    <a href="<{url subdomain=$tradeitem.subdomain action=topc_ctl_shopcenter@index shop_id=$tradeitem.shop_id}>"><{$tradeitem.shop_id|shopname}></a>
+    <{im shop_id=$tradeitem.shop_id type=small}>
+  </div>
+  <div class="order-item-info">
+    <div class="info-col info-col-01">
+      <{assign var=orderItemCount value=$tradeitem.order|count}>
+      <{foreach from=$tradeitem.order item=orderitem name=orderlist}>
+       <a href="<{url action=topc_ctl_item@index item_id=$orderitem.item_id}>">
+        <{if $env.foreach.orderlist.iteration < 5}>
+          <{if $orderitem.pic_path}>
+          <img width="64" height="64" src="<{$orderitem.pic_path|storager:t}>" title="<{$orderitem.title}>">
+          <{else}>
+          <img width="64" height="64" src="<{$defaultImageId.T.default_image}>" title="<{$orderitem.title}>">
+          <{/if}>
+        <{/if}>
+      </a>
+      <{/foreach}>
+      <{if $orderItemCount>5}>
+       <span class="sp-more">
+          <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">
+          查看更多
+          </a><br /><span class="info-goods-num">共<{$orderItemCount|count}>件</span>
+       </span>
+      <{/if}>
+    </div>
+    <div class="info-col info-col-02">
+      <p>
+        <{if $tradeitem.status == "WAIT_BUYER_PAY"}>
+        等待买家付款
+        <{elseif $tradeitem.status == "WAIT_SELLER_SEND_GOODS" && $tradeitem.pay_type=="online"}>
+        买家已付款
+        <{elseif $tradeitem.status == "WAIT_SELLER_SEND_GOODS" && $tradeitem.pay_type=="offline"}>
+        等待买家付款
+        <{elseif $tradeitem.status == "WAIT_BUYER_CONFIRM_GOODS"}>
+        卖家已发货
+        <{elseif $tradeitem.status == "TRADE_FINISHED"}>
+        订单已完成
+        <{elseif $tradeitem.status == "TRADE_CLOSED_BY_SYSTEM" || $tradeitem.status == "TRADE_CLOSED"}>
+        订单已关闭
+        <{/if}>
+      </p>
+
+    </div>
+    <div class="info-col info-col-03">
+      <span><{$tradeitem.payment|cur}></span>
+    </div>
+    <div class="info-col info-col-04">
+      <div class="center-layout">
+        <a href="<{url action=topc_ctl_member_trade@tradeDetail tid=$tradeitem.tid}>">查看详情</a>
+      </div>
+    </div>
+  </div>
+</li>
+<{/foreach}>

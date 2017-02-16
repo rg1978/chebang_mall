@@ -1,0 +1,61 @@
+<desktop>
+
+    <permissions>
+        <permission id="cat" display='true' parent="0" workground='syscategory.workground.category'>分类</permission>
+        <permission id="cat_del" display='true' parent="cat" workground='syscategory.workground.category'>分类删除</permission>
+        <permission id="cat_edit" display='true' parent="cat" workground='syscategory.workground.category'>分类编辑</permission>
+        <permission id="brand" display='true' parent="0" workground='syscategory.workground.category'>品牌</permission>
+        <permission id="brand_edit" display='true' parent="brand" workground='syscategory.workground.category'>品牌编辑</permission>
+        <permission id="brand_del" display='true' parent="brand" workground='syscategory.workground.category'>品牌删除</permission>
+        <permission id="prop" display='true' parent="0" workground='syscategory.workground.category'>属性</permission>
+        <permission id="prop_setdefaultpic" display='true' parent="prop" workground='syscategory.workground.category'>属性默认图片</permission>
+        <permission id="prop_edit" display='true' parent="prop" workground='syscategory.workground.category'>属性编辑</permission>
+        <permission id="prop_del" display='true' parent="prop" workground='syscategory.workground.category'>属性删除</permission>
+    </permissions>
+
+    <workground name="类目" id="syscategory.workground.category" controller="admin_cat" action="index" order='30'>
+        <menugroup name="品牌管理">
+            <menu controller='admin_brand' action='index' permission='brand' display='true' order='20'>品牌列表</menu>
+            <menu controller='admin_brand' action='index' params="action:dodelete" permission='brand_del' display='false' order='20'>品牌删除</menu>
+            <menu controller='admin_brand' action='create' permission='brand_edit' display='false' order='10'>添加品牌</menu>
+            <menu controller='admin_brand' action='saveBrand' permission='brand_edit' display='false' order='10'>保存品牌</menu>
+            <menu controller='admin_brand' action='relcat' permission='brand_edit' display='false' order='10'>品牌关联分类</menu>
+            <menu controller='admin_brand' action='brandRelCat' permission='brand_edit' display='false' order='10'>品牌关联类目页面</menu>
+            <menu controller='admin_brand' action='saveBrandRelCat' permission='brand_edit' display='false' order='10'>保存品牌关联类目</menu>
+        </menugroup>
+        <menugroup name="属性管理">
+            <menu controller='admin_props' action='index' permission='prop' display='true' order='40'>属性列表</menu>
+  			<menu controller='admin_props' action='examineValues' permission='prop' display='true' order='50'>属性值审核</menu>
+            <menu controller='admin_props' action='index' permission='prop_del' params="action:dodelete" display='false' order='40'>属性列表</menu>
+            <menu controller='admin_props' action='create' permission='prop_edit' display='false' order='30'>添加属性页面</menu>
+            <menu controller='admin_props' action='saveProp' permission='prop_edit' display='false' order='30'>保存属性</menu>
+            <menu controller='admin_props' action='settingDefaultPic' permission='prop_setdefaultpic' display='false' order='30'>编辑属性默认图页面</menu>
+            <menu controller='admin_props' action='saveDefaultPic' permission='prop_setdefaultpic' display='false' order='30'>设置属性默认图</menu>
+            <menu controller='admin_props' action='selPropDialog' permission='cat_edit' display='false' order='30'>选择属性</menu>
+            <menu controller='admin_props' action='previewProp' permission='prop_edit' display='false' order='30'>属性预览</menu>
+            <menu controller='admin_props' action='delete' permission='prop_del' display='false' order='30'>删除属性</menu>
+            <menu controller='admin_props' action='delPage' permission='prop_del' display='false' order='30'>删除属性提示页面</menu>
+        </menugroup>
+        <menugroup name="分类管理">
+            <menu controller='admin_cat' action='index' permission='cat' display='true' order='160'>分类列表</menu>
+
+            <menu controller='admin_cat' action='create' permission='cat_edit' display='false' order='150'>添加分类</menu>
+            <menu controller='admin_cat' action='leaf' permission='cat' display='false' order='170'>三级分类列表</menu>
+            <menu controller='admin_cat' action='add' permission='cat_edit' display='false' order='170'>添加分类节点信息</menu>
+            <menu controller='admin_cat' action='edit' permission='cat_edit' display='false' order='170'>编辑分类节点信息</menu>
+            <menu controller='admin_cat' action='save' permission='cat_edit' display='false' order='170'>保存分类节点信息</menu>
+            <menu controller='admin_cat' action='delPage' permission='cat_del' display='false' order='170'>删除分类提示页面</menu>
+            <menu controller='admin_cat' action='toRemove' permission='cat_del' display='false' order='170'>删除分类</menu>
+            <menu controller='admin_cat' action='updateSort' permission='cat_edit' display='false' order='170'>更新菜单排序</menu>
+            <menu controller='admin_cat' action='isLeafCat' permission='cat' display='false' order='170'>判断是否是三级节点</menu>
+            <menu controller='admin_cat' action='relBrand' permission='cat_edit' display='false' order='170'>编辑三级分类关联的品牌页面</menu>
+            <menu controller='admin_cat' action='saveRelBrand' permission='cat_edit' display='false' order='170'>保存三级分类关联的品牌</menu>
+            <menu controller='admin_cat' action='relProp' permission='cat_edit' display='false' order='170'>编辑三级分类关联的属性页面</menu>
+            <menu controller='admin_cat' action='saveRelProp' permission='cat_edit' display='false' order='170'>保存三级分类关联的属性</menu>
+            <menu controller='admin_cat' action='relParam' permission='cat_edit' display='false' order='170'>编辑三级分类关联的参数页面</menu>
+            <menu controller='admin_cat' action='saveRelParam' permission='cat_edit' display='false' order='170'>保存三级分类关联的参数</menu>
+            <menu controller='admin_cat' action='checkCatName' permission='cat_edit' display='false' order='170'>检查分类名称</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

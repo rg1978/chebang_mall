@@ -1,0 +1,11 @@
+{
+    "enabled": true,
+    "service": "httpd",
+    "title": "erp_bbc",
+    "pipe": "logistics.shop.trade.delivery",
+    "service_args": {
+        "path": "ecos.ome-bbc/logistics.shop.trade.delivery"
+    },
+    "pipe_params": {},
+    "input": null
+}

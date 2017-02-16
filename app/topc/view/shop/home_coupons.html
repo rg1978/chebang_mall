@@ -1,0 +1,75 @@
+<div class="shoptitle mod-bottom clearfix"><span class="fl">店铺优惠券</span><a href="<{url action=topc_ctl_shopcenter@shopCouponList shop_id=$shopdata.shop_id}>" class="fr font-red">全部优惠券&nbsp;></a></div>
+<div class="relative">
+  <div class="shopcenter-coupon">
+    <div class="coupon">
+      <{foreach from=$homeCouponList item=homecoupon name=homecouponname}>
+      <div class="coupon-item">
+        <div class="init">
+          <div class="coupon-price"><{$homecoupon.deduct_money|cur}></div>
+          <div class="coupon-info">
+            <{$homecoupon.coupon_name}>
+          </div>
+          <a href="javascript:void(0);" data-couponid="<{$homecoupon.coupon_id}>" data-shopid="<{$shopdata.shop_id}>" class="get-coupon-btn">立即领取</a>
+        </div>
+      </div>
+      <{/foreach}>
+    </div>
+  </div>
+  <span class="coupon-left"><i class="icon icon-chevron-left"></i></span>
+  <span class="coupon-right"><i class="icon icon-chevron-right"></i></span>
+</div>
+<script>
+$(".get-coupon-btn").click(function(e){
+  e.preventDefault();
+  var url = '<{url action=topc_ctl_shopcenter@getCouponCode}>';
+  var coupon_id = $(this).attr('data-couponid');
+  var shop_id = $(this).attr('data-shopid');
+  var data = 'shop_id='+shop_id+'&coupon_id='+coupon_id;
+  $.post(url, data, function(rs){
+      if(rs.error) {
+        Message.error(rs.message);
+      }
+      if(rs.redirect) {
+        location.href = rs.redirect;
+      }
+  })
+});
+//优惠券移动
+var couponWidth = (parseInt($('.coupon-item').css('width')) + parseInt($('.coupon-item').css('margin-right')))*4;
+var couponItemCount = $('.coupon-item').length;
+couponItemCount = (couponItemCount / 4) > 1 ? (couponItemCount % 4) > 0 ? parseInt(couponItemCount / 4) : (couponItemCount / 4)-1 : 0;
+var i = 0;
+if(couponItemCount > 0) {
+  $('.coupon-right').addClass('active');
+}
+$('.coupon-left').on('click', function() {
+  if(i == 0 || couponItemCount == 0) {
+    return;
+  }
+  if(!$('.coupon-right').hasClass('active')) {
+    $('.coupon-right').addClass('active');
+  }
+  i -=1;
+  $('.shopcenter-coupon .coupon').css('left',-i*couponWidth+'px');
+  if(i == 0) {
+    $(this).removeClass('active');
+  } else {
+    $(this).addClass('active');
+  }
+});
+$('.coupon-right').on('click', function() {
+  if (couponItemCount == 0 || i >= couponItemCount) {
+    return;
+  }
+  if(!$('.coupon-left').hasClass('active')) {
+    $('.coupon-left').addClass('active');
+  }
+  i +=1;
+  $('.shopcenter-coupon .coupon').css('left',-i*couponWidth+'px');
+  if(i >= couponItemCount ) {
+    $(this).removeClass('active');
+  } else {
+    $(this).addClass('active');
+  }
+});
+</script>

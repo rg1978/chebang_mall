@@ -1,0 +1,118 @@
+<{if !$imageModal}>
+<div class="tab-pane active index-imgs clearfix">
+  <div class="folder-wrap">
+  <{include file="topshop/shop/image/folderlist.html"}>
+  </div>
+  <div class="row gallery">
+    <{if !$imagedata}>
+      <div class="no-data">
+        暂无数据
+      </div>
+    <{/if}>
+    <{foreach from=$imagedata item=data}>
+    <div class="col-sm-3 col-md-2">
+      <div class="thumbnail" data-param='<{$data|json_encode}>' data-img-id='<{$data.id}>'>
+        <div class="img-show">
+          <a href="<{$data.url|storager}>" <{foreach from=$imageTypeSize item=row key=key}> data-img-<{$key}>="<{$data.url|storager:$key}>"<{/foreach}> ><img src="<{$data.url|storager:'t'}>"></a>
+        </div>
+        <div class="caption" data-name="<{$data.url|storager}>">
+          <p class="image-name"><{$data.image_name}></p>
+          <input type="text" class="form-control image-name-input" name="image_name" value="<{$data.image_name|htmlspecialchars_decode:ENT_QUOTES}>">
+        </div>
+      </div>
+    </div>
+    <{/foreach}>
+  </div>
+</div>
+
+<div class="modal fade" id="img_show_modal" tabindex="-1" role="dialog">
+  <div class="panel panel-default modal-dialog modal-lg">
+    <div class="panel-heading">
+      <div class="clearfix">
+        <div class="pull-right">
+          <i class="glyphicon glyphicon-remove" data-dismiss="modal"></i>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body text-center">
+      <div class="big-img-show"><div class="show-position"><img src="" alt="" ></div></div>
+      <div class="caption">
+        <dl class="dl-horizontal">
+          <dt>图片地址：</dt>
+          <dd>
+          <a href="" class="img-url glyphicon glyphicon-link" target="_black">查看原图</a>&nbsp;&nbsp;&nbsp;
+          <{foreach from=$imageTypeSize item=row key=key}>
+          <a href="" class="img-url-<{$key}> glyphicon glyphicon-link" target="_black">查看<{$row.title}></a>&nbsp;&nbsp;&nbsp;
+          <{/foreach}>
+          <{assign var=imagesize value=$imageTypeSize|array_keys}>
+          </dd>
+          <dt>图片尺寸：</dt>
+          <dd class="img-spec"></dd>
+          <dt>原图大小：</dt>
+          <dd class="img-size"></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  //查看图片详细
+$('.nav-tabs-custom').on('click', '.gallery-no-editing .thumbnail', function(e) {
+  e.preventDefault();
+  var that = $(this);
+  $('.show-position').empty()
+  $('#img_show_modal').modal('show').on('shown.bs.modal',function(){
+    var param = that.attr('data-param');
+    param = JSON.parse(param);
+    var imgsrc = that.find('a').attr('href');
+    var imgsize = '<{$imagesize|json_encode}>'
+    imgsize = JSON.parse(imgsize);
+    for( var i=0; i<imgsize.length;i++ )
+    {
+      $(this).find('.img-url-' + imgsize[i] ).attr('href',that.find('a').attr('data-img-' + imgsize[i]));
+    }
+    $(this).find('.show-position').html('<img src="'+ imgsrc +'">');
+    $(this).find('.img-url').attr('href',imgsrc);
+    $(this).find('.img-size').text(param.format_size);
+    $(this).find('.img-spec').text(param.width + ' x ' + param.height);
+
+  });
+});
+
+</script>
+
+<{else}>
+<div class="tab-pane active upload-imgs clearfix">
+  <div class="folder-wrap">
+  <{include file="topshop/shop/image/folderlist.html"}>
+  </div>
+
+  <div class="row gallery">
+    <{if !$imagedata}>
+    <div class="no-data">
+      暂无数据
+    </div>
+    <{/if}>
+    <{foreach from=$imagedata item=data}>
+    <div class="col-sm-3">
+      <div class="thumbnail">
+        <div class="img-show"><a href="<{$data.url}>"><img src="<{$data.url|storager:'t'}>"></a></div>
+        <div class="caption" data-name="<{$data.url}>" data-url="<{$data.url|storager}>">
+          <p class="image-name"><{$data.image_name}></p>
+        </div>
+      </div>
+    </div>
+    <{/foreach}>
+  </div>
+</div>
+<{/if}>
+
+<{if $image_name}>
+<input type="hidden" name="image_name" class="has-searched" value="<{$image_name}>">
+<{/if}>
+
+<{pagers data=$pagers}>
+<{if $count > 0}>
+<span class="page-number">共&nbsp;<em class="text-aqua"><{$count}></em>&nbsp;条记录</span>
+<{/if}>
+

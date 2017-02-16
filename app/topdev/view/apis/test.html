@@ -1,0 +1,81 @@
+<div class="panel panel-info">
+  <!-- Default panel contents -->
+  <div class="panel-heading">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-success btn-flat">GET</button>
+      <button type="button" class="btn btn-warning btn-flat">POST</button>
+    </div>
+    <strong>/<{$groupKey}>?method=<{$method}></strong>
+  </div>
+  <div class="panel-body">
+    <form id="test_api"  action="<{url action=topdev_ctl_apis@testApi method=$method apitype=$apitype}>" method="post">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>字段</th>
+            <th width="30%">值</th>
+            <th width="10%">数据类型</th>
+            <th width="50%">描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <{foreach from=$system_params item="column" key="columnName"}>
+          <tr>
+            <td><{$column.field}></td>
+            <td>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <input type='text' class="form-control" name="params[<{$column.field}>]" value="<{$column.example}>" placeholder="<{$column.validate}>">
+                </div>
+              </div>
+            </td>
+            <td><{$column.type}></td>
+            <td><{$column.desc}></td>
+          </tr>
+          <{/foreach}>
+          <{foreach from=$params item="column" key="columnName"}>
+          <tr>
+            <td><{$column.field}></td>
+            <td>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <{if $column.input_type  == "select"}>
+                  <select class="form-control" name="params[<{$column.field}>]">
+                    <{if ! $column.required }>
+                    <option value ="">请选择</option>
+                    <{/if}>
+                    <{foreach from=$column.select_option item=option}>
+                    <option value =<{$option}>><{$option}></option>
+                    <{/foreach}>
+                  </select>
+                  <{else}>
+                  <input type='text' class="form-control" name="params[<{$column.field}>]" value="<{$apiParams[$column.field]}>" placeholder="<{$column.validate}>">
+                  <{/if}>
+                </div>
+              </div>
+            </td>
+            <td><{$column.type}></td>
+            <td><{$column.desc}></td>
+          </tr>
+          <{/foreach}>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-success btn-send">
+        <i class="glyphicon glyphicon-send"></i>
+        &nbsp;执行API&nbsp;
+      </button>
+    </form>
+  </div>
+</div>
+
+<div id="api_result">
+</div>
+
+<script>
+  $('.btn-send').click(function(){
+    $.post($("#test_api").attr('action'), $("#test_api").serialize(),function(rs){
+      $("#api_result").html(rs.html);
+    })
+  });
+</script>
+

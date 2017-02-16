@@ -1,0 +1,87 @@
+{
+    "title": "test1",
+    "slices": [
+        {
+            "input": "${var}",
+            "module": "encoding.json.decode.ex"
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "other",
+                "value": "${var}"
+            }
+        },
+        {
+            "module": "control.map",
+            "mapping": {
+                "other": "${global.other}",
+                "key": "${config.key}",
+                "secret": "${config.secret}"
+            }
+        },
+        {
+            "module": "script.lua",
+            "params": {
+                "script": "switch_pipe"
+            }
+        },
+
+        {
+            "module": "global.set",
+            "params": {
+                "key": "query",
+                "value": "${var}"
+            }
+        },
+        {
+            "module":"database.mongodb.findone",
+            "params":{
+                "node": "shopex_certi",
+                "collection":"poll_info_2",
+                "filter":"${global.query.query}",
+                "sort":"-time",
+                "limit":""
+            }
+        },
+
+        {
+            "module": "script.lua",
+            "params": {
+                "script": "permission"
+            }
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "permission",
+                "value": "${var}"
+            }
+        },
+
+        {
+            "module": "control.map",
+            "mapping": {
+                "other": "${global.other}",
+                "permission": "${global.permission}",
+                "msg_id":[
+                    {
+                        "module": "buildin.uuid"
+                    }
+                ],
+                "id": "${global.query.id}"
+            }
+        },
+         {
+            "module": "encoding.json.encode.ex"
+        },
+        {
+            "module": "control.include",
+            "params": {
+                "pipe": "${global.query.pipe}"
+            }
+        },
+        {"module": "trigger.mqack"}
+    ],
+    "log_level": 5
+}

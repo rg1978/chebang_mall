@@ -1,0 +1,12 @@
+<cronentries>
+    <cron id="system_tasks_cleanadminlog">
+        <description>清除平台操作日志</description>
+        <schedule>0 2 * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+    <cron id="system_tasks_cleansellerlog">
+        <description>清除商家操作日志</description>
+        <schedule>0 3 * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

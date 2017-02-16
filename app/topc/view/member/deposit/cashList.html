@@ -1,0 +1,41 @@
+<style>
+  td.red { color:red; }
+  td.green { color:green; }
+  td.black { color:black; }
+</style>
+<div class="deposit">
+  <div class="membercenter-box">
+    <div class="membercenter-box-hd">
+      <div class="membercenter-box-left">预存款提现记录</div>
+    </div>
+    <div class="membercenter-box-bd">
+      <table class="base-list-style" width="100%">
+        <colgroup>
+          <col class="list-col-3">
+          <col class="list-col-3">
+          <col class="list-col-3">
+          <col class="list-col-1">
+        </colgroup>
+        <thead>
+          <tr>
+            <td><{t}>申请时间<{/t}></td>
+            <td><{t}>提现金额<{/t}></td>
+            <td><{t}>提现单号<{/t}></td>
+            <td><{t}>提现状态<{/t}></td>
+          </tr>
+        </thead>
+        <tbody>
+          <{foreach from=$cashes item=cash}>
+          <tr>
+            <td><{$cash.create_time|cdate}></td>
+            <td><{$cash.amount|cur}></td>
+            <td><{$cash.cash_id}></td>
+            <td class='<{$color[$cash.status]}>'><{$status[$cash.status]}></td>
+          </tr>
+          <{/foreach}>
+        </tbody>
+      </table>
+    </div>
+    <{pagers data=$pagers}>
+  </div>
+</div>

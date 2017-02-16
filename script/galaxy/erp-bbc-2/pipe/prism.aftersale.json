@@ -1,0 +1,92 @@
+{
+    "title": "test1",
+    "slices": [
+         {
+            "module": "encoding.json.decode.ex"
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "query",
+                "value": "${var}"
+            }
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "permission",
+                "value": "${var.permission}"
+            }
+        },
+        {
+            "module": "control.map",
+            "mapping": {
+                "format": "json",
+                "v": "v1",
+                "aftersales_bn": "${global.query.id}",
+                "msg_id": "${global.query.msg_id}",
+                "fields":"*,trade.tid,sku.bn,attachment"
+            }
+        },
+        {
+            "module": "net.prism.post",
+            "params": {
+                "key": "${global.permission.from_key}",
+                "secret": "${global.permission.from_secrt}",
+                "host": "${global.permission.api_url}",
+                "token": "${global.permission.from_token}",
+                "api": "api/sysaftersales?method=aftersales.get",
+                "params": "${var}"
+            }
+        },
+        {
+            "module": "encoding.json.decode.ex"
+        },
+        {"module": "script.lua", "params": {
+            "script": "test",
+            "prefix": "aftersale bbc 返回"
+            }},
+        {
+            "module": "control.assert",
+            "params": {
+                "assert": "is",
+                "left": "${var.error}",
+                "right": ""
+            }
+        },
+
+        {
+            "module": "control.map",
+            "mapping": {
+                "data": "${var}",
+                "msg_id": "${global.query.msg_id}",
+                "permission": "${global.permission}"
+            }
+        },
+        {
+            "module": "script.lua",
+            "params": {
+                "script": "to_ome_aftersale"
+            }
+        },
+        {
+            "module": "encoding.json.encode.ex"
+        },
+        {
+            "module": "cloud.erp.callback_ecos",
+            "params": {
+                "method": "POST",
+                "url": "${global.permission.to_url}",
+                "token": "${global.permission.to_token}"
+            }
+        },
+        {
+            "module": "encoding.json.decode.ex"
+        },
+        {"module": "script.lua", "params": {
+            "script": "test",
+            "prefix": "aftersale erp 返回"
+            }}
+    ],
+    "log_level": 5
+}

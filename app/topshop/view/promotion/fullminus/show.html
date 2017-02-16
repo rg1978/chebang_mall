@@ -1,0 +1,262 @@
+  <div class="panel panel-default">
+    <div class="panel-heading">设置规则名称</div>
+    <div class="panel-body">
+    <p>
+       <span>名称：</span>
+       <span>
+         <{$fullminus_name}>
+       </span>
+    </p>
+    </div>
+  </div>
+
+ <div class="panel panel-default select-goods-panel">
+    <div class="panel-heading">
+      已选择适用商品
+    </div>
+    <div class="panel-body">
+      <div class="selected-goods-list">
+   <table wdith="100%" class="table table-primary table-hover table-goods">
+          <{foreach from=$itemsList item=itemslist}>
+          <tr>
+            <td>
+              <div class="goods">
+                <a href="<{url action=topc_ctl_item@index item_id=$itemslist.item_id}>" target="_blank">
+                  <img src="<{$itemslist.image_default_id|default:$image_default_id.S.default_image|storager:t}>" alt="">
+                  <{$itemslist.title}>
+                </a>
+              </div>
+            </td>
+            <td>
+              商品金额:<{$itemslist.price|cur}>
+            </td>
+          </tr>
+          <{/foreach}>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+
+   <div class="panel panel-default">
+    <div class="panel-heading">设置规则</div>
+    <div class="panel-body">
+    <p>
+    <span>促销规则：</span>
+    <span>
+       <{if $condition_value}>
+         <{foreach from=$condition_value item=condition}>
+           消费满 <{$condition[0]}> 元，减<{$condition[1]}>元
+         <{/foreach}>
+          <{if $canjoin_repeat=="1"}>
+           (上不封顶)
+         <{else}>
+           (无上不封顶)
+         <{/if}>
+      <{/if}>
+     </span>
+     <p>
+     <p>
+     <span>规则描述：</span>
+     <span>
+       <{if $fullminus_desc}>
+          <{$fullminus_desc}>
+       <{else}>
+          <{foreach from=$condition_value item=condition}>
+            消费满 <{$condition[0]}> 元，减<{$condition[1]}>元
+          <{/foreach}>
+          <{if $canjoin_repeat=="1"}>
+            (上不封顶),
+          <{else}>
+            (无上不封顶),
+          <{/if}>
+          <span>
+            适用于
+             <{$greade_str}>
+          </span>
+           <span>
+            参与<{$join_limit}>次
+          </span>
+        <{/if}>
+     </span>
+     <p>
+    <p>
+    <span>参与次数：</span>
+    <span>
+        <{$join_limit}>
+    </span>
+    <p>
+    <p>
+    <span>适用会员：</span>
+    <span>
+       <{$greade_str}>
+    </span>
+    <p>
+    <p>
+    <span>使用平台：</span>
+    <span>
+       <{if $used_platform=='0' || !$used_platform}>
+         全平台(pc+wap)
+       <{elseif $used_platform=='1'}>
+         pc端
+       <{elseif $used_platform=='2'}>
+         wap端
+       <{/if}>
+    </span>
+    <p>
+    <p>
+       <span>起止时间：</span>
+       <{$valid_time}>
+    </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-2">
+      <a href="<{url action="topshop_ctl_promotion_fullminus@list_fullminus"}>"><button type="submit" class="btn btn-primary btn-lg btn-block action-save">返回</button></a>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+  </div>
+</form>
+<script>
+var optionA = '<div class="wholesale-rule-discount"><div class="wholesale-row"><span>消费满 <input type="text" size="5" name="full[]"> 元，减 <input type="text" size="5" name="minus[]"> 元</span><a class="del-btn" href="javascript:void(0);">删除</a></div></div>';
+//添加和删除批发规则
+$('.rule-dom').find('.wholesale-rule-discount').eq(0).find('.del-btn').remove();
+$('#addWholesaleRule').click(function(){
+    var ruleDom = $('.rule-dom').find('.wholesale-rule-discount');
+    if(ruleDom.length < 5){
+        $('.rule-dom').append(optionA);
+    }else{
+        $('#messagebox').message('最多添加5条规则!')
+    }
+});
+
+$('.rule-dom').on('click','.del-btn',function(){
+    $(this).parents('.wholesale-rule-discount').remove();
+});
+
+$('.reservation').daterangepicker({
+    "timePicker": true,
+    "opens": "right",
+    "timePicker24Hour": true,
+    "timePickerIncrement": 1,
+    "locale": {
+        "format": "YYYY/MM/DD HH:mm"
+    }
+});
+
+function ajaxSubmit (e) {
+  var form = e.target;
+  e.preventDefault();
+  $.post(form.action, $(form).serialize(), function(rs) {
+    if(rs.error) {
+      $('#messagebox').message(rs.message);
+      return;
+    }
+    if(rs.success) {
+      $('#messagebox').message(rs.message, 'success');
+    }
+    if(rs.redirect) {
+      location.href = rs.redirect;
+    }
+  });
+}
+
+var list = $('#op_items_list');
+var added = $('#op_items_added');
+var jsonData = '<{$notEndItem}>';
+var addedItems;
+if(jsonData == ''){
+  addedItems = []
+}else{
+  addedItems = JSON.parse(jsonData);
+}
+//var addedItems = JSON.stringify('<{$notEndItem}>') || [];
+
+$('.action-checkall').change(function(e) {
+    checkAll(this, $(this).parents('.item-filter-table').find('.action-checkitem'));
+});
+$('.action-add-item').click(function(e) {
+    e.preventDefault();
+    var items = list.find('.action-checkitem:checked');
+    var pros = added.find('.items');
+    if(pros.length ==0){
+      added.empty();
+    }
+    items.filter(function (i) {
+          if(addedItems.indexOf(this.value) < 0) {
+              addedItems.push(this.value);
+              return true;
+          }
+          $(this).parents('.item-filter-row').remove();
+          return false;
+      })
+      .prop('checked', false)
+      .parents('.item-filter-row').find('.action-checkitem').css('display','none')
+      .parents('.item-filter-row').append('<div class="item-check del"><a class="item-del" href="#">删除</a></div>').appendTo(added);
+
+    if(!list.children().length) {
+        list.parents('.item-filter-table').find('.action-checkall').prop('checked', false);
+    }
+});
+added.on('click','.item-del',function(e){
+  e.preventDefault();
+  var delVal = $(this).parents('.item-filter-row').find('.action-checkitem').val();
+  $(this)
+  .parents('.item-filter-row').find('.action-checkitem').css('display','inline-block')
+  .parents('.item-filter-row').appendTo(list)
+  .find('.del').remove();
+  var emptyDom = '<div class="item-filter-row"><div align="center">暂未添加商品</div></div>'
+  var pros = added.find('.items');
+  if(pros.length ==0){
+    added.append(emptyDom);
+  }
+  for (var i = 0; i < addedItems.length; i++) {
+    if(delVal == addedItems[i]){
+      addedItems.splice(i);
+    }
+  };
+});
+$('.action-delete-item').click(function(e) {
+    e.preventDefault();
+    added.find('.action-checkitem:checked')
+      .filter(function (i, el) {
+          addedItems.splice(addedItems.indexOf(el.value), 1);
+          var checkbox = list.find('.action-checkitem');
+          var result = true;
+          checkbox.length && checkbox.each(function() {
+              if(this.value == el.value) {
+                  $(el).parents('.item-filter-row').remove();
+                  result = false;
+              }
+          });
+          return result;
+      })
+      .prop('checked', false)
+      .parents('.item-filter-row').appendTo(list);
+
+    if(!added.children().length) {
+        added.parents('.item-filter-table').find('.action-checkall').prop('checked', false);
+    }
+});
+
+$('.conditions label').click(function() {
+  var cidx = $(this).index();
+  $('.condition-view>div').hide().eq(cidx).show();
+  if($(this).hasClass('all')){
+    $('.action-add-item').hide();
+    $('.result').hide();
+  }else{
+    $('.action-add-item').show();
+    $('.result').show();
+  }
+});
+$('.action-save').click(function(e) {
+    added.find('.action-checkitem').prop('checked', true);
+});
+</script>

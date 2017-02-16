@@ -1,0 +1,79 @@
+<div class="recharge-container">
+  <div class="recharge-header clearfix">
+    <div class="recharge-title">
+      预存款充值
+    </div>
+    <div class="recharge-steps">
+      <span class="current">1.填写充值金额</span>
+      <span class="current">2.选择支付方式</span>
+      <span>3.充值成功</span>
+    </div>
+  </div>
+  <{if $count.paymentsCount == 0 }>
+  <div class="recharge-content recharge-pay">
+    <form class="recharge-form" action="<{url action=topc_ctl_member_deposit@doRecharge}>" method="post">
+<div class="form-title"> 没有可用的支付方式，请联系商家协调 </div>
+    </form>
+  </div>
+  <{else}>
+  <div class="recharge-content recharge-pay">
+    <form class="recharge-form" action="<{url action=topc_ctl_member_deposit@doRecharge}>" method="post">
+      <input type='hidden' name='amount' value='<{$amount}>'>
+
+      <{if $count.paymentsNoTeegonCount != 0}>
+      <div class="form-title">选择支付方式</div>
+      <div class="form-group">
+        <ul class="paytype paytype-choose-list">
+          <{foreach from=$payments item=payment}>
+          <{if $payment.app_id != teegonali and $payment.app_id != teegonwxpay}>
+          <li>
+            <label class="choose-item-content">
+              <input type="radio" name="pay_app_id" value='<{$payment.app_id}>'>
+              <img src="<{$payment.img|storager}>" alt="<{$payment.app_name}>">
+              <i class="icon icon-checkmark"></i>
+              <span></span>
+            </label>
+          </li>
+          <{/if}>
+          <{/foreach}>
+        </ul>
+      </div>
+      <{/if}>
+      <{if $count.paymentsTeegonCount != 0}>
+        <{foreach from=$payments item=payment}>
+          <{if $payment.app_id == teegonali or $payment.app_id == teegonwxpay}>
+            <div class="form-title">选择天工收银</div>
+            <{break}>
+          <{/if}>
+        <{/foreach}>
+      <{/if}>
+      <div class="form-group">
+        <ul class="paytype paytype-choose-list">
+          <{foreach from=$payments item=payment}>
+          <{if $payment.app_id == teegonali or $payment.app_id == teegonwxpay}>
+          <li>
+            <label class="choose-item-content">
+              <input type="radio" name="pay_app_id" value='<{$payment.app_id}>'>
+              <img src="<{$payment.img|storager}>" alt="<{$payment.app_name}>">
+              <i class="icon icon-checkmark"></i>
+              <span></span>
+            </label>
+          </li>
+
+          <{/if}>
+          <{/foreach}>
+        </ul>
+      </div>
+      <div class="form-action">
+        <button type="submit" class="btn btn-danger btn-block"><span><span>下一步</span></span></button>
+      </div>
+    </form>
+  </div>
+  <{/if}>
+</div>
+<script>
+  $('.recharge-form li').on('click', function() {
+    $('.recharge-pay').find('li').removeClass('on');
+    $(this).addClass('on');
+  });
+</script>

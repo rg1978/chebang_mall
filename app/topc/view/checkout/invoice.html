@@ -1,0 +1,90 @@
+<div class="order-confirm-item-hd"><em>发票信息</em>
+  <a href="javascript:void(0);" class="step3-open" style="display:none;">修改</a>
+</div>
+<div class="order-confirm-item-bd">
+  <div class="item-border">
+    <div class="step3-update" style="display:none;">
+      普通发票（电子）&nbsp;&nbsp;个人 &nbsp;&nbsp; 明细
+    </div>
+    <div class="step3">
+      <ul>
+        <li class="form-row">
+          <label for="" class="form-label">是否需要发票：</label>
+          <span class="form-act">
+            <input id="for_invoiceneed" type="radio" name="invoice[need_invoice]" value="1">
+            <label for="for_invoiceneed">是</label>
+            <input id="for_noinvoice" type="radio" name="invoice[need_invoice]" value="0" checked>
+            <label for="for_noinvoice">否</label>
+          </span>
+        </li>
+      </ul>
+      <ul class="invoice-info" style="display:none;">
+        <li class="form-row">
+          <label for="" class="form-label">发票类型：</label>
+          <span class="form-act">
+            <label><input type="radio" name="invoice[invoice_type]" value="normal" checked class="invoice-type"><span>普通发票</span></label>
+            <label><input type="radio" name="invoice[invoice_type]" value="vat" class="invoice-type"><span>增值税发票</span></label>
+          </span>
+        </li>
+        <li class="form-row invoice-normal">
+          <label for="" class="form-label">发票抬头：</label>
+          <span class="form-act">
+            <select name="invoice[invoice_title]" id="">
+              <option value="individual" <{if $invoice.invoice_title=='individual'}>selected="selected"<{/if}>>个人</option>
+              <option value="unit" <{if $invoice.invoice_title=='unit'}>selected="selected"<{/if}>>单位</option>
+              <input class="x-input" type="text" maxlength="100" name="invoice[invoice_content]" value="<{$invoice.invoice_content}>" />
+            </select>
+          </span>
+        </li>
+        <li class="form-row invoice-tax hid">
+          <label for="" class="form-label">公司名称：</label>
+          <input class="x-input w210" type="text" maxlength="100" name="invoice[invoice_vat][company_name]" value="<{$invoice.invoice_vat.company_name}>" />
+        </li>
+        <li class="form-row invoice-tax hid">
+          <label for="" class="form-label">纳税人登记号：</label>
+          <input class="x-input w210" type="text" maxlength="100" name="invoice[invoice_vat][registration_number]" value="<{$invoice.invoice_vat.registration_number}>" />
+        </li>
+        <li class="form-row invoice-tax hid">
+          <label for="" class="form-label">公司地址：</label>
+          <input class="x-input w210" type="text" maxlength="100" name="invoice[invoice_vat][company_address]" value="<{$invoice.invoice_vat.company_address}>" />
+        </li>
+        <li class="form-row invoice-tax hid">
+          <label for="" class="form-label">电话：</label>
+          <input class="x-input w210" type="text" maxlength="100" name="invoice[invoice_vat][company_phone]" value="<{$invoice.invoice_vat.company_phone}>" />
+        </li>
+        <li class="form-row invoice-tax hid">
+          <label for="" class="form-label">开户银行：</label>
+          <input class="x-input w210" type="text" maxlength="100" name="invoice[invoice_vat][bankname]" value="<{$invoice.invoice_vat.bankname}>" />
+        </li>
+        <li class="form-row invoice-tax hid">
+          <label for="" class="form-label">银行账户：</label>
+          <input class="x-input w210" type="text" maxlength="100" name="invoice[invoice_vat][bankaccount]" value="<{$invoice.invoice_vat.bankaccount}>" />
+        </li> 
+        <li class="form-row invoice-tax hid">
+          <label for="" class="form-label">备注：</label>
+          <span class="form-act">
+            订单中的商品由入驻商家销售，如需开具增票，请联系商家在线客服咨询确认。
+          </span>
+        </li>
+        <li class="form-row invoice-normal">
+          <label for="" class="form-label">发票内容：</label>
+          <span class="form-act">
+            由商家直接开具
+          </span>
+        </li>
+        <li class="form-row invoice-normal">
+          <label for="" class="form-label">备注：</label>
+          <span class="form-act">
+            订单中的商品由入驻商家销售，发票内容由商家决定（如需修改，请联系商家），发票由商家开具寄出。
+          </span>
+        </li>
+        <li class="form-row last">
+          <span class="">
+            <button type="button" class="btn btn-import step3-close"><span><span>保存发票信息</span></span></button>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+

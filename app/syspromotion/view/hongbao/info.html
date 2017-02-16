@@ -1,0 +1,143 @@
+<form id="hongbaoForm" action="?app=syspromotion&ctl=admin_hongbao&act=stopIssuedHongbao"  method="POST" >
+  <input type="hidden" name="hongbao_id"  value="<{$hongbao_id}>">
+  <div class="tableform">
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>红包名称：<{/t}></th>
+          <td><{$name}></td>
+        </tr>
+        <tr>
+          <th><{t}>每人限领金额：<{/t}></th>
+          <td><{$user_total_money}></td>
+          <th><{t}>每人限领数量：<{/t}></th>
+          <td><{$user_total_num}></td>
+        </tr>
+        <tr>
+          <th><{t}>领取红包起始时间：<{/t}></th>
+          <td><{$get_start_time|cdate}></td>
+          <th><{t}>领取红包截止时间：<{/t}></th>
+          <td><{$get_end_time|cdate}></td>
+        </tr>
+        <tr>
+          <th><{t}>	使用红包起始时间：<{/t}></th>
+          <td><{$use_start_time|cdate}></td>
+          <th><{t}>	使用红包截止时间：<{/t}></th>
+          <td><{$use_end_time|cdate}></td>
+        </tr>
+        <tr>
+          <th><{t}>使用平台：<{/t}></th>
+          <td>
+            电脑端
+            <!--
+            <select name="used_platform" disabled=disabled>
+              <option value="all" <{if $used_platform == 'all'}>checked<{/if}>>全平台</option>
+              <option value="pc" <{if $used_platform == 'pc'}>checked<{/if}>>电脑端</option>
+              <option value="wap" <{if $used_platform == 'wap'}>checked<{/if}>>手机端</option>
+            </select>
+            -->
+          </td>
+        </tr>
+        <tr>
+          <th><{t}>红包类型：<{/t}></th>
+          <td>
+            <div class='hongbao_type'>
+              <label><input type="radio" name="hongbao_type" value="fixed" checked disabled=disabled/><{t}>定额红包<{/t}></label>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="division">
+      <div class="gridlist-action">
+        <{button app="desktop" label="红包规则" class="addhongbao" id="addhongbao" }><!--<span class="notice-inline"></span>-->
+      </div>
+
+      <table border="0" cellspacing="0" cellpadding="0" class="gridlist hongbao_value_table <{$propInfo.show_type|default:'text'}>-prop-value-table">
+        <thead>
+          <tr>
+            <th><{t}>红包金额<{/t}></th>
+            <th><{t}>红包数量<{/t}></th>
+            <th><{t}>领取红包数量<{/t}></th>
+          </tr>
+        </thead>
+        <tbody>
+          <{foreach from=$hongbao_list item=item key=key}>
+          <tr>
+            <td>
+              <{$item.money}>
+            </td>
+            <td>
+              <{$item.num}>
+            </td>
+            <td>
+              <{$item.getNum|default:0}>
+            </td>
+          </tr>
+          <{/foreach}>
+        </tbody>
+      </table>
+    </div>
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>红包总金额：<{/t}></th>
+          <td><font color='red'><{$total_money|cur}></font></td>
+          <th><{t}>红包总数量：<{/t}></th>
+          <td><font color='red'><{$total_num}></font></td>
+        </tr>
+        <tr>
+          <th><{t}>领取红包总金额：<{/t}></th>
+          <td><font color='red'><{$getTotalMoney|default:0|cur}></font></td>
+          <th><{t}>已使用红包总金额：<{/t}></th>
+          <td><font color='red'><{$useTotalMoney|default:0|cur}></font></td>
+        </tr>
+        <!--
+        <tr>
+          <th><{t}>领取红包总数量：<{/t}></th>
+          <td><font color='red'><{$getTotalNum|default:0}></font></td>
+        </tr>
+        -->
+        <tr>
+          <th><{t}>退回给红包总金额：<{/t}></th>
+          <td><font color='red'><{$refundMoney|default:0|cur}></font></td>
+          <th><{t}>退回后已使用总金额：<{/t}></th>
+          <td><font color='red'><{$useRefundMoney|default:0|cur}></font></td>
+        </tr>
+      </table>
+    </div>
+    <input type="hidden" name="status" value="<{$update_status}>">
+    <div class="table-action">
+      <{button type="submit" id='brand-form-submit' label=$btn_title|t:'syspromotion'}>
+    </div>
+  </div>
+</form>
+<script>
+  (function(){
+    var _form = $('hongbaoForm');
+    var btn =$('brand-form-submit');
+    var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+    _form.store('target',{
+      onSuccess:function(response){
+        var hash_res_obj = JSON.decode(response);
+
+        if (hash_res_obj.success != undefined && hash_res_obj.success != ""){
+          try{
+            var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+          }catch(e){}
+
+          if(_dialogIns){
+            _dialogIns.close();
+            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+          }
+        }
+      }
+    });
+
+    btn.addEvent('click',function(){
+      _form.fireEvent('submit',{stop:$empty});
+    });
+
+  })();
+</script>

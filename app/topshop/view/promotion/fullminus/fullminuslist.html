@@ -1,0 +1,25 @@
+<{if $itemsList}>
+  <{foreach from=$itemsList item=itemslist}>
+    <div class="item-filter-row items">
+      <div class="item-check">
+        <input type="hidden" name="item_id[]" value="<{$itemslist.item_id}>" class="action-checkitem">
+      </div>
+      <div class="item-name">
+        <div class="goods">
+          <a href="<{url action=topc_ctl_item@index item_id=$itemslist.item_id}>" target="_blank">
+            <img src="<{$itemslist.image_default_id|default:$image_default_id.S.default_image|storager:t}>" alt="">
+            <{$itemslist.title}>
+          </a>
+        </div>
+      </div>
+      <div class="item-price"><{$itemslist.price|cur}></div>
+      <div class="item-check del"><a class="item-del" href="#">删除</a></div>
+    </div>
+  <{/foreach}>
+  <script>
+    $('.item-del').click(function(e) {
+      e.preventDefault();
+      $(this).parents('.item-filter-row').remove();
+    });
+  </script>
+<{/if}>

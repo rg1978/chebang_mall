@@ -1,0 +1,70 @@
+<div class="tableform widgetconfig" >
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th><em><font color="red">*</font></em><{t}>设置文章栏目名称：<{/t}></th>
+        <td>
+          <{input type="text" name="contenttag" vtype="required" value=$setting.contenttag|default:""}>
+        </td>
+      </tr>
+        <tr>
+            <th><{t app='topc'}>选择栏目节点:<{/t}> </th>
+            <td>
+                <{input id="select_begin_node" type='select' name='node_id' value=$setting.node_id vtype='required' caution=$___topc='请选择节点'|t:'topc' rows=$setting.selectNode valueColumn="node_id" labelColumn="node_name"}>
+            </td>
+        </tr>
+        <tr>
+            <th><{t app='topc'}>选择栏目下展示文章:<{/t}> <br><{t}>(按住ctrl 或 shift 多选)<{/t}></th>
+            <td>
+                <{input type='select' id="select_article" name='articlelist[]' multiple="true" value=$setting.article_id  caution=$___topc='请选择文章'|t:'topc' rows=$setting.selectmaps valueColumn="article_id" labelColumn="article_name" size=15 style="min-width:150px"}>
+            </td>
+        </tr>
+        <!--tr>
+            <th><{t app='topc'}>文章标题按:<{/t}> </th>
+            <td>
+            <select name="order_type">
+              <{foreach from=$setting.select_order.order_type key=key item=item}>
+              <option value="<{$key}>" <{if $key==$setting.order_type}>selected="selected"<{/if}> ><{$item}></option>
+              <{/foreach}>
+            </select>
+            <select name="order">
+              <{foreach from=$setting.select_order.order key=key item=item}>
+              <option value="<{$key}>" <{if $key==$setting.order}>selected="selected"<{/if}> ><{$item}></option>
+              <{/foreach}>
+            </select>
+            排序
+            </td>
+        </tr-->
+   </table>
+</div>
+<script type="text/javascript">
+
+$$('input[name=showallart]').addEvent('change',function(){
+    if(!this.checked)return;
+    $$('[data-extends='+this.get('data-extends-name')+']').setStyle('display',this.value>0 ? '' : 'none');
+}).fireEvent('change');
+
+$('select_begin_node').addEvent('change',function(){
+req('node_id=' + this.value);
+    $$('[data-extends=beginnode]').setStyle('display', this.value>0 ? '' : 'none');
+}).fireEvent('change');
+
+function req(data) {
+    new Request({
+      url: '<{url action=toputil_ctl_themesAjax@getContentNodeArticleList}>',
+        onSuccess: function(rs) {
+            var s = [];
+            if(rs) {
+                rs = JSON.decode(rs);
+                var articlelist = '<{$setting.articlelist|json_encode}>';
+                rs.each(function(r){
+                   var value=JSON.stringify(r);
+                    s.push("<option value='" + value + "' "+(articlelist.indexOf(value) > -1 ? "selected" : "") +">" + r.title + "</option>");
+                });
+
+                $('select_article').set('html', s.join(''));
+            }
+        }
+    }).post(data);
+}
+req('node_id=<{$setting.node_id}>');
+</script>

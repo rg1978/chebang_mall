@@ -1,0 +1,17 @@
+<div class="promotion-banner">
+    <h1 class="title"><{$promotionInfo.coupon_name}></h1>
+    <p class="sub-title"><{$promotionInfo.coupon_desc}></p>
+    <p class="time-area">优惠券领取时间：<{$promotionInfo.cansend_start_time|cdate:'FDATE'}> 至 <{$promotionInfo.cansend_end_time|cdate:'FDATE'}></p>
+    <p class="time-area">优惠券生效时间：<{$promotionInfo.canuse_start_time|cdate:'FDATE'}> 至 <{$promotionInfo.canuse_end_time|cdate:'FDATE'}></p>
+</div>
+<div class="redemption-area">
+	<select name="" id="">
+		<option value="1" selected="selected">满100元换购区</option>
+	</select>
+	<select name="" id="">
+		<option value="1" selected="selected">满200元换购区</option>
+	</select>
+	<select name="" id="">
+		<option value="1" selected="selected">满300元换购区</option>
+	</select>
+</div>

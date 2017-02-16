@@ -1,0 +1,140 @@
+{
+    "title": "store.trade.aftersales.status.update",
+    "slices": [
+        {
+            "input": "${var.params}",
+            "module": "encoding.json.decode.ex"
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "msg_id",
+                "value": "${var.msg_id}"
+            }
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "shopex_permission",
+                "value": "${var.permission}"
+            }
+        },
+        {
+            "module": "global.set",
+            "params": {
+                "key": "shopex_adapter",
+                "value": "${var.shopex_adapter}"
+            }
+        },
+        {
+            "mapping": {
+                "data": "",
+                "err_msg": "",
+                "msg_id": "${global.msg_id}",
+                "res": "",
+                "rsp": "running"
+            },
+            "module": "control.map"
+        },
+        {
+            "module": "control.return"
+        },
+        {
+            "input": "${global.shopex_adapter}",
+            "module": "script.lua",
+            "params": {
+                "script": "check_status"
+            }
+        },
+        {
+            "module": "control.map",
+            "mapping": {
+                "format": "json",
+                "v": "v1",
+                "status": "${var}",
+                "msg_id": "${global.msg_id}",
+                "aftersales_bn": "${global.shopex_adapter.aftersale_id}",
+                "memo": "${global.shopex_adapter.memo}"
+            }
+        },
+        
+        {
+            "module": "net.prism.post",
+            "params": {
+                "key": "${global.shopex_permission.bbc_appkey}",
+                "secret": "${global.shopex_permission.bbc_secret}",
+                "host": "${global.shopex_permission.api_url}",
+                "token": "${global.shopex_permission.bbc_access_token}",
+                "api": "api/sysaftersales?method=aftersales.status.update",
+                "params": "${var}"
+            }
+        },
+        {
+            "module": "encoding.json.decode.ex"
+        },
+        {"module": "script.lua", "params": {
+            "script": "test",
+            "prefix": "store.trade.aftersale.status.update.async bbc 返回"
+            }},
+        {
+            "mapping": {
+                "res": [
+                    {
+                        "mapping": {
+                            "data": "",
+                            "exception": "${var.error.exception}",
+                            "err_msg": "${var.error.message}",
+                            "msg_id": "${global.msg_id}",
+                            "res": "${var.error.code}",
+                            "rsp": "fail",
+                            "spider": "${var}"
+                        },
+                        "module": "control.map"
+                    },
+                    {
+                        "module": "control.assert",
+                        "params": {
+                            "assert": "is",
+                            "left": "${var.spider.error}",
+                            "right": ""
+                        }
+                    },
+                    {
+                        "mapping": {
+                            "data": "${var.spider.result}",
+                            "err_msg": "",
+                            "msg_id": "${global.msg_id}",
+                            "res": "${var.spider.error.message}",
+                            "rsp": "succ"
+                        },
+                        "module": "control.map"
+                    }
+                ]
+            },
+            "module": "control.map"
+        },
+        {
+            "input": "${var.res}",
+            "module": "encoding.json.encode.ex"
+        },
+        {"module": "script.lua", "params": {
+            "script": "test"
+            }},
+        {
+            "module": "cloud.erp.callback_ecos",
+            "params": {
+                "method": "POST",
+                "url": "${global.shopex_adapter.callback_url}",
+                "token": "${global.shopex_permission.from_token}"
+            }
+        },
+        {
+            "module": "encoding.json.decode.ex"
+        },
+        {"module": "script.lua", "params": {
+            "script": "test",
+            "prefix": "store.trade.aftersale.status.update.async erp 返回"
+            }}
+    ],
+    "log_level": 5
+}
